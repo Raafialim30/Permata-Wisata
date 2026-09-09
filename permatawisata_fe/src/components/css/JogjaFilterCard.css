@@ -1,0 +1,525 @@
+/* ========================================================= */
+/* JOGJA FILTER CARD STYLES                                 */
+/* ========================================================= */
+
+.jogja-filter-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px 24px 28px;
+  margin: 0 auto 35px auto;
+  max-width: 1000px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* Accent Top Bar */
+.filter-top-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ff8c00 0%, #f97316 100%);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* Top Controls Row (Date & Duration) */
+.filter-top-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-control-btn-wrapper {
+  position: relative;
+}
+
+.filter-control-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-control-btn:hover {
+  border-color: #ff8c00;
+  color: #ff8c00;
+  background: #fffdfa;
+}
+
+.filter-control-btn.active {
+  border-color: #ff8c00;
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.filter-control-btn .btn-icon {
+  font-size: 15px;
+  color: #64748b;
+}
+
+.filter-control-btn.active .btn-icon {
+  color: #ea580c;
+}
+
+/* Popover for Date / Duration selection */
+.filter-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+}
+
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.close-popover-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-popover-btn:hover {
+  color: #ef4444;
+}
+
+.popover-date-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.popover-date-input:focus {
+  border-color: #ff8c00;
+}
+
+.popover-clear-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: #f1f5f9;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.popover-clear-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.duration-options-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.duration-chip {
+  padding: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  text-align: center;
+}
+
+.duration-chip:hover {
+  background: #fff7ed;
+  border-color: #ff8c00;
+  color: #ff8c00;
+}
+
+.duration-chip.selected {
+  background: #ff8c00;
+  color: #ffffff;
+  border-color: #ff8c00;
+  font-weight: 600;
+}
+
+/* Center Subtitle Divider */
+.filter-divider-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0 20px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #e2e8f0;
+  max-width: 150px;
+}
+
+.divider-text {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* Filter Tabs Row */
+.filter-tabs-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.filter-tab-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-pill:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.filter-tab-pill.active {
+  border-color: #0f172a;
+  color: #0f172a;
+  font-weight: 700;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filter-tab-pill.bold-tab.active {
+  color: #0f172a;
+  font-weight: 700;
+  border-color: #0f172a;
+}
+
+.pill-icon {
+  font-size: 13px;
+}
+
+/* Filter Chips Container (Spot Wisata Chips Grid) */
+.filter-chips-container {
+  margin-top: 10px;
+}
+
+.chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.spot-chip {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.spot-chip:hover {
+  border-color: #ff8c00;
+  color: #ff8c00;
+  transform: translateY(-1px);
+}
+
+.spot-chip.selected {
+  background: #ff8c00;
+  color: #ffffff;
+  border-color: #ff8c00;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(255, 140, 0, 0.25);
+}
+
+/* Radius Selector Bar */
+.radius-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.radius-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c2410c;
+}
+
+.radius-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.radius-chip {
+  background: #ffffff;
+  border: 1px solid #fdba74;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ea580c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radius-chip:hover {
+  background: #ea580c;
+  color: #ffffff;
+}
+
+.radius-chip.active {
+  background: #ea580c;
+  color: #ffffff;
+  font-weight: 600;
+  border-color: #ea580c;
+  box-shadow: 0 2px 5px rgba(234, 88, 12, 0.2);
+}
+
+/* Sub Filter Chips (Kapasitas & Kamar) */
+.chips-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.sub-filter-chip {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-filter-chip:hover {
+  border-color: #0B3C5D;
+  color: #0B3C5D;
+}
+
+.sub-filter-chip.selected {
+  background: #0B3C5D;
+  color: #ffffff;
+  border-color: #0B3C5D;
+  font-weight: 600;
+}
+
+/* Price Sort Info */
+.price-sort-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #475569;
+}
+
+.change-sort-btn {
+  background: #0B3C5D;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.change-sort-btn:hover {
+  background: #082a42;
+}
+
+/* Summary Bar */
+.filter-active-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  padding-right: 55px; /* Leave space for auto-up float button */
+  border-top: 1px dashed #e2e8f0;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.active-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.active-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #ffedd5;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.active-tag svg {
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.active-tag svg:hover {
+  color: #ef4444;
+}
+
+.reset-all-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.reset-all-btn:hover {
+  text-decoration: underline;
+}
+
+/* Floating Scroll to Top button matching screenshot */
+.scroll-top-float-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #ff8c00;
+  color: #ff8c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.scroll-top-float-btn:hover {
+  background: #ff8c00;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .jogja-filter-card {
+    padding: 16px 14px 20px;
+  }
+
+  .divider-line {
+    max-width: 40px;
+  }
+
+  .divider-text {
+    font-size: 12.5px;
+  }
+
+  .filter-tabs-row {
+    gap: 8px;
+  }
+
+  .filter-tab-pill {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+
+  .spot-chip {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .chips-grid {
+    gap: 6px;
+  }
+
+  .scroll-top-float-btn {
+    bottom: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .filter-active-summary {
+    padding-right: 45px;
+  }
+}

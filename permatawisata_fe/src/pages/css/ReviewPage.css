@@ -1,0 +1,169 @@
+.review-page {
+    min-height: 100vh;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 40px; /* space for navbar */
+}
+
+.review-form, .review-success {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 500px;
+}
+
+.review-success {
+    text-align: center;
+}
+
+.review-success h2 {
+    color: #27ae60;
+    margin-bottom: 16px;
+}
+
+.review-success p {
+    color: #64748b;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-home {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #2980b9;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-home:hover {
+    background-color: #2471a3;
+}
+
+.review-form h2 {
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+}
+
+.review-form p {
+    color: #64748b;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.1);
+}
+
+/* Search input styling */
+.form-group input[type="text"][placeholder*="Ketik"] {
+    background-color: #f0f7ff;
+    border-color: #93c5fd;
+    padding-left: 12px;
+}
+
+.form-group input[type="text"][placeholder*="Ketik"]::placeholder {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Expanded select (when searching) */
+.form-group select[size]:not([size="1"]) {
+    border-radius: 0 0 6px 6px;
+    border-top: none;
+    background-color: #fff;
+    overflow-y: auto;
+    max-height: 120px;
+}
+
+/* Connect search box visually with expanded select */
+.form-group input + select[size]:not([size="1"]) {
+    border-top: 1px dashed #93c5fd;
+    border-radius: 0 0 6px 6px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.star {
+    color: #cbd5e1;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.star.active {
+    color: #f1c40f;
+}
+
+.star:hover {
+    color: #f39c12;
+    transform: scale(1.15);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: #219653;
+    transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}

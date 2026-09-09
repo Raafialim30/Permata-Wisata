@@ -1,0 +1,117 @@
+/* FOOTER KHUSUS (ANTI BENTROK) */
+.pw-footer {
+  /* Menggunakan warna biru tua solid agar sama dengan Navbar */
+  background-color: #0B3C5D; 
+  color: #ffffff;
+  padding: 60px 0 30px 0;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.pw-footer-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pw-footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.pw-footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-logo-img {
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.footer-logo-img:hover {
+  transform: scale(1.04);
+}
+
+/* Styling Judul Brand */
+.pw-brand-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.pw-brand-subtitle {
+  display: block;
+  font-size: 14px;
+  color: #D4AF37; /* Warna emas agar elegan */
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.pw-brand-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+/* Styling Section Title (Contact Us & Follow Us) */
+.pw-footer-section h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Styling Kontak */
+.pw-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.pw-icon {
+  color: #D4AF37;
+}
+
+/* Styling Ikon Bulat */
+.pw-social {
+  display: flex;
+  gap: 15px;
+}
+
+.pw-dot {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.9;
+  transition: 0.3s;
+}
+
+.pw-dot:hover {
+  background-color: #D4AF37;
+  transform: scale(1.2);
+}
+
+/* Divider & Bottom */
+.pw-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 40px 0 20px 0;
+}
+
+.pw-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}

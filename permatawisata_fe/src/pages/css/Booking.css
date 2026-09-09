@@ -1,0 +1,428 @@
+/* ==========================================================
+   GLOBAL STYLE FOR BOOKING PAGE
+   ========================================================== */
+.booking-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================
+   CSS NAVBAR SOLID DEEP BLUE (SESUAI LANDING PAGE AWAL)
+   ========================================================== */
+.navbar {
+  background: #0B3C5D; /* Warna Deep Blue Solid */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 80px;
+  box-sizing: border-box;
+  
+  position: fixed; /* Tetap fixed di atas */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  color: #D4AF37;
+  font-size: 22px;
+}
+
+.logo-text h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo-text span {
+  color: #d0d0d0;
+  font-size: 12px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #D4AF37;
+}
+
+/* HUBUNGI KAMI NAVBAR BUTTON */
+.contact-btn {
+  background: #D4AF37 !important;
+  border: none;
+  padding: 8px 18px !important;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #c99d2d !important;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ==========================================================
+   HEADER SECTION
+   ========================================================== */
+.booking-header {
+  padding: 120px 80px 10px; /* Jarak aman dari top fixed navbar */
+}
+
+/* BACK LINK BUTTON */
+.back-link {
+  color: #ffffff !important; 
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #0B3C5D;
+  border-radius: 8px;
+  background: #0B3C5D;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  background: #072b45;
+  color: #ffffff !important;
+}
+
+.booking-header h1 {
+  margin-top: 10px;
+  color: #0B3C5D;
+}
+
+/* ==========================================================
+   MAIN CONTAINERS & FORM
+   ========================================================== */
+.booking-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  padding: 30px 80px 80px;
+  flex: 1;
+}
+
+.booking-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.contact-title {
+  margin-top: 20px;
+}
+
+.payment-btn {
+  margin-top: 20px;
+  background: #D4AF37;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+  background: #c99d2d;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ==========================================================
+   SUMMARY SIDEBAR
+   ========================================================== */
+.booking-summary {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+}
+
+.summary-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.summary-card h4 {
+  margin: 5px 0;
+  color: #333;
+}
+
+.location {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.total {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.price {
+  color: #0B3C5D;
+  font-size: 18px;
+}
+
+/* ==========================================================
+   CSS FOOTER (WARNA RINGAN #1c4a64 SESUAI LANDING PAGE)
+   ========================================================== */
+.footer-container {
+  background: #1c4a64; 
+  color: white;
+  padding: 50px 80px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #D4AF37;
+}
+
+.footer-left span {
+  display: block;
+  font-size: 12px;
+  color: #d0d0d0;
+  margin-bottom: 15px;
+}
+
+.footer-left p {
+  color: #ddd;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 350px;
+}
+
+.footer-center h3,
+.footer-right h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-center p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ddd;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.footer-center svg {
+  color: #D4AF37;
+  font-size: 16px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.social-icon:hover {
+  background-color: #D4AF37;
+  color: #1c4a64;
+  transform: translateY(-3px);
+}
+
+.footer-divider {
+  width: 100%;
+  max-width: 1200px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 40px 0 20px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN (MOBILE FRIENDLY)
+   ========================================================== */
+@media (max-width: 992px) {
+  .booking-container {
+    grid-template-columns: 1fr;
+    padding: 20px 40px;
+  }
+  .navbar {
+    padding: 15px 40px;
+  }
+  .booking-header {
+    padding: 110px 40px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  .booking-header {
+    padding: 100px 20px 10px;
+  }
+  .booking-container {
+    padding: 15px 20px;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-center p {
+    justify-content: center;
+  }
+  .social-icons {
+    justify-content: center;
+  }
+  .footer-left p {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .booking-header {
+    padding: 92px 16px 8px;
+  }
+  .booking-container {
+    padding: 12px 16px 24px;
+    gap: 18px;
+  }
+  .booking-form,
+  .booking-summary {
+    padding: 18px;
+    border-radius: 10px;
+  }
+  .form-group input {
+    padding: 11px;
+  }
+  .payment-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .summary-card img {
+    height: 120px;
+  }
+  .summary-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .footer-container {
+    padding: 32px 16px 18px;
+  }
+}

@@ -1,0 +1,1034 @@
+/* ==========================================================
+   GLOBAL STYLE FOR PAYMENT PAGE
+   ========================================================== */
+.payment-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-header {
+  padding: 120px 80px 10px;
+}
+
+.back-link {
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #0B3C5D;
+  border-radius: 8px;
+  background: #0B3C5D;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  background: #072b45;
+  color: #ffffff !important;
+}
+
+.payment-header h1 {
+  margin-top: 16px;
+  color: #0B3C5D;
+  font-size: 2rem;
+}
+
+.payment-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 28px;
+  padding: 30px 80px 40px;
+  flex: 1;
+  align-items: start;
+  grid-auto-rows: minmax(min-content, max-content);
+}
+
+.payment-methods,
+.order-summary {
+  width: 100%;
+  align-self: start;
+  margin-top: 0;
+}
+
+.order-summary h3 {
+  margin-top: 0;
+}
+
+.payment-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e8edf4;
+}
+
+.payment-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.midtrans-logo-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.midtrans-logo {
+  max-width: 180px;
+  height: auto;
+}
+
+.midtrans-logo-fallback {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 80px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.midtrans-logo-fallback small {
+  margin-top: 4px;
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.payment-info-card h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.6rem;
+}
+
+.payment-description {
+  color: #475569;
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+.order-summary {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.order-summary h3 {
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.summary-card {
+  display: grid;
+  gap: 20px;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100%;
+}
+
+.villa-mini-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.villa-mini-info img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.villa-mini-info h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.villa-mini-info p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.summary-details {
+  display: grid;
+  gap: 12px;
+}
+
+.s-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #475569;
+  font-size: 0.96rem;
+}
+
+.s-row span {
+  color: #64748b;
+}
+
+.order-id-row {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+  margin-top: 10px;
+}
+
+.total-box {
+  background: #f8fafc;
+  padding: 22px;
+  border-radius: 16px;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+}
+
+.total-box span {
+  display: block;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.total-box h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.8rem;
+}
+
+.payment-notfound {
+  margin: 180px auto 0;
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 520px;
+}
+
+.payment-notfound h2 {
+  margin-bottom: 24px;
+  font-size: 1.9rem;
+  color: #0f172a;
+}
+
+@media (max-width: 980px) {
+  .payment-container {
+    grid-template-columns: 1fr;
+    padding: 30px 24px 40px;
+  }
+
+  .payment-header {
+    padding: 100px 24px 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .payment-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .payment-card {
+    padding: 22px;
+  }
+
+  .midtrans-logo {
+    max-width: 150px;
+  }
+
+  .payment-description {
+    font-size: 0.95rem;
+  }
+
+  .payment-container {
+    gap: 20px;
+  }
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.total {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.price {
+  color: #0B3C5D;
+  font-size: 18px;
+}
+
+/* POPUP MODAL COMPONENT */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.popup-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+}
+
+.popup-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.popup-item {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.popup-item:hover {
+  background: #fff8e1;
+  border-color: #D4AF37;
+}
+
+.popup-item.active {
+  background: #D4AF37;
+  color: white;
+  border-color: #D4AF37;
+}
+
+.popup-box button {
+  background: #eee;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.popup-box button:hover {
+  background: #ddd;
+}
+
+/* ==========================================================
+   CSS FOOTER (REPLIKA PERSIS SESUAI GAMBAR)
+   ========================================================== */
+.footer-container {
+  background: #0B3C5D; /* Warna deep blue navy yang serasi dengan navbar */
+  color: #ffffff;
+  padding: 60px 80px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Bagian Kiri */
+.footer-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #D4AF37; /* Warna emas/kuning khas jogjavilla.id */
+  letter-spacing: 0.5px;
+}
+
+.footer-left span {
+  display: block;
+  font-size: 13px;
+  color: #a0b2c6;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+.footer-left p {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+/* Bagian Tengah & Kanan Heading */
+.footer-center h3,
+.footer-right h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* List Kontak */
+.footer-center p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+}
+
+.footer-icon {
+  color: #D4AF37;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Lingkaran Social Icons (Instagram & Facebook) */
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #D4AF37;
+  color: #0B3C5D;
+  transform: translateY(-3px);
+  border-color: #D4AF37;
+}
+
+/* Garis Tipis Horizontal */
+.footer-divider {
+  width: 100%;
+  max-width: 1200px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 50px 0 25px;
+}
+
+/* Hak Cipta di Bawah */
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #a0b2c6;
+  margin: 0;
+}
+
+/* RESPONSIVE FOOTER */
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .footer-left p {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  .payment-header {
+    padding: 100px 20px 10px;
+  }
+  .payment-container {
+    padding: 15px 20px;
+  }
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-center p {
+    justify-content: center;
+  }
+  .social-icons {
+    justify-content: center;
+  }
+}/* ==========================================================
+   GLOBAL STYLE FOR PAYMENT PAGE
+   ========================================================== */
+.payment-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================
+   CSS NAVBAR SOLID DEEP BLUE (DIPAKSA SOLID SESUAI LANDING PAGE)
+   ========================================================== */
+.navbar {
+  background: #0B3C5D !important; /* Memaksa warna Deep Blue Solid */
+  color: white !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 80px;
+  box-sizing: border-box;
+  
+  position: fixed; /* Tetap fixed di atas */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: none !important; /* Hapus efek blur transparan template lama */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  color: #D4AF37;
+  font-size: 22px;
+}
+
+.logo-text h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo-text span {
+  color: #d0d0d0;
+  font-size: 12px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #D4AF37;
+}
+
+/* HUBUNGI KAMI NAVBAR BUTTON */
+.contact-btn {
+  background: #D4AF37 !important;
+  border: none;
+  padding: 8px 18px !important;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #c99d2d !important;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ==========================================================
+   HEADER SECTION & CONTAINERS
+   ========================================================== */
+.payment-header {
+  padding: 120px 80px 10px; /* Jarak aman dari top fixed navbar */
+}
+
+.back-link {
+  color: #ffffff !important; 
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #0B3C5D;
+  border-radius: 8px;
+  background: #0B3C5D;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  background: #072b45;
+  color: #ffffff !important;
+}
+
+.payment-header h1 {
+  margin-top: 10px;
+  color: #0B3C5D;
+}
+
+.payment-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  padding: 30px 80px 80px;
+  flex: 1;
+}
+
+/* CARD LAYOUT */
+.payment-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* METODE PEMBAYARAN */
+.method {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.method:hover {
+  border-color: #D4AF37;
+  background: #fffdf8;
+}
+
+.method.active {
+  border: 2px solid #D4AF37;
+  background: #fff8e1;
+}
+
+/* DATA RETRIEVED BOXES */
+.bank-box {
+  background: #f9f4e8;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+.bank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.bank-row b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copy-icon {
+  cursor: pointer;
+  font-size: 14px;
+  color: #0B3C5D;
+  transition: 0.2s;
+}
+
+.copy-icon:hover {
+  color: #D4AF37;
+}
+
+/* QRIS STYLING */
+.qris-box {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.qris-box img {
+  width: 150px;
+  margin: 10px 0;
+}
+
+.steps {
+  margin-left: 20px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.important {
+  background: #e6f0ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 14px;
+}
+
+.confirm-btn {
+  width: 100%;
+  background: #D4AF37;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: #c99d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* RIGHT SIDE (SUMMARY DISPLAY) */
+.payment-right {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  height: fit-content;
+}
+
+.summary-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.location {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.total {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.price {
+  color: #0B3C5D;
+  font-size: 18px;
+}
+
+/* POPUP MODAL STYLING */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.popup-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+}
+
+.popup-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.popup-item {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.popup-item:hover {
+  background: #fff8e1;
+  border-color: #D4AF37;
+}
+
+.popup-item.active {
+  background: #D4AF37;
+  color: white;
+  border-color: #D4AF37;
+}
+
+.popup-box button {
+  background: #eee;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* ==========================================================
+   CSS FOOTER (REPLIKA PERSIS HALAMAN BOOKING)
+   ========================================================== */
+.footer-container {
+  background: #1c4a64; 
+  color: white;
+  padding: 50px 80px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto; /* Memastikan footer berada di paling bawah */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #D4AF37;
+}
+
+.footer-left span {
+  display: block;
+  font-size: 12px;
+  color: #d0d0d0;
+  margin-bottom: 15px;
+}
+
+.footer-left p {
+  color: #ddd;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 350px;
+}
+
+.footer-center h3,
+.footer-right h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-center p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ddd;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.footer-center svg {
+  color: #D4AF37;
+  font-size: 16px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.social-icon:hover {
+  background-color: #D4AF37;
+  color: #1c4a64;
+  transform: translateY(-3px);
+}
+
+.footer-divider {
+  width: 100%;
+  max-width: 1200px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 40px 0 20px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN (MOBILE FRIENDLY)
+   ========================================================== */
+@media (max-width: 992px) {
+  .payment-container {
+    grid-template-columns: 1fr;
+    padding: 20px 40px;
+  }
+  .navbar {
+    padding: 15px 40px;
+  }
+  .payment-header {
+    padding: 110px 40px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  .payment-header {
+    padding: 100px 20px 10px;
+  }
+  .payment-container {
+    padding: 15px 20px;
+  }
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-center p {
+    justify-content: center;
+  }
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .payment-header {
+    padding: 92px 16px 8px;
+  }
+  .payment-container {
+    padding: 12px 16px 24px;
+    gap: 18px;
+  }
+  .payment-card,
+  .payment-right {
+    padding: 18px;
+  }
+  .method {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .bank-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .steps {
+    margin-left: 0;
+  }
+  .popup-box {
+    width: min(92vw, 320px);
+    padding: 18px;
+  }
+  .confirm-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .summary-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

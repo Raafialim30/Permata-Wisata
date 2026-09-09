@@ -1,0 +1,640 @@
+/* GLOBAL LAYOUT PACK */
+.success-page {
+  background: #f5f7fa;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==========================================================
+   CSS NAVBAR (MEGURUNG LAYAR PENUH)
+   ========================================================== */
+.navbar {
+  background: #0B3C5D !important;
+  color: white !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 80px;
+  box-sizing: border-box;
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  color: #D4AF37;
+  font-size: 22px;
+}
+
+.logo-text h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo-text span {
+  color: #a0b2c6;
+  font-size: 12px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #D4AF37;
+}
+
+.contact-btn {
+  background: #D4AF37 !important;
+  border: none;
+  padding: 8px 18px !important;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  color: white !important;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #c99d2d !important;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ==========================================================
+   KONTEN PEMBUNGKUS TENGAH (KEMBALI LUAS & LEBARNYA PAS)
+   ========================================================== */
+.success-content-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 120px; /* Jarak aman di bawah fixed navbar */
+  padding-bottom: 60px;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.success-container {
+  width: 100%;
+  max-width: 900px; /* Membatasi lebar konten kartu di tengah agar proporsional */
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* CARDS CONFIGURATION */
+.success-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* PDF specific wrapper styles to match A4 */
+.pdf-wrapper {
+  width: 210mm;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #222;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Force left-aligned content inside PDF */
+.pdf-wrapper .success-card,
+.pdf-wrapper .detail-card,
+.pdf-wrapper .next-card {
+  text-align: left;
+}
+
+/* Use wider content inside PDF and remove the page-center max-width */
+.pdf-wrapper .success-container {
+  max-width: 170mm !important;
+  padding: 0 12mm !important;
+}
+
+/* Reduce top spacing and icon size for PDF */
+.pdf-wrapper .success-card {
+  margin-top: 4mm;
+  padding: 12mm 10mm;
+}
+.pdf-wrapper .success-header { padding-bottom: 6px; }
+.pdf-wrapper .success-icon { font-size: 44px !important; margin-bottom: 6px; }
+
+/* Booking box and reference tweaks for PDF */
+.pdf-wrapper .booking-reference { padding: 8px 10px; }
+.pdf-wrapper .booking-code h2 { font-size: 20px; }
+.pdf-wrapper .booking-reference .ref-item:last-child { text-align: right; }
+
+/* Make the label column slightly lighter and aligned */
+.pdf-wrapper .detail-row span { color: #6b7280; padding-right: 6px; }
+.pdf-wrapper .detail-row strong { color: #0B3C5D; font-weight: 600; }
+
+/* Print-optimized spacing */
+@media print {
+  body { background: #fff; }
+  .pdf-wrapper { box-shadow: none; }
+  .pdf-wrapper .success-card { padding: 18mm 14mm; }
+  .pdf-wrapper .booking-reference,
+  .pdf-wrapper .payment-summary { page-break-inside: avoid; }
+  .pdf-wrapper .action-buttons,
+  .pdf-wrapper .navbar,
+  .pdf-wrapper .footer-container { display: none !important; }
+}
+
+/* Small typography refinements specifically for PDF */
+.pdf-wrapper .success-card h1 { font-size: 22px; margin-bottom: 6px; }
+.pdf-wrapper .success-card p { font-size: 12px; color: #6b7280; }
+.pdf-wrapper .booking-reference h3 { font-size: 18px; }
+.pdf-wrapper .detail-row { font-size: 12px; }
+.pdf-wrapper .detail-row span { color: #6b7280; }
+.pdf-wrapper .detail-row strong { color: #0B3C5D; font-weight: 600; }
+.pdf-wrapper .payment-summary h2 { font-size: 16px; }
+
+.icon-success {
+  font-size: 55px;
+  color: #2ecc71;
+  margin-bottom: 12px;
+}
+
+.success-card h1 {
+  color: #0B3C5D;
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.success-card p {
+  color: #555;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* BOX NOMOR BOOKING */
+.booking-code {
+  background: #fdf6e2;
+  padding: 18px;
+  border-radius: 12px;
+  margin: 25px 0;
+  border: 1px dashed #e6c875;
+}
+
+.booking-code span {
+  font-size: 13px;
+  color: #777;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.booking-code h2 {
+  font-size: 32px;
+  margin: 0;
+  color: #0B3C5D;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2ecc71;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-item.wa {
+  color: #25d366;
+}
+
+/* CARDS DETAIL MODERN */
+.detail-card.modern {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  margin-top: 25px;
+}
+
+.detail-card.modern h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #0B3C5D;
+  font-weight: 600;
+}
+
+.detail-content.modern {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.detail-content.modern img {
+  width: 35%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.detail-info.modern {
+  flex: 1;
+}
+
+.detail-info.modern h4 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0B3C5D;
+}
+
+.detail-info .location {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 8px 0;
+  color: #444;
+}
+
+.detail-row span:last-child {
+  font-weight: 500;
+  color: #222;
+}
+
+.detail-card h4 {
+  font-size: 15px;
+  color: #0B3C5D;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.detail-card hr {
+  margin: 22px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+/* PAYMENT BOX SUMMARY */
+.payment-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.payment-summary h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.payment-summary h2 {
+  margin: 0;
+  color: #0B3C5D;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.status {
+  font-size: 12px;
+  color: #D4AF37;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* WHAT'S NEXT CARD */
+.next-card {
+  background: white;
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.next-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #0B3C5D;
+  font-weight: 600;
+}
+
+.next-card ul {
+  padding-left: 20px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.next-card li {
+  margin-bottom: 8px;
+}
+
+/* BUTTON ACTION GROUP */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.download-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 2px solid #0B3C5D;
+  background: white;
+  color: #0B3C5D;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #0B3C5D;
+  color: white;
+}
+
+.home-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #D4AF37;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.home-btn:hover {
+  background: #c99d2d;
+}
+
+/* NEED HELP REGION */
+.help-section {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.help-section p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.help-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.help-contact div,
+.help-contact a {
+  color: #D4AF37;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ==========================================================
+   CSS FOOTER (MEGURUNG LAYAR PENUH 100%)
+   ========================================================== */
+.footer-container {
+  background: #0B3C5D;
+  color: #ffffff;
+  padding: 60px 80px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #D4AF37;
+  letter-spacing: 0.5px;
+}
+
+.footer-left span {
+  display: block;
+  font-size: 13px;
+  color: #a0b2c6;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+.footer-left p {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+}
+
+.footer-center h3,
+.footer-right h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-center p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+}
+
+.footer-icon {
+  color: #D4AF37;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #D4AF37;
+  color: #0B3C5D;
+  transform: translateY(-3px);
+  border-color: #D4AF37;
+}
+
+.footer-divider {
+  width: 100%;
+  max-width: 1200px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 50px 0 25px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #a0b2c6;
+  margin: 0;
+}
+
+/* RESPONSIVE LAYOUT */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  .success-content-wrapper {
+    padding-top: 90px;
+  }
+  .detail-content.modern {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .detail-content.modern img {
+    width: 100%;
+    height: 180px;
+  }
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .success-content-wrapper {
+    padding-top: 92px;
+    padding-bottom: 36px;
+  }
+  .success-container {
+    padding: 0 12px;
+  }
+  .success-card {
+    padding: 22px 16px;
+  }
+  .booking-code {
+    padding: 14px;
+  }
+  .booking-code h2 {
+    font-size: 24px;
+  }
+  .status-row {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .detail-card.modern,
+  .next-card {
+    padding: 20px 16px;
+  }
+  .payment-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .action-buttons {
+    flex-direction: column;
+  }
+  .download-btn,
+  .home-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .help-contact {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
