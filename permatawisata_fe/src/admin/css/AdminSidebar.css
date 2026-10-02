@@ -1,0 +1,409 @@
+/* =========================================================
+   ADMIN SIDEBAR
+   Sidebar bersama untuk seluruh halaman Admin.
+   ========================================================= */
+
+.admin-sidebar {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  box-sizing: border-box;
+
+  background: #123c55;
+  color: #ffffff;
+
+  padding: 30px 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  font-family: Poppins, sans-serif;
+}
+
+
+/* =========================================================
+   LOGO / BRAND
+   ========================================================= */
+
+.admin-sidebar-logo-image {
+  height: 40px;
+  max-width: 185px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  display: block;
+}
+
+.admin-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.admin-logo-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #d4af37;
+  color: #ffffff;
+
+  border-radius: 10px;
+}
+
+.admin-logo-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-logo-text h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.admin-logo-text span {
+  margin-top: 4px;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   ADMIN PANEL LABEL
+   ========================================================= */
+
+.admin-sidebar-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 2px 4px 12px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.9px;
+}
+
+.admin-sidebar-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #10b981;
+
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+}
+
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+.admin-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.admin-menu-item {
+  min-height: 48px;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  border-radius: 10px;
+
+  color: #ffffff;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-menu-item:hover {
+  background: #1c516f;
+  color: #ffffff;
+
+  transform: translateX(2px);
+}
+
+.admin-menu-item.active {
+  background: #d4af37;
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+.admin-menu-item.active:hover {
+  background: #d4af37;
+  color: #ffffff;
+
+  transform: none;
+}
+
+.admin-menu-icon {
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-menu-text {
+  flex: 1;
+
+  min-width: 0;
+
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.admin-menu-arrow {
+  flex-shrink: 0;
+
+  opacity: 0.55;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.admin-menu-item:hover .admin-menu-arrow {
+  opacity: 0.9;
+
+  transform: translateX(2px);
+}
+
+.admin-menu-item.active .admin-menu-arrow {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   SPACER
+   ========================================================= */
+
+.admin-sidebar-spacer {
+  flex: 1;
+  min-height: 25px;
+}
+
+
+/* =========================================================
+   INFO CARD
+   ========================================================= */
+
+.admin-sidebar-info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  padding: 13px;
+
+  margin-bottom: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-sidebar-info-icon {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: rgba(212, 175, 55, 0.18);
+  color: #d4af37;
+}
+
+.admin-sidebar-info > div:last-child {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-sidebar-info strong {
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-sidebar-info span {
+  margin-top: 3px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.admin-sidebar-logout {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-sidebar-logout:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.admin-sidebar-logout:active {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 210px;
+    padding: 25px 15px;
+  }
+
+  .admin-logo-text h3 {
+    font-size: 16px;
+  }
+
+  .admin-menu-item {
+    padding: 12px;
+  }
+
+  .admin-menu-text {
+    font-size: 13px;
+  }
+}
+
+
+@media (max-width: 650px) {
+  .admin-sidebar {
+    width: 70px;
+
+    padding: 20px 10px;
+
+    align-items: stretch;
+  }
+
+  .admin-sidebar-logo {
+    justify-content: center;
+
+    padding-bottom: 15px;
+  }
+
+  .admin-logo-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .admin-logo-text,
+  .admin-sidebar-label,
+  .admin-menu-text,
+  .admin-menu-arrow,
+  .admin-sidebar-info,
+  .admin-sidebar-logout span {
+    display: none;
+  }
+
+  .admin-sidebar-menu {
+    gap: 8px;
+  }
+
+  .admin-menu-item {
+    justify-content: center;
+
+    padding: 12px 8px;
+  }
+
+  .admin-menu-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .admin-sidebar-logout {
+    justify-content: center;
+
+    padding: 12px 8px;
+  }
+}

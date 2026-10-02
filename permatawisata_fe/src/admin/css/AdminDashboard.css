@@ -5,92 +5,29 @@ background:#f4f6f9;
 min-height:100vh;
 }
 
-/* SIDEBAR */
-
-.sidebar{
-width:260px;
-background:#123c55;
-color:white;
-position:fixed;
-left:0;
-top:0;
-height:100vh;
-padding:30px 20px;
-display:flex;
-flex-direction:column;
-}
-
 /* LOGO */
 
-.sidebar-logo{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:25px;
-padding-bottom:20px;
-border-bottom:1px solid rgba(255,255,255,0.15);
-}
 
-.logo-icon{
-background:#D4AF37;
-padding:12px;
-border-radius:10px;
-font-size:20px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
 
-.sidebar-logo h3{
-margin:0;
-font-size:18px;
-}
 
-.sidebar-logo span{
-font-size:13px;
-opacity:0.8;
-}
+
+
+
+
 
 /* MENU */
 
-.menu{
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:15px;
-}
 
-.menu-item{
-padding:14px 16px;
-border-radius:10px;
-display:flex;
-align-items:center;
-gap:12px;
-cursor:pointer;
-transition:0.2s;
-font-size:14px;
-}
 
-.menu-item:hover{
-background:#1c516f;
-}
 
-.menu-item.active{
-background:#D4AF37;
-color:white;
-}
+
+
+
+
 
 /* LOGOUT */
 
-.logout{
-margin-top:auto;
-padding:14px 16px;
-display:flex;
-align-items:center;
-gap:10px;
-cursor:pointer;
-opacity:0.9;
-}
+
 
 /* MAIN AREA */
 
@@ -291,32 +228,41 @@ background:#fef3c7;
 color:#92400e;
 }
 
-.menu a{
-text-decoration:none;
-color:white;
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   ADMIN SIDEBAR SYNC
+   Sidebar dikelola oleh AdminSidebar.jsx.
+   ========================================================= */
+
+.admin-layout {
+  min-height: 100vh;
 }
 
-.menu a:visited{
-color:white;
+.admin-layout .main {
+  margin-left: 260px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.menu-item{
-padding:14px 16px;
-border-radius:10px;
-display:flex;
-align-items:center;
-gap:10px;
-cursor:pointer;
-transition:0.2s;
-color:white;
+@media (max-width: 900px) {
+  .admin-layout .main {
+    margin-left: 210px;
+  }
 }
 
-.menu-item:hover{
-background:#1c516f;
-}
-
-.menu-item.active{
-background:#D4AF37;
-color:white;
-font-weight:500;
+@media (max-width: 650px) {
+  .admin-layout .main {
+    margin-left: 70px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

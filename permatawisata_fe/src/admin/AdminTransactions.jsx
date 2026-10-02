@@ -2,18 +2,16 @@ import {
   FaBell,
   FaCalendarAlt,
   FaCheckCircle,
-  FaHome,
-  FaSignOutAlt,
-  FaThLarge,
   FaArrowRight,
   FaTimes,
   FaMoneyBillWave
 } from "react-icons/fa";
 
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import API_BASE_URL from "../config";
+import AdminSidebar from "./AdminSidebar";
 import "./css/AdminTransactions.css";
 
 function AdminTransactions() {
@@ -140,86 +138,12 @@ function AdminTransactions() {
     );
   });
 
-  // =========================================================
-  // LOGOUT
-  // =========================================================
-  const handleLogout = () => {
-    localStorage.removeItem("adminLogin");
-    navigate("/admin/login");
-    window.location.reload();
-  };
-
   return (
     <div className="admin-layout">
 
-      {/* =====================================================
-          SIDEBAR
-      ====================================================== */}
-      <div className="sidebar">
+<AdminSidebar />
 
-        <div>
-
-          <div className="sidebar-logo">
-            <img
-              src="/images/logo-jogjavilla.png"
-              alt="Jogja Villa"
-              style={{
-                height: "40px",
-                objectFit: "contain",
-                filter: "brightness(0) invert(1)"
-              }}
-            />
-          </div>
-
-          <div className="menu">
-
-            <Link
-              to="/admin/dashboard"
-              className="menu-item"
-            >
-              <FaThLarge />
-              Dashboard
-            </Link>
-
-            <Link
-              to="/admin/villas"
-              className="menu-item"
-            >
-              <FaHome />
-              Kelola Villa
-            </Link>
-
-            <Link
-              to="/admin/transactions"
-              className="menu-item active"
-            >
-              <FaCalendarAlt />
-              Transaksi Pemesanan
-            </Link>
-
-            <Link
-              to="/admin/payment"
-              className="menu-item"
-            >
-              <FaCheckCircle />
-              Validasi Pembayaran
-            </Link>
-
-          </div>
-        </div>
-
-        <div
-          className="logout"
-          onClick={handleLogout}
-          style={{ cursor: "pointer" }}
-        >
-          <FaSignOutAlt />
-          Keluar
-        </div>
-
-      </div>
-
-      {/* =====================================================
+{/* =====================================================
           MAIN
       ====================================================== */}
       <div className="main">

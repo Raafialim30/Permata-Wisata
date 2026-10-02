@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
-    FaCalendarAlt,
-    FaCheckCircle,
     FaEdit,
     FaFileCsv,
-    FaHome,
     FaPlus,
-    FaSignOutAlt,
-    FaThLarge,
     FaTrash,
     FaTimes,
     FaSave,
@@ -16,8 +11,8 @@ import {
     FaMapMarkerAlt
 } from "react-icons/fa";
 
-import { Link } from "react-router-dom";
 import API_BASE_URL from "../config";
+import AdminSidebar from "./AdminSidebar";
 import "./css/AdminManageVillas.css";
 
 function AdminManageVillas() {
@@ -376,16 +371,17 @@ function AdminManageVillas() {
         }
     };
 
-    const saveRoomData = async () => {
-        if (!roomForm.bed_info) {
-            alert("Nama unit (Bed Info) wajib diisi!");
-            return;
-        }
+    const buildRoomPayload = (imageName = null) => {
+        const safeFallbackName = (roomForm.bed_info || "Kamar")
+            .replace(/[^a-zA-Z0-9\-_ ]/g, '')
+            .trim();
 
-        const safeFallbackName = roomForm.bed_info.replace(/[^a-zA-Z0-9\-_ ]/g, '');
-        const chosenImage = roomForm.img || `${safeFallbackName}.jpg`;
+        const chosenImage =
+            imageName ||
+            roomForm.img ||
+            `${safeFallbackName || "Kamar"}.jpg`;
 
-        const payloadData = {
+        return {
             villa_id: parseInt(form.id),
             bed_info: roomForm.bed_info,
             room_name: roomForm.bed_info,
@@ -407,33 +403,152 @@ function AdminManageVillas() {
             hours: roomForm.hours || "",
             location: roomForm.location || ""
         };
+    };
+
+    /*
+     * Jika user memilih foto sebelum kamar baru disimpan,
+     * sistem otomatis membuat record kamar terlebih dahulu.
+     * Setelah room_id didapat, backend membuat folder:
+     *
+     * villa_<villa_id>/rooms/room_<room_id>/
+     */
+    const createRoomBeforeUpload = async () => {
+        if (!form.id) {
+            throw new Error("ID villa belum tersedia.");
+        }
+
+        if (!roomForm.bed_info || !roomForm.bed_info.trim()) {
+            throw new Error(
+                "Isi Nama Kamar terlebih dahulu sebelum menambahkan foto."
+            );
+        }
+
+        const payloadData = buildRoomPayload();
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/admin/villa-details`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payloadData)
+            }
+        );
+
+        let result = {};
+        try {
+            result = await response.json();
+        } catch (_) {
+            result = {};
+        }
+
+        if (!response.ok || !result.room_id) {
+            throw new Error(
+                result.error ||
+                "Gagal membuat data kamar sebelum upload foto."
+            );
+        }
+
+        const newRoomId = String(result.room_id);
+
+        // Refresh daftar kamar supaya dropdown langsung mengetahui kamar baru.
+        const roomsResponse = await fetch(
+            `${API_BASE_URL}/api/admin/villa-details?villa_id=${form.id}`
+        );
+
+        let rooms = [];
+        if (roomsResponse.ok) {
+            const roomsData = await roomsResponse.json();
+            rooms = roomsData.data || roomsData || [];
+            if (!Array.isArray(rooms)) {
+                rooms = [];
+            }
+        }
+
+        setRelatedRooms(rooms);
+
+        const newIndex = rooms.findIndex(
+            (room) =>
+                String(room.id || room.id_detail || room._id) === newRoomId
+        );
+
+        if (newIndex >= 0) {
+            setSelectedRoomIndex(String(newIndex));
+        }
+
+        setRoomForm((prev) => ({
+            ...prev,
+            id: newRoomId
+        }));
+
+        return newRoomId;
+    };
+
+    const saveRoomData = async () => {
+        if (!roomForm.bed_info || !roomForm.bed_info.trim()) {
+            alert("Nama unit (Bed Info) wajib diisi!");
+            return;
+        }
+
+        const payloadData = buildRoomPayload();
 
         try {
             let response;
-            if (selectedRoomIndex === "") {
-                response = await fetch(`${API_BASE_URL}/api/admin/villa-details`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payloadData)
-                });
+
+            if (selectedRoomIndex === "" || !roomForm.id) {
+                response = await fetch(
+                    `${API_BASE_URL}/api/admin/villa-details`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payloadData)
+                    }
+                );
             } else {
-                response = await fetch(`${API_BASE_URL}/api/admin/villa-details/${roomForm.id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ ...payloadData, id: roomForm.id, id_detail: roomForm.id })
-                });
+                response = await fetch(
+                    `${API_BASE_URL}/api/admin/villa-details/${roomForm.id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            ...payloadData,
+                            id: roomForm.id,
+                            id_detail: roomForm.id
+                        })
+                    }
+                );
             }
 
             if (response.ok) {
-                alert("Data unit dan relasi foto berhasil disimpan ke database! 🚀");
+                alert(
+                    "Data unit dan relasi foto berhasil disimpan ke database! 🚀"
+                );
                 resetRoomForm();
                 fetchRelatedRooms(form.id);
             } else {
-                const errData = await response.json();
-                alert(`Gagal: ${errData.error || 'Periksa koneksi Flask'}`);
+                let errData = {};
+                try {
+                    errData = await response.json();
+                } catch (_) {
+                    errData = {};
+                }
+
+                alert(
+                    `Gagal: ${
+                        errData.error ||
+                        errData.message ||
+                        "Periksa koneksi Flask"
+                    }`
+                );
             }
         } catch (error) {
             console.error("Error saving room:", error);
+            alert(`Gagal menyimpan kamar: ${error.message}`);
         }
     };
 
@@ -471,27 +586,56 @@ function AdminManageVillas() {
     // ==========================================================
     const [isUploading, setIsUploading] = useState(false);
 
-    const uploadImageFile = async (file, villaId, folderType, targetFilename, roomId = null) => {
+    const uploadImageFile = async (
+        file,
+        villaId,
+        folderType,
+        targetFilename,
+        roomId = null
+    ) => {
         setIsUploading(true);
+
         try {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("villa_id", villaId);
             formData.append("folder_type", folderType);
             formData.append("filename", targetFilename);
-            if (roomId) {
+
+            if (folderType === "room") {
+                if (!roomId) {
+                    throw new Error(
+                        "Room ID belum tersedia. Sistem akan membuat kamar terlebih dahulu."
+                    );
+                }
+
                 formData.append("room_id", roomId);
             }
 
-            const response = await fetch(`${API_BASE_URL}/api/admin/upload`, {
-                method: "POST",
-                body: formData
-            });
+            const response = await fetch(
+                `${API_BASE_URL}/api/admin/upload`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
 
             if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.error || "Gagal upload gambar");
+                let err = {};
+
+                try {
+                    err = await response.json();
+                } catch (_) {
+                    err = {};
+                }
+
+                throw new Error(
+                    err.error ||
+                    err.message ||
+                    "Gagal upload gambar"
+                );
             }
+
             return true;
         } catch (error) {
             console.error("Upload error:", error);
@@ -509,42 +653,84 @@ function AdminManageVillas() {
     const handleSingleImageUpload = async (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            const roomId = roomForm.id || "";
-            
+
             // VALIDASI FILE
-            const allowedExts = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+            const allowedExts = [
+                'image/png',
+                'image/jpeg',
+                'image/webp',
+                'image/gif'
+            ];
+
             if (!allowedExts.includes(file.type)) {
-                alert("❌ Tipe file tidak didukung. Gunakan PNG, JPG, WEBP, atau GIF");
+                alert(
+                    "❌ Tipe file tidak didukung. Gunakan PNG, JPG, WEBP, atau GIF"
+                );
+                e.target.value = '';
                 return;
             }
 
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            if (file.size > 5 * 1024 * 1024) {
                 alert("❌ Ukuran file terlalu besar (max 5MB)");
+                e.target.value = '';
                 return;
             }
 
-            // Generate nama file yang aman dan konsisten
-            // Format: image_1.png, image_2.png, dsb
-            const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
-            const nextNum = uploadedImagesInFE.length + 1;
-            const safeFileName = `image_${nextNum}${ext}`;
-            
-            const success = await uploadImageFile(file, form.id || '1', "room", safeFileName, roomId);
-            
-            if (success) {
-                if (!uploadedImagesInFE.includes(safeFileName)) {
-                    setUploadedImagesInFE([...uploadedImagesInFE, safeFileName]);
+            try {
+                /*
+                 * SOLUSI:
+                 * Kalau kamar baru belum punya room_id, sistem otomatis
+                 * menyimpan kamar terlebih dahulu. Setelah itu backend
+                 * membuat folder room_<room_id> secara otomatis.
+                 */
+                let roomId = roomForm.id;
+
+                if (!roomId) {
+                    roomId = await createRoomBeforeUpload();
                 }
-                
-                // Set sebagai gambar aktif jika ini gambar pertama
-                if (uploadedImagesInFE.length === 0) {
-                    setRoomForm(prev => ({ ...prev, img: safeFileName }));
+
+                const ext = file.name
+                    .substring(file.name.lastIndexOf('.'))
+                    .toLowerCase();
+
+                const nextNum = uploadedImagesInFE.length + 1;
+                const safeFileName = `image_${nextNum}${ext}`;
+
+                const success = await uploadImageFile(
+                    file,
+                    form.id,
+                    "room",
+                    safeFileName,
+                    roomId
+                );
+
+                if (success) {
+                    setUploadedImagesInFE((prev) =>
+                        prev.includes(safeFileName)
+                            ? prev
+                            : [...prev, safeFileName]
+                    );
+
+                    // Foto pertama otomatis menjadi foto utama kamar.
+                    setRoomForm((prev) => ({
+                        ...prev,
+                        id: String(roomId),
+                        ...(uploadedImagesInFE.length === 0
+                            ? { img: safeFileName }
+                            : {})
+                    }));
+
+                    alert(
+                        `✅ Gambar "${safeFileName}" berhasil diunggah ke folder kamar ${roomId}!`
+                    );
                 }
-                
-                alert(`✅ Gambar "${safeFileName}" berhasil diunggah ke server!`);
+            } catch (error) {
+                console.error("Upload error:", error);
+                alert(`❌ Gagal upload: ${error.message}`);
             }
         }
-        // Reset input agar bisa upload file dengan nama sama lagi
+
+        // Reset input agar file dengan nama sama tetap bisa dipilih lagi.
         e.target.value = '';
     };
 
@@ -1013,24 +1199,9 @@ function AdminManageVillas() {
 
     return (
         <div className="admin-layout">
-            <div className="sidebar">
-                <div>
-                    <div className="sidebar-logo">
-                        <img
-                            src="/images/logo-jogjavilla.png"
-                            alt="Jogja Villa"
-                            style={{ height: "40px", objectFit: "contain", filter: "brightness(0) invert(1)" }}
-                        />
-                    </div>
-                    <div className="menu">
-                        <Link to="/admin/dashboard" className="menu-item"><FaThLarge /> Dashboard</Link>
-                        <Link to="/admin/villas" className="menu-item active"><FaHome /> Kelola Villa</Link>
-                        <Link to="/admin/transactions" className="menu-item"><FaCalendarAlt /> Transaksi Pemesanan</Link>
-                        <Link to="/admin/payment" className="menu-item"><FaCheckCircle /> Validasi Pembayaran</Link>
-                    </div>
-                </div>
-                <div className="logout"><FaSignOutAlt /> Keluar</div>
-            </div>
+
+<AdminSidebar />
+            
 
             <div className="main">
                 <div className="topbar">

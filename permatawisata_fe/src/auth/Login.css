@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+
+/* ==========================================================
+   GLOBAL
+   ========================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+/* ==========================================================
+   LOGIN PAGE
+   ========================================================== */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0B3C5D,
+      #0a2f48
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  padding: 30px 20px;
+}
+
+
+/* ==========================================================
+   WRAPPER
+   ========================================================== */
+
+.login-wrapper {
+  width: 100%;
+  max-width: 420px;
+
+  text-align: center;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.login-header {
+  margin-bottom: 30px;
+}
+
+.login-logo {
+  height: 52px;
+  width: auto;
+
+  object-fit: contain;
+
+  margin-bottom: 10px;
+}
+
+.login-header p {
+  margin: 0;
+
+  font-size: 15px;
+
+  color: white;
+
+  opacity: 0.9;
+}
+
+
+/* ==========================================================
+   LOGIN CARD
+   ========================================================== */
+
+.login-card {
+  width: 100%;
+
+  background: white;
+
+  color: #333;
+
+  padding: 30px;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 20px 40px
+    rgba(0, 0, 0, 0.25);
+
+  text-align: left;
+}
+
+.login-card h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+
+  font-size: 26px;
+
+  font-weight: 600;
+
+  color: #222;
+}
+
+.login-description {
+  margin-top: 0;
+  margin-bottom: 20px;
+
+  font-size: 13px;
+
+  color: #777;
+
+  line-height: 1.5;
+}
+
+
+/* ==========================================================
+   ROLE SWITCH
+   ========================================================== */
+
+.role-switch {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 22px;
+}
+
+.role-switch button {
+  flex: 1;
+
+  padding: 11px 10px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #eeeeee;
+
+  color: #555;
+
+  cursor: pointer;
+
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.role-switch button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.role-switch button.active {
+  background: #0B3C5D;
+
+  color: white;
+
+  box-shadow:
+    0 5px 15px
+    rgba(0, 0, 0, 0.15);
+}
+
+.role-switch button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+
+/* ==========================================================
+   INPUT GROUP
+   ========================================================== */
+
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+
+  color: #555;
+
+  font-weight: 500;
+}
+
+
+/* ==========================================================
+   INPUT BOX
+   ========================================================== */
+
+.input-box {
+  position: relative;
+
+  width: 100%;
+}
+
+.input-icon {
+  position: absolute;
+
+  left: 12px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #999;
+
+  pointer-events: none;
+}
+
+.input-box input {
+  width: 100%;
+
+  padding:
+    12px
+    12px
+    12px
+    40px;
+
+  border:
+    1px solid
+    #dddddd;
+
+  border-radius: 8px;
+
+  outline: none;
+
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 14px;
+
+  color: #333;
+
+  background: white;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-box input:focus {
+  border-color: #0B3C5D;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(11, 60, 93, 0.1);
+}
+
+.input-box input:disabled {
+  background: #f5f5f5;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================
+   LOGIN BUTTON
+   ========================================================== */
+
+.login-btn {
+  width: 100%;
+
+  padding: 13px;
+
+  border: none;
+
+  background: #D4AF37;
+
+  color: white;
+
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  margin-top: 10px;
+
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #c99d2d;
+
+  transform: translateY(-1px);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* ==========================================================
+   COPYRIGHT
+   ========================================================== */
+
+.copyright {
+  margin-top: 30px;
+
+  margin-bottom: 0;
+
+  font-size: 12px;
+
+  color: white;
+
+  opacity: 0.8;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+  .login-page {
+    padding: 20px 15px;
+  }
+
+  .login-card {
+    padding: 24px 20px;
+  }
+
+  .login-header {
+    margin-bottom: 22px;
+  }
+
+  .login-logo {
+    height: 45px;
+  }
+
+  .login-header p {
+    font-size: 13px;
+  }
+
+  .login-card h2 {
+    font-size: 23px;
+  }
+
+  .role-switch {
+    gap: 7px;
+  }
+
+  .role-switch button {
+    font-size: 12px;
+    padding: 10px 7px;
+  }
+
+}

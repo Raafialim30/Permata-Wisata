@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import {
   FaBell,
   FaCalendarAlt,
-  FaCheckCircle,
   FaDollarSign,
-  FaHome,
-  FaSignOutAlt,
-  FaThLarge
+  FaHome
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import API_BASE_URL from "../config";
+import AdminSidebar from "./AdminSidebar";
 import "./css/AdminDashboard.css";
 
 function AdminDashboard(){
@@ -38,49 +35,7 @@ return(
 
 <div className="admin-layout">
 
-{/* SIDEBAR */}
-
-<div className="sidebar">
-
-<div>
-
-<div className="sidebar-logo">
-  <img
-    src="/images/logo-jogjavilla.png"
-    alt="Jogja Villa"
-    style={{ height: "40px", objectFit: "contain", filter: "brightness(0) invert(1)" }}
-  />
-</div>
-
-
-<div className="menu">
-
-<Link to="/admin/dashboard" className="menu-item active">
-<FaThLarge/> Dashboard
-</Link>
-
-<Link to="/admin/villas" className="menu-item">
-<FaHome/> Kelola Villa
-</Link>
-
-<Link to="/admin/transactions" className="menu-item">
-  <FaCalendarAlt/> Transaksi Pemesanan
-</Link>
-
-<Link to="/admin/payment" className="menu-item">
-  <FaCheckCircle/> Validasi Pembayaran
-</Link>
-
-</div>
-
-</div>
-
-<div className="logout">
-<FaSignOutAlt/> Keluar
-</div>
-
-</div>
-
+<AdminSidebar />
 
 {/* MAIN CONTENT */}
 
@@ -116,7 +71,6 @@ A
 
 </div>
 
-
 {/* TITLE */}
 
 <div className="dashboard-title">
@@ -125,7 +79,6 @@ A
 <p>Pantau performa pemesanan villa dan aktivitas terbaru</p>
 
 </div>
-
 
 {/* STATS */}
 
@@ -144,7 +97,6 @@ A
 
 </div>
 
-
 <div className="stat-card">
 
 <div className="icon green">
@@ -158,7 +110,6 @@ A
 
 </div>
 
-
 <div className="stat-card">
 
 <div className="icon navy">
@@ -171,7 +122,6 @@ A
 </div>
 
 </div>
-
 
 <div className="stat-card">
 
@@ -187,7 +137,6 @@ A
 </div>
 
 </div>
-
 
 {/* BOOKING TABLE */}
 

@@ -1,105 +1,234 @@
-import os
-import sys
 from flask import Blueprint, jsonify
+from db import get_db_connection
 
-# Menambahkan path folder utama agar Python bisa membaca modul 'backend'
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-from backend.db import get_db_connection
-
-villa_bp = Blueprint("villa", __name__)
 
 # =========================================================
-# 1. AMBIL SEMUA DAFTAR VILLA (UNTUK LANDING / VILLAS PAGE)
+# BLUEPRINT
+# =========================================================
+villa_bp = Blueprint("villa", __name__)
+
+
+# =========================================================
+# DAFTAR VILLA
 # =========================================================
 @villa_bp.route("", methods=["GET"])
 def get_villas():
+    """
+    Mengambil seluruh data villa.
+
+    Catatan:
+    - Tidak menggunakan SELECT *
+    - owner_user_id sengaja tidak dikirim ke frontend publik
+    - owner_id lama juga tidak dikirim
+    """
+
     conn = None
     cursor = None
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("SELECT * FROM villas")
+        query = """
+            SELECT
+                id,
+                name,
+                location,
+                description,
+                price,
+                image,
+                facilities,
+                capacity,
+                status
+            FROM villas
+            ORDER BY id ASC
+        """
+
+        cursor.execute(query)
         villas = cursor.fetchall()
 
         return jsonify(villas), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print("ERROR GET VILLAS:", e)
+
+        return jsonify({
+            "success": False,
+            "message": "Gagal mengambil data villa",
+            "error": str(e)
+        }), 500
+
     finally:
-        if cursor: cursor.close()
-        if conn: conn.close()
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
 
 
 # =========================================================
-# 2. AMBIL DETAIL SATU VILLA & SEMUA VARIASI KAMARNYA (FIXED)
+# DETAIL VILLA
 # =========================================================
 @villa_bp.route("/<int:villa_id>", methods=["GET"])
-def get_villa_by_id(villa_id):
+def get_villa_detail(villa_id):
+    """
+    Mengambil detail satu villa berdasarkan ID.
+
+    Data yang dikembalikan:
+    - Informasi utama villa
+    - Detail kamar dari villa_details
+    - owner_user_id dan owner_id tidak dikirim ke publik
+    """
+
     conn = None
     cursor = None
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # 1. Ambil data utama villa berdasarkan ID
-        cursor.execute("SELECT * FROM villas WHERE id = %s", (villa_id,))
+        # -------------------------------------------------
+        # AMBIL DATA VILLA
+        # -------------------------------------------------
+        villa_query = """
+            SELECT
+                id,
+                name,
+                location,
+                description,
+                price,
+                image,
+                facilities,
+                capacity,
+                status
+            FROM villas
+            WHERE id = %s
+            LIMIT 1
+        """
+
+        cursor.execute(villa_query, (villa_id,))
+        villa = cursor.fetchone()
+
+        # Villa tidak ditemukan
+        if not villa:
+            return jsonify({
+                "success": False,
+                "message": "Villa tidak ditemukan"
+            }), 404
+
+        # -------------------------------------------------
+        # AMBIL DETAIL KAMAR
+        # -------------------------------------------------
+        detail_query = """
+            SELECT *
+            FROM villa_details
+            WHERE villa_id = %s
+            ORDER BY id ASC
+        """
+
+        cursor.execute(detail_query, (villa_id,))
+        rooms = cursor.fetchall()
+
+        # -------------------------------------------------
+        # RESPONSE
+        # -------------------------------------------------
+        response = {
+            "success": True,
+            "data": {
+                "id": villa.get("id"),
+                "name": villa.get("name"),
+                "location": villa.get("location"),
+                "description": villa.get("description"),
+                "price": villa.get("price"),
+                "image": villa.get("image"),
+                "facilities": villa.get("facilities"),
+                "capacity": villa.get("capacity"),
+                "status": villa.get("status"),
+                "rooms": rooms
+            }
+        }
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        print("ERROR GET VILLA DETAIL:", e)
+
+        return jsonify({
+            "success": False,
+            "message": "Gagal mengambil detail villa",
+            "error": str(e)
+        }), 500
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
+
+
+# =========================================================
+# DETAIL KAMAR BERDASARKAN VILLA
+# =========================================================
+@villa_bp.route("/<int:villa_id>/rooms", methods=["GET"])
+def get_villa_rooms(villa_id):
+    """
+    Mengambil daftar kamar/detail kamar dari sebuah villa.
+    """
+
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        # Pastikan villa ada
+        villa_query = """
+            SELECT id
+            FROM villas
+            WHERE id = %s
+            LIMIT 1
+        """
+
+        cursor.execute(villa_query, (villa_id,))
         villa = cursor.fetchone()
 
         if not villa:
-            return jsonify({"error": "Villa tidak ditemukan"}), 404
+            return jsonify({
+                "success": False,
+                "message": "Villa tidak ditemukan"
+            }), 404
 
-        # 2. Ambil semua tipe kamar yang terikat dengan villa ini
-        cursor.execute("SELECT * FROM villa_details WHERE villa_id = %s", (villa_id,))
-        rooms_raw = cursor.fetchall()
+        # Ambil kamar
+        room_query = """
+            SELECT *
+            FROM villa_details
+            WHERE villa_id = %s
+            ORDER BY id ASC
+        """
 
-        # 3. Membersihkan data kamar & mengekstrak harga
-        rooms = []
-        for r in rooms_raw:
-            price_raw = 0
-            try:
-                of = r.get("other_facilities") or ""
-                if "Rp" in of:
-                    # Pola ekstrak harga dari string "Harga Kamar: Rp XXX.XXX | ..."
-                    price_str = of.split("Rp")[1].split("|")[0].strip().replace(".", "").replace(",", "")
-                    price_raw = int(price_str)
-            except Exception:
-                price_raw = 0
+        cursor.execute(room_query, (villa_id,))
+        rooms = cursor.fetchall()
 
-            # KUNCI UTAMA: Menyertakan field 'img' asli dari database agar dikirim ke frontend React
-            rooms.append({
-                "id_detail":        r.get("id"),
-                "bed_info":         r.get("bed_info")         or "Standard Bed Setup",
-                "facilities":       r.get("facilities")       or "Free Wifi, TV, AC",
-                "other_facilities": r.get("other_facilities") or "Fasilitas Standar Lengkap",
-                "max_guests":       r.get("max_guests")       or 4,
-                "max_age_rule":     r.get("max_age_rule")     or "Batas usia standar 6 tahun ke atas.",
-                "price_raw":        price_raw,
-                "img":              r.get("img")              or "room_1_1.png"  # <-- Mengirim data gambar asli dari DB
-            })
-
-        # 4. Menyusun payload respon data yang dibutuhkan oleh VillaDetail.jsx
-        payload = {
-            "id":               villa.get("id"),
-            "name":             villa.get("name"),
-            "location":         villa.get("location"),
-            "price":            villa.get("price"),
-            "image":            villa.get("image") or villa.get("img"),
-            "rating":           villa.get("rating") or 5.0,
-            "description":      villa.get("description") or "",
-            "rooms":            rooms,
-            # Fallback jika list rooms kosong
-            "guests":           rooms[0]["max_guests"]      if rooms else 4,
-            "bed_info":         rooms[0]["bed_info"]        if rooms else "Standard Setup",
-            "facilities":       rooms[0]["facilities"]      if rooms else "Free Wifi, TV, AC",
-            "other_facilities": rooms[0]["other_facilities"] if rooms else "Fasilitas Lengkap",
-            "max_age_rule":     rooms[0]["max_age_rule"]    if rooms else "Batas usia standar.",
-        }
-
-        return jsonify(payload), 200
+        return jsonify({
+            "success": True,
+            "villa_id": villa_id,
+            "rooms": rooms
+        }), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print("ERROR GET VILLA ROOMS:", e)
+
+        return jsonify({
+            "success": False,
+            "message": "Gagal mengambil data kamar villa",
+            "error": str(e)
+        }), 500
+
     finally:
-        if cursor: cursor.close()
-        if conn: conn.close()
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()

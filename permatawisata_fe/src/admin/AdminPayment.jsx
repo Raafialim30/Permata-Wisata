@@ -2,9 +2,6 @@ import {
   FaBell,
   FaCheckCircle,
   FaEye,
-  FaHome,
-  FaSignOutAlt,
-  FaThLarge,
   FaTimesCircle,
   FaMoneyBillWave,
   FaUser,
@@ -15,13 +12,12 @@ import {
 } from "react-icons/fa";
 
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 
 import API_BASE_URL from "../config";
+import AdminSidebar from "./AdminSidebar";
 import "./css/AdminPayment.css";
 
 function AdminPayment() {
-  const navigate = useNavigate();
 
   const [notif, setNotif] = useState(true);
   const [data, setData] = useState([]);
@@ -131,7 +127,7 @@ function AdminPayment() {
     const { type, id } = confirmAction;
 
     const newStatus =
-      type === "approve" ? "Success" : "Reject";
+      type === "approve" ? "Lunas" : "Batal";
 
     setActionLoading(true);
 
@@ -169,6 +165,7 @@ function AdminPayment() {
             type: "error",
             title: "Proses Gagal",
             message:
+              resData.error ||
               resData.message ||
               "Perubahan status pembayaran tidak dapat diproses."
           });
@@ -197,90 +194,61 @@ function AdminPayment() {
   };
 
   // =========================================================
-  // LOGOUT
-  // =========================================================
-  const handleLogout = () => {
-    localStorage.removeItem("adminLogin");
-    navigate("/admin/login");
-    window.location.reload();
-  };
-
-  // =========================================================
   // HELPER STATUS
   // =========================================================
   const getStatusLabel = (status) => {
-    if (status === "Pending") return "Menunggu";
-    if (status === "Success") return "Berhasil";
-    if (status === "Reject") return "Ditolak";
+    if (
+      status === "Menunggu Pembayaran" ||
+      status === "Menunggu Verifikasi" ||
+      status === "Pending"
+    ) {
+      return "Menunggu";
+    }
+
+    if (status === "Lunas" || status === "Success") {
+      return "Berhasil";
+    }
+
+    if (status === "Batal" || status === "Reject") {
+      return "Dibatalkan";
+    }
 
     return status || "Tidak diketahui";
+  };
+
+  const getStatusClass = (status) => {
+    if (status === "Lunas" || status === "Success") {
+      return "success";
+    }
+
+    if (status === "Batal" || status === "Reject") {
+      return "reject";
+    }
+
+    return "pending";
+  };
+
+  const isWaitingPayment = (status) => {
+    return (
+      status === "Menunggu Pembayaran" ||
+      status === "Menunggu Verifikasi" ||
+      status === "Pending"
+    );
+  };
+
+  const canValidatePayment = (status) => {
+    return (
+      status === "Menunggu Verifikasi" ||
+      status === "Pending"
+    );
   };
 
   return (
     <div className="admin-layout">
 
-      {/* =====================================================
-          SIDEBAR
-      ===================================================== */}
-      <div className="sidebar">
+<AdminSidebar />
 
-        <div>
-          <div className="sidebar-logo">
-            <img
-              src="/images/logo-jogjavilla.png"
-              alt="Jogja Villa"
-              style={{
-                height: "40px",
-                objectFit: "contain",
-                filter: "brightness(0) invert(1)"
-              }}
-            />
-          </div>
-
-          <div className="menu">
-
-            <Link
-              to="/admin/dashboard"
-              className="menu-item"
-            >
-              <FaThLarge /> Dashboard
-            </Link>
-
-            <Link
-              to="/admin/villas"
-              className="menu-item"
-            >
-              <FaHome /> Kelola Villa
-            </Link>
-
-            <Link
-              to="/admin/transactions"
-              className="menu-item"
-            >
-              <FaThLarge /> Transaksi
-            </Link>
-
-            <Link
-              to="/admin/payment"
-              className="menu-item active"
-            >
-              <FaCheckCircle /> Validasi Pembayaran
-            </Link>
-
-          </div>
-        </div>
-
-        <div
-          className="logout"
-          onClick={handleLogout}
-          style={{ cursor: "pointer" }}
-        >
-          <FaSignOutAlt /> Keluar
-        </div>
-
-      </div>
-
-      {/* =====================================================
+{/* =====================================================
           MAIN CONTENT
       ===================================================== */}
       <div className="main">
@@ -371,7 +339,7 @@ function AdminPayment() {
             <h1>
               {
                 data.filter(
-                  (d) => d.status === "Pending"
+                  (d) => isWaitingPayment(d.status)
                 ).length
               }
             </h1>
@@ -387,7 +355,7 @@ function AdminPayment() {
             <h1>
               {
                 data.filter(
-                  (d) => d.status === "Success"
+                  (d) => d.status === "Lunas"
                 ).length
               }
             </h1>
@@ -403,7 +371,7 @@ function AdminPayment() {
             <h1>
               {
                 data.filter(
-                  (d) => d.status === "Reject"
+                  (d) => d.status === "Batal"
                 ).length
               }
             </h1>
@@ -484,11 +452,7 @@ function AdminPayment() {
                     <td>
 
                       <span
-                        className={`badge ${
-                          item.status
-                            ? item.status.toLowerCase()
-                            : "pending"
-                        }`}
+                        className={`badge ${getStatusClass(item.status)}`}
                       >
                         {getStatusLabel(item.status)}
                       </span>
@@ -516,7 +480,7 @@ function AdminPayment() {
                           HANYA UNTUK PENDING
                       =================================== */}
 
-                      {item.status === "Pending" && (
+                      {canValidatePayment(item.status) && (
                         <>
 
                           <button
@@ -944,9 +908,9 @@ function AdminPayment() {
                   <FaCheckCircle
                     style={{
                       color:
-                        selectedTransaction.status === "Success"
+                        selectedTransaction.status === "Lunas"
                           ? "#16a36e"
-                          : selectedTransaction.status === "Reject"
+                          : selectedTransaction.status === "Batal"
                           ? "#dc4242"
                           : "#d49b18"
                     }}
@@ -971,16 +935,16 @@ function AdminPayment() {
                     fontWeight: 700,
 
                     background:
-                      selectedTransaction.status === "Success"
+                      selectedTransaction.status === "Lunas"
                         ? "#e5f7ef"
-                        : selectedTransaction.status === "Reject"
+                        : selectedTransaction.status === "Batal"
                         ? "#fdeaea"
                         : "#fff4d8",
 
                     color:
-                      selectedTransaction.status === "Success"
+                      selectedTransaction.status === "Lunas"
                         ? "#14865c"
-                        : selectedTransaction.status === "Reject"
+                        : selectedTransaction.status === "Batal"
                         ? "#cf3d3d"
                         : "#ad7b09"
                   }}

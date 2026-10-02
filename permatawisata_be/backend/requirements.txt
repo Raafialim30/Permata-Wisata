@@ -1,3 +1,4 @@
 Flask==2.2.5
 Flask-CORS==4.0.0
 mysql-connector-python==8.0.33
+PyJWT==2.15.0

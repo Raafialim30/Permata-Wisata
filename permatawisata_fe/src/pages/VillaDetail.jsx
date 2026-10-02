@@ -301,9 +301,39 @@ return validImages;
         }
     };
 
+    // ========================================================
+    // VALIDASI TANGGAL KALENDER
+    // Tanggal yang sudah lewat tidak boleh dipilih.
+    // Hari ini tetap bisa dipilih sebagai tanggal check-in.
+    // ========================================================
+    const getTodayStart = () => {
+        const today = new Date();
+        return new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        ).getTime();
+    };
+
+    const isPastDate = (day) => {
+        const selectedDate = new Date(
+            chosenYear,
+            currentMonth,
+            day
+        ).getTime();
+
+        return selectedDate < getTodayStart();
+    };
+
     const getDayClassName = (day) => {
-        if (!checkIn) return "";
-        const thisTime = new Date(chosenYear, currentMonth, day).getTime();
+        const thisTime = new Date(
+            chosenYear,
+            currentMonth,
+            day
+        ).getTime();
+
+        // Tanggal yang sudah lewat selalu dianggap disabled.
+        if (isPastDate(day)) return "disabled-date";
 
         if (checkIn && thisTime === checkIn.timeValue) return "checkin";
         if (checkOut && thisTime === checkOut.timeValue) return "checkout";
@@ -796,16 +826,37 @@ return validImages;
                         </div>
 
                         <div className="calendar-grid" style={{ fontSize: "0.85rem", gap: "4px" }}>
-                            {days.map((day) => (
-                                <div
-                                    key={day}
-                                    className={`day ${getDayClassName(day)}`}
-                                    onClick={() => handleDateClick(day)}
-                                    style={{ padding: "6px 0", fontSize: "0.85rem", borderRadius: "4px" }}
-                                >
-                                    {day}
-                                </div>
-                            ))}
+                            {days.map((day) => {
+                                const pastDate = isPastDate(day);
+
+                                return (
+                                    <div
+                                        key={day}
+                                        className={`day ${getDayClassName(day)}`}
+                                        onClick={() => {
+                                            // Jangan jalankan handler untuk tanggal yang sudah lewat.
+                                            if (pastDate) return;
+                                            handleDateClick(day);
+                                        }}
+                                        aria-disabled={pastDate}
+                                        title={
+                                            pastDate
+                                                ? "Tanggal sudah terlewat"
+                                                : "Pilih tanggal"
+                                        }
+                                        style={{
+                                            padding: "6px 0",
+                                            fontSize: "0.85rem",
+                                            borderRadius: "4px",
+                                            cursor: pastDate ? "not-allowed" : "pointer",
+                                            pointerEvents: pastDate ? "none" : "auto",
+                                            opacity: pastDate ? 0.45 : 1
+                                        }}
+                                    >
+                                        {day}
+                                    </div>
+                                );
+                            })}
                         </div>
 
                         <div className="selected-date" style={{ fontSize: "0.85rem", marginTop: "12px" }}>
@@ -824,7 +875,7 @@ return validImages;
                     {/* ACTION PESAN SEKARANG */}
                     <button
                         className="book-now"
-                        disabled={!checkIn || !checkOut}
+                        disabled={!checkIn || !checkOut || !selectedRoom}
                         onClick={() => {
                             const combinedRoomName = selectedRoom
                                 ? `${villa.name} - ${selectedRoom.bed_info}`

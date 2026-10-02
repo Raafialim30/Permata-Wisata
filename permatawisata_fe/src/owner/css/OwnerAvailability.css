@@ -1,0 +1,1185 @@
+/* =========================================================
+   OWNER AVAILABILITY
+   ========================================================= */
+
+.owner-availability-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  color: #173b57;
+}
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.availability-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.availability-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.availability-title-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #e9f5f8;
+  color: #11607d;
+}
+
+.availability-title h1 {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  color: #163e5c;
+}
+
+.availability-title p {
+  margin: 5px 0 0;
+
+  font-size: 14px;
+  color: #7890a0;
+}
+
+
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
+.availability-refresh-button {
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid #d9e5ec;
+  border-radius: 12px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #1b5876;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.availability-refresh-button:hover {
+  background: #eef8fa;
+  border-color: #9ed8dc;
+}
+
+.availability-refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.availability-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 16px;
+
+  margin-bottom: 20px;
+
+  border-radius: 12px;
+
+  background: #fff3f3;
+  border: 1px solid #f3caca;
+
+  color: #b43c3c;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.availability-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.availability-eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  color: #67a5ae;
+}
+
+.availability-section-heading h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  color: #183f5c;
+}
+
+.availability-section-heading p {
+  margin: 6px 0 0;
+
+  font-size: 14px;
+
+  color: #7b919f;
+}
+
+.availability-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 75px;
+
+  padding: 9px 14px;
+
+  border-radius: 999px;
+
+  background: #e9f6f7;
+
+  color: #167183;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.availability-loading-box {
+  min-height: 200px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border: 1px solid #dce8ed;
+  border-radius: 18px;
+
+  background: white;
+
+  color: #6f8795;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.availability-empty-villa {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px solid #dce8ed;
+  border-radius: 18px;
+
+  background: white;
+}
+
+.availability-empty-icon {
+  width: 74px;
+  height: 74px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 20px;
+
+  background: #edf7f8;
+  color: #5a9ba6;
+}
+
+.availability-empty-villa h3 {
+  margin: 0 0 7px;
+
+  color: #23445a;
+
+  font-size: 18px;
+}
+
+.availability-empty-villa p {
+  margin: 0;
+
+  max-width: 450px;
+
+  color: #8497a2;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   VILLA GRID
+   ========================================================= */
+
+.availability-villa-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(300px, 1fr)
+    );
+
+  gap: 16px;
+}
+
+.availability-villa-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  border: 1px solid #dce7ed;
+  border-radius: 17px;
+
+  background: white;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.availability-villa-item:hover {
+  transform: translateY(-2px);
+
+  border-color: #82cdd1;
+
+  box-shadow:
+    0 10px 28px
+    rgba(24, 76, 99, 0.08);
+}
+
+.availability-villa-icon {
+  flex-shrink: 0;
+
+  width: 56px;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: #edf7f8;
+  color: #327d8d;
+}
+
+.availability-villa-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.availability-villa-info > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #8aa0ab;
+}
+
+.availability-villa-info h3 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 800;
+
+  color: #173e5a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.availability-villa-info p {
+  margin: 5px 0 0;
+
+  font-size: 13px;
+
+  color: #8296a1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.availability-villa-arrow {
+  flex-shrink: 0;
+
+  color: #78a0ae;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.availability-back-button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 18px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #dce7ed;
+  border-radius: 10px;
+
+  background: white;
+
+  color: #35647c;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.availability-back-button:hover {
+  background: #f1f8fa;
+  border-color: #a5cbd2;
+}
+
+
+/* =========================================================
+   SELECTED VILLA
+   ========================================================= */
+
+.availability-selected-villa {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  margin-bottom: 26px;
+
+  border: 1px solid #dce8ed;
+  border-radius: 18px;
+
+  background: white;
+}
+
+.availability-selected-villa-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #eaf6f7;
+
+  color: #327d8d;
+}
+
+.availability-selected-villa span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+
+  color: #7c9aa5;
+}
+
+.availability-selected-villa h2 {
+  margin: 0;
+
+  font-size: 21px;
+
+  color: #173e5a;
+}
+
+
+/* =========================================================
+   UNIT GRID
+   ========================================================= */
+
+.availability-unit-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(340px, 1fr)
+    );
+
+  gap: 16px;
+}
+
+.availability-unit-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 14px;
+
+  border: 1px solid #dce7ed;
+  border-radius: 17px;
+
+  background: white;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.availability-unit-item:hover {
+  transform: translateY(-2px);
+
+  border-color: #83ccd0;
+
+  box-shadow:
+    0 10px 28px
+    rgba(24, 76, 99, 0.08);
+}
+
+.availability-unit-image {
+  width: 82px;
+  height: 82px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 13px;
+
+  background: #edf6f8;
+
+  color: #568e9c;
+}
+
+.availability-unit-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.availability-unit-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.availability-unit-info > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  color: #91a3ac;
+}
+
+.availability-unit-info h3 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  color: #173e5a;
+}
+
+.availability-unit-info p {
+  margin: 5px 0 0;
+
+  font-size: 12px;
+
+  color: #8497a2;
+
+  line-height: 1.4;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.availability-unit-meta {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+.availability-unit-meta span {
+  padding: 5px 8px;
+
+  border-radius: 7px;
+
+  background: #f0f7f8;
+
+  color: #427b88;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.availability-unit-arrow {
+  flex-shrink: 0;
+
+  color: #78a0ae;
+}
+
+
+/* =========================================================
+   CALENDAR CARD
+   ========================================================= */
+
+.availability-calendar-card {
+  overflow: hidden;
+
+  border: 1px solid #dce7ed;
+  border-radius: 19px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 30px
+    rgba(31, 72, 91, 0.04);
+}
+
+.availability-calendar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 23px 25px;
+
+  border-bottom: 1px solid #e8eef1;
+}
+
+.availability-calendar-top > div:first-child span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #6ca1a9;
+}
+
+.availability-calendar-top h2 {
+  margin: 0;
+
+  font-size: 22px;
+
+  color: #173f5c;
+}
+
+
+/* =========================================================
+   CALENDAR CONTROLS
+   ========================================================= */
+
+.availability-calendar-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.availability-calendar-controls button {
+  height: 38px;
+  min-width: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d8e4ea;
+  border-radius: 9px;
+
+  background: white;
+
+  color: #3c687d;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.availability-calendar-controls button:hover {
+  background: #edf7f8;
+  border-color: #9ccbd0;
+}
+
+.availability-calendar-controls
+.availability-today-button {
+  padding: 0 13px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CALENDAR BODY
+   ========================================================= */
+
+.availability-calendar-body {
+  padding: 20px;
+}
+
+.availability-weekdays {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, 1fr);
+
+  gap: 8px;
+
+  margin-bottom: 8px;
+}
+
+.availability-weekdays span {
+  text-align: center;
+
+  padding: 8px 0;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  color: #91a3ac;
+}
+
+
+/* =========================================================
+   CALENDAR GRID
+   ========================================================= */
+
+.availability-calendar-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+
+/* =========================================================
+   DAY
+   ========================================================= */
+
+.availability-day {
+  position: relative;
+
+  min-height: 82px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  border-radius: 11px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.availability-day:hover {
+  transform: translateY(-1px);
+}
+
+.availability-day strong {
+  font-size: 15px;
+}
+
+.availability-day span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.availability-day small {
+  position: absolute;
+
+  top: 7px;
+  right: 7px;
+
+  padding: 3px 5px;
+
+  border-radius: 5px;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   AVAILABLE
+   ========================================================= */
+
+.availability-day.available {
+  border: 1px solid #dbeae3;
+
+  background: #f7fcf9;
+
+  color: #225f49;
+}
+
+.availability-day.available span {
+  color: #3e9976;
+}
+
+
+/* =========================================================
+   BOOKED
+   ========================================================= */
+
+.availability-day.booked {
+  border: 1px solid #f0cccc;
+
+  background: #fff6f6;
+
+  color: #8f3c3c;
+}
+
+.availability-day.booked span {
+  color: #c35c5c;
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+.availability-day.today {
+  border-width: 2px;
+  border-color: #48a5b0;
+}
+
+.availability-day.today small {
+  background: #dff2f4;
+
+  color: #357d86;
+}
+
+
+/* =========================================================
+   SELECTED
+   ========================================================= */
+
+.availability-day.selected {
+  box-shadow:
+    0 0 0 3px
+    rgba(72, 165, 176, 0.18);
+}
+
+
+/* =========================================================
+   EMPTY CALENDAR CELL
+   ========================================================= */
+
+.availability-day.empty {
+  min-height: 82px;
+
+  border: 1px solid transparent;
+
+  background: transparent;
+
+  cursor: default;
+}
+
+.availability-day.empty:hover {
+  transform: none;
+}
+
+
+/* =========================================================
+   CALENDAR LOADING
+   ========================================================= */
+
+.availability-calendar-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 13px;
+
+  border-bottom: 1px solid #edf1f3;
+
+  color: #728c98;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LEGEND
+   ========================================================= */
+
+.availability-legend {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  padding: 15px 20px;
+
+  border-top: 1px solid #e8eef1;
+
+  background: #fbfcfd;
+}
+
+.availability-legend div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 12px;
+
+  color: #667f8b;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+}
+
+.legend-dot.available {
+  background: #51aa83;
+}
+
+.legend-dot.booked {
+  background: #d46565;
+}
+
+.legend-dot.today {
+  background: #49a7b1;
+}
+
+
+/* =========================================================
+   SELECTED DAY DETAIL
+   ========================================================= */
+
+.availability-day-detail {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 18px;
+
+  padding: 17px 19px;
+
+  border-radius: 14px;
+
+  border: 1px solid #dce7ed;
+
+  background: white;
+}
+
+.availability-day-detail-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+}
+
+.availability-day-detail.available
+.availability-day-detail-icon {
+  background: #e7f7ee;
+  color: #3f9a72;
+}
+
+.availability-day-detail.booked
+.availability-day-detail-icon {
+  background: #fff0f0;
+  color: #c25a5a;
+}
+
+.availability-day-detail span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 12px;
+
+  color: #7d939e;
+}
+
+.availability-day-detail strong {
+  font-size: 15px;
+
+  color: #27475b;
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+.availability-spin {
+  animation:
+    availabilitySpin
+    1s linear infinite;
+}
+
+@keyframes availabilitySpin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (
+  max-width: 900px
+) {
+
+  .owner-availability-page {
+    padding: 22px;
+  }
+
+  .availability-calendar-grid,
+  .availability-weekdays {
+    gap: 5px;
+  }
+
+  .availability-day {
+    min-height: 70px;
+    padding: 8px;
+  }
+
+}
+
+
+@media (
+  max-width: 700px
+) {
+
+  .owner-availability-page {
+    padding: 16px;
+  }
+
+  .availability-topbar {
+    align-items: flex-start;
+  }
+
+  .availability-title h1 {
+    font-size: 23px;
+  }
+
+  .availability-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .availability-villa-grid,
+  .availability-unit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .availability-calendar-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .availability-calendar-controls {
+    width: 100%;
+  }
+
+  .availability-calendar-controls button {
+    flex: 1;
+  }
+
+  .availability-day {
+    min-height: 65px;
+  }
+
+  .availability-day strong {
+    font-size: 13px;
+  }
+
+  .availability-day span {
+    font-size: 8px;
+  }
+
+  .availability-day small {
+    display: none;
+  }
+
+}
+
+
+@media (
+  max-width: 480px
+) {
+
+  .availability-calendar-body {
+    padding: 10px;
+  }
+
+  .availability-calendar-grid,
+  .availability-weekdays {
+    gap: 3px;
+  }
+
+  .availability-day {
+    min-height: 58px;
+    padding: 6px;
+  }
+
+  .availability-weekdays span {
+    font-size: 9px;
+  }
+
+  .availability-day span {
+    font-size: 7px;
+  }
+
+  .availability-selected-villa {
+    padding: 14px;
+  }
+
+  .availability-selected-villa h2 {
+    font-size: 17px;
+  }
+
+}

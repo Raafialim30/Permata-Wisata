@@ -96,8 +96,31 @@
 
 /* ================= RESPONSIVE ================= */
 
-@media(max-width:900px){
-  .stats-cards{
-    grid-template-columns:1fr;
+/* =========================================================
+   ADMIN SIDEBAR SYNC
+   Sidebar dikelola oleh AdminSidebar.jsx.
+   ========================================================= */
+
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-layout .main {
+  margin-left: 260px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .admin-layout .main {
+    margin-left: 210px;
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-layout .main {
+    margin-left: 70px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }

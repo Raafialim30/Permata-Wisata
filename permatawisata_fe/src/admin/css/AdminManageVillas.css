@@ -5,64 +5,6 @@ background:#f4f6f9;
 min-height:100vh;
 }
 
-/* SIDEBAR */
-
-.sidebar{
-width:260px;
-background:#123c55;
-color:white;
-position:fixed;
-height:100vh;
-padding:30px 20px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-}
-
-.sidebar-logo{
-display:flex;
-gap:12px;
-align-items:center;
-margin-bottom:30px;
-}
-
-.logo-icon{
-background:#D4AF37;
-padding:12px;
-border-radius:10px;
-}
-
-.menu{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.menu-item{
-padding:14px 16px;
-border-radius:10px;
-display:flex;
-gap:10px;
-cursor:pointer;
-text-decoration:none;
-color:white;
-}
-
-.menu-item:hover{
-background:#1c516f;
-}
-
-.menu-item.active{
-background:#D4AF37;
-}
-
-.logout{
-margin-top:40px;
-display:flex;
-gap:10px;
-cursor:pointer;
-}
-
 /* MAIN */
 
 .main{
@@ -273,57 +215,31 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* RESPONSIVE DESIGN UNTUK ADMIN */
-@media (max-width: 768px) {
-  .admin-layout {
-    flex-direction: column;
+/* =========================================================
+   ADMIN SIDEBAR SYNC
+   Sidebar dikelola oleh AdminSidebar.jsx.
+   ========================================================= */
+
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-layout .main {
+  margin-left: 260px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .admin-layout .main {
+    margin-left: 210px;
   }
-  .sidebar {
-    width: 100%;
-    position: relative;
-    height: auto;
-    padding: 20px;
-  }
-  .main {
-    margin-left: 0;
-    padding: 15px;
-  }
-  .topbar {
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-  }
-  .villa-table {
-    padding: 15px;
-    overflow-x: auto;
-    display: block;
-  }
-  .modal-content {
-    width: 95% !important;
-    padding: 15px !important;
-    max-height: 95vh !important;
-  }
-  .image-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  .modal-content input, .modal-content select {
-    width: 100% !important;
-    box-sizing: border-box;
-  }
-  /* Merubah inline flex/grid di JS modal menjadi stack */
-  .modal-content > div[style*="display: grid"],
-  .modal-content > div[style*="display: flex"] {
-    display: flex !important;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .modal-actions, 
-  .modal-content > div[style*="justify-content: flex-end"] {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .modal-actions button,
-  .modal-content > div[style*="justify-content: flex-end"] button {
-    width: 100%;
+}
+
+@media (max-width: 650px) {
+  .admin-layout .main {
+    margin-left: 70px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
