@@ -1,0 +1,758 @@
+/* ==========================================================
+   OWNER SIDEBAR
+   ========================================================== */
+
+:root {
+  --owner-sidebar-width: 270px;
+
+  --owner-navy: #0b4669;
+  --owner-navy-dark: #083b59;
+  --owner-navy-light: #126488;
+
+  --owner-white: #ffffff;
+  --owner-text-light: rgba(255, 255, 255, 0.82);
+  --owner-text-muted: rgba(255, 255, 255, 0.52);
+
+  --owner-green: #78e0ba;
+  --owner-yellow: #ffd447;
+}
+
+
+/* ==========================================================
+   LAYOUT BASE
+   ========================================================== */
+
+.owner-layout {
+  min-height: 100vh;
+  width: 100%;
+  background: #f4f7fb;
+}
+
+.owner-main-content {
+  min-width: 0;
+  min-height: 100vh;
+  margin-left: var(--owner-sidebar-width);
+  width: calc(100% - var(--owner-sidebar-width));
+}
+
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.owner-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+
+  width: var(--owner-sidebar-width);
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--owner-navy) 0%,
+      var(--owner-navy-dark) 100%
+    );
+
+  color: var(--owner-white);
+
+  z-index: 1000;
+
+  box-shadow:
+    8px 0 35px rgba(8, 59, 89, 0.12);
+}
+
+
+/* ==========================================================
+   DECORATION
+   ========================================================== */
+
+.owner-sidebar-decoration {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  opacity: 0.7;
+}
+
+.owner-sidebar-decoration-one {
+  width: 230px;
+  height: 230px;
+
+  right: -125px;
+  top: 80px;
+
+  background:
+    rgba(86, 183, 224, 0.10);
+}
+
+.owner-sidebar-decoration-two {
+  width: 170px;
+  height: 170px;
+
+  left: -95px;
+  bottom: 100px;
+
+  background:
+    rgba(119, 226, 190, 0.07);
+}
+
+
+/* ==========================================================
+   BRAND
+   ========================================================== */
+
+.owner-sidebar-brand {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 28px 24px 22px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  z-index: 1;
+}
+
+.owner-brand-mark {
+  position: relative;
+
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.08);
+}
+
+.owner-brand-leaf {
+  position: absolute;
+
+  width: 10px;
+  height: 21px;
+
+  background: #ffffff;
+
+  border-radius:
+    100% 0 100% 0;
+
+  transform-origin: bottom center;
+}
+
+.owner-brand-leaf.leaf-one {
+  left: 13px;
+  top: 10px;
+
+  transform:
+    rotate(-38deg);
+}
+
+.owner-brand-leaf.leaf-two {
+  left: 21px;
+  top: 9px;
+
+  transform:
+    rotate(38deg);
+}
+
+.owner-brand-leaf.leaf-three {
+  left: 17px;
+  top: 18px;
+
+  width: 9px;
+  height: 16px;
+
+  transform:
+    rotate(180deg);
+
+  opacity: 0.88;
+}
+
+.owner-brand-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-brand-text {
+  color: #ffffff;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.owner-brand-subtitle {
+  margin-top: 4px;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+}
+
+
+/* ==========================================================
+   PANEL LABEL
+   ========================================================== */
+
+.owner-sidebar-label {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin:
+    20px 20px 10px;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+
+  z-index: 1;
+}
+
+.owner-sidebar-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--owner-green);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(120, 224, 186, 0.10);
+}
+
+
+/* ==========================================================
+   NAVIGATION
+   ========================================================== */
+
+.owner-sidebar-nav {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  padding:
+    4px 14px;
+
+  z-index: 1;
+}
+
+.owner-nav-item {
+  position: relative;
+
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    0 14px;
+
+  border-radius: 13px;
+
+  text-decoration: none;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 14px;
+  font-weight: 650;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.owner-nav-item:hover {
+  color: #ffffff;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  transform:
+    translateX(2px);
+}
+
+.owner-nav-item.active {
+  color: #ffffff;
+
+  background:
+    rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    inset 3px 0 0 var(--owner-green),
+    0 7px 20px
+    rgba(0, 0, 0, 0.07);
+}
+
+.owner-nav-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  transition:
+    background 0.2s ease;
+}
+
+.owner-nav-item.active .owner-nav-icon {
+  background:
+    rgba(255, 255, 255, 0.12);
+}
+
+.owner-nav-text {
+  white-space: nowrap;
+}
+
+.owner-nav-arrow {
+  margin-left: auto;
+
+  opacity: 0.55;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.owner-nav-item:hover .owner-nav-arrow,
+.owner-nav-item.active .owner-nav-arrow {
+  transform:
+    translateX(2px);
+
+  opacity: 0.9;
+}
+
+
+/* ==========================================================
+   INFO CARD
+   ========================================================== */
+
+.owner-sidebar-info {
+  position: relative;
+
+  display: flex;
+
+  gap: 11px;
+
+  margin:
+    20px 14px 0;
+
+  padding: 15px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  z-index: 1;
+}
+
+.owner-sidebar-info-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  color: #8de0ff;
+
+  background:
+    rgba(111, 211, 255, 0.11);
+}
+
+.owner-sidebar-info-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-sidebar-info-content strong {
+  color: #ffffff;
+
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.owner-sidebar-info-content span {
+  margin-top: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.52);
+
+  font-size: 9px;
+
+  line-height: 1.55;
+}
+
+
+/* ==========================================================
+   SPACER
+   ========================================================== */
+
+.owner-sidebar-spacer {
+  flex: 1;
+}
+
+
+/* ==========================================================
+   BOTTOM PROFILE
+   ========================================================== */
+
+.owner-sidebar-bottom {
+  position: relative;
+
+  padding:
+    17px 14px 18px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  z-index: 1;
+}
+
+.owner-profile {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    3px 4px 10px;
+}
+
+.owner-profile-avatar {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffd85a,
+      #f4b92e
+    );
+
+  color: #173b56;
+
+  font-size: 16px;
+  font-weight: 850;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.12);
+}
+
+.owner-profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-profile-info strong {
+  max-width: 145px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.owner-profile-info span {
+  margin-top: 3px;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  font-size: 10px;
+}
+
+.owner-profile-online {
+  width: 8px;
+  height: 8px;
+
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  background: #6ee7b7;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(110, 231, 183, 0.10);
+}
+
+.owner-profile-villa {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    7px 7px 11px;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  font-size: 9px;
+}
+
+.owner-profile-villa span {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ==========================================================
+   LOGOUT
+   ========================================================== */
+
+.owner-logout-button {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 11px 14px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.owner-logout-button:hover {
+  background:
+    rgba(255, 255, 255, 0.09);
+
+  border-color:
+    rgba(255, 255, 255, 0.28);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* ==========================================================
+   TABLET
+   ========================================================== */
+
+@media (max-width: 900px) {
+  :root {
+    --owner-sidebar-width: 230px;
+  }
+
+  .owner-sidebar {
+    width: 230px;
+  }
+
+  .owner-main-content {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+  }
+
+  .owner-sidebar-info {
+    display: none;
+  }
+
+  .owner-brand-subtitle {
+    display: none;
+  }
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 700px) {
+  :root {
+    --owner-sidebar-width: 0px;
+  }
+
+  .owner-sidebar {
+    position: relative;
+
+    width: 100%;
+    height: auto;
+    min-height: auto;
+
+    overflow: visible;
+  }
+
+  .owner-main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .owner-sidebar-brand {
+    padding: 17px 18px;
+  }
+
+  .owner-sidebar-label {
+    margin:
+      12px 15px 7px;
+  }
+
+  .owner-sidebar-nav {
+    flex-direction: row;
+
+    overflow-x: auto;
+
+    padding:
+      5px 12px 12px;
+  }
+
+  .owner-nav-item {
+    min-width: 150px;
+
+    justify-content: flex-start;
+  }
+
+  .owner-nav-arrow {
+    display: none;
+  }
+
+  .owner-sidebar-spacer {
+    display: none;
+  }
+
+  .owner-sidebar-bottom {
+    padding:
+      12px 14px;
+  }
+
+  .owner-profile-villa {
+    display: none;
+  }
+}
+
+
+/* ==========================================================
+   VERY SMALL MOBILE
+   ========================================================== */
+
+@media (max-width: 430px) {
+  .owner-nav-item {
+    min-width: 135px;
+
+    min-height: 48px;
+
+    padding:
+      0 11px;
+
+    font-size: 12px;
+  }
+
+  .owner-nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .owner-sidebar-brand {
+    padding:
+      15px;
+  }
+}

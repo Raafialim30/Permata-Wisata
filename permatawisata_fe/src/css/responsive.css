@@ -1,0 +1,90 @@
+/* Responsive helpers for mobile/tablet layouts */
+
+/* General page container adjustments */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 16px;
+    max-width: 1000px;
+  }
+
+  .villas-hero {
+    padding: 40px 16px;
+  }
+
+  .hero-content h1 { font-size: 28px; }
+}
+
+@media (max-width: 900px) {
+  .navbar { padding: 12px 20px; }
+  .nav-menu { gap: 12px; }
+  .search-bar-modern { max-width: 100%; padding: 8px 16px; }
+  .villas-hero { padding: 36px 12px; }
+  .hero-content h1 { font-size: 24px; }
+}
+
+/* Villa grid and cards */
+@media (max-width: 768px) {
+  .villa-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+  .card-image { height: 180px; }
+  .card-details { padding: 14px; }
+  .hero-content h1 { font-size: 22px; }
+}
+
+@media (max-width: 480px) {
+  .villa-grid { grid-template-columns: 1fr; gap: 14px; }
+  .card-image { height: 160px; }
+  .search-bar-modern { padding: 8px 12px; border-radius: 36px; }
+  .nav-menu { gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .nav-menu a { font-size: 12px; }
+  .contact-btn { padding: 6px 10px !important; }
+  .hamburger { display: block !important; }
+}
+
+/* Admin / Owner responsive tweaks */
+@media (max-width: 1024px) {
+  .admin-layout, .owner-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .sidebar .menu {
+    flex-direction: row !important;
+    gap: 10px;
+    margin-top: 0 !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .main { margin-left: 0 !important; padding: 18px !important; }
+
+  .topbar { padding: 12px; flex-direction: column; align-items: flex-start; gap: 10px; }
+
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .sidebar { padding: 10px !important; }
+  .menu-item { padding: 8px 10px !important; font-size: 13px !important; }
+  .stats { grid-template-columns: 1fr; }
+  .booking-table, .page-header { padding: 12px; }
+}
+
+/* Small utility tweaks */
+img { max-width: 100%; height: auto; }
+.button, button { touch-action: manipulation; }
+
+/* Ensure modals and fixed navs do not overflow on small screens */
+@media (max-width: 480px) {
+  .nav-menu { width: 85%; padding-left: 18px; }
+}

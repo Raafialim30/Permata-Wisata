@@ -1,0 +1,149 @@
+.owner-register-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  background: linear-gradient(135deg, #0b3c5d, #0a2f48);
+  font-family: Poppins, "Segoe UI", sans-serif;
+}
+
+.owner-register-card {
+  width: min(100%, 520px);
+  padding: 30px;
+  border-radius: 16px;
+  background: #fff;
+  color: #243b53;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+}
+
+.owner-register-card > img {
+  display: block;
+  width: 145px;
+  height: 48px;
+  object-fit: contain;
+  margin: 0 auto 18px;
+}
+
+.owner-register-eyebrow {
+  margin: 0 0 6px;
+  color: #c49a24;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-align: center;
+}
+
+.owner-register-card h1 {
+  margin: 0;
+  color: #123c55;
+  font-size: 25px;
+  text-align: center;
+}
+
+.owner-register-intro {
+  margin: 10px 0 22px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.owner-register-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.owner-register-card label {
+  margin-top: 5px;
+  color: #334e68;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.owner-register-card input,
+.owner-register-card select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #243b53;
+  font: inherit;
+}
+
+.owner-register-card input:focus,
+.owner-register-card select:focus {
+  border-color: #0b6b96;
+  outline: 3px solid rgba(11, 107, 150, 0.12);
+}
+
+.owner-register-card small {
+  color: #b42318;
+  line-height: 1.5;
+}
+
+.owner-register-note {
+  margin: 8px 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.owner-register-card form button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: #d4af37;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.owner-register-card form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.owner-register-message {
+  margin: 0 0 15px;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.owner-register-message.error {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.owner-register-message.success {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.owner-register-login-link {
+  display: block;
+  margin-top: 18px;
+  color: #0b6b96;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.owner-register-login-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .owner-register-card {
+    padding: 22px 18px;
+  }
+
+  .owner-register-card h1 {
+    font-size: 22px;
+  }
+}

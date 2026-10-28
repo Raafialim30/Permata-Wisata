@@ -1,0 +1,57 @@
+from flask import Blueprint, request, jsonify
+from db import get_db_connection
+
+testimonials_bp = Blueprint('testimonials_bp', __name__)
+
+
+def _close(cursor=None, conn=None):
+    if cursor:
+        try:
+            cursor.close()
+        except Exception:
+            pass
+
+    if conn:
+        try:
+            conn.close()
+        except Exception:
+            pass
+
+
+@testimonials_bp.route('/api/testimonials', methods=['GET'])
+def get_testimonials():
+    conn = cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM testimonials ORDER BY id DESC")
+        return jsonify(cursor.fetchall())
+    except Exception as e:
+        return jsonify({"error": f"{e}"}), 500
+    finally:
+        _close(cursor, conn)
+
+
+@testimonials_bp.route('/api/testimonials', methods=['POST'])
+def add_testimonial():
+    conn = cursor = None
+    try:
+        # get_json(silent=True) or {} memastikan data selalu berupa dict (bukan None)
+        data = request.get_json(silent=True) or {}
+
+        name = data.get('name')
+        comment = data.get('comment')
+        rating = data.get('rating', 5)
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO testimonials (name, comment, rating) VALUES (%s, %s, %s)",
+            (name, comment, rating)
+        )
+        conn.commit()
+        return jsonify({"message": "Testimonial berhasil ditambahkan!"}), 201
+    except Exception as e:
+        return jsonify({"error": f"{e}"}), 500
+    finally:
+        _close(cursor, conn)

@@ -1,0 +1,1289 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#f5f5f5;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#0B3C5D;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 80px;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+/* LOGO */
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo-icon{
+color:#D4AF37;
+font-size:22px;
+}
+
+.logo-text h3{
+margin:0;
+font-size:18px;
+}
+
+.logo-text span{
+font-size:12px;
+color:#d0d0d0;
+}
+
+/* MENU */
+
+.nav-menu{
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+.nav-menu a{
+color:white;
+text-decoration:none;
+font-size:14px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-menu a:hover{
+color:#D4AF37;
+}
+
+.nav-menu .active{
+color:#D4AF37;
+}
+
+/* BUTTON */
+
+.book-btn{
+background:#D4AF37;
+border:none;
+padding:8px 18px;
+border-radius:8px;
+font-weight:500;
+cursor:pointer;
+color:white;
+transition:0.3s;
+}
+
+.book-btn:hover{
+background:#c99d2d;
+}
+
+/* HERO */
+
+.hero{
+height:460px;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.hero-overlay{
+background:linear-gradient(
+rgba(11,60,93,0.7),
+rgba(11,60,93,0.45)
+);
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
+opacity:0.9;
+}
+
+.search-box {
+  /* Pakai warna Deep Blue solid dengan sedikit transparansi (0.9) */
+  background: rgba(11, 60, 93, 0.9) !important; 
+  
+  /* Efek blur tipis saja agar tetap terlihat modern */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* Garis pinggir tipis agar kotak terlihat tegas */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Memastikan tulisan label (Location, Check-in, dll) Putih Bersih */
+.search-item label {
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: none; /* Hapus bayangan teks agar bersih */
+}
+
+/* Tombol Search Emas agar kontras dengan Deep Blue */
+.search-btn {
+  background: #D4AF37 !important;
+  color: #0B3C5D !important;
+  font-weight: 700;
+  border-radius: 12px !important;
+  padding: 12px 25px !important;
+  border: none !important;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background: #ffffff !important;
+  transform: translateY(-3px);
+}
+
+/* SEARCH ITEM */
+
+.search-item{
+display:flex;
+flex-direction:column;
+position:relative;
+}
+
+.search-item label{
+font-size:11px;
+font-weight:500;
+color:#888;
+margin-bottom:4px;
+display:flex;
+align-items:center;
+gap:5px;
+}
+
+.search-item input{
+padding:9px 12px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+width:130px;
+font-size:13px;
+background:#fafafa;
+transition:0.25s;
+}
+
+.search-item input:focus{
+outline:none;
+border-color:#0B3C5D;
+background:white;
+box-shadow:0 0 0 2px rgba(11,60,93,0.1);
+}
+
+/* GUEST INPUT */
+
+.search-item select{
+padding:9px 12px;
+border:1px solid #e3e3e3;
+border-radius:10px;
+width:120px;
+font-size:13px;
+background:#fafafa;
+transition:0.25s;
+}
+
+.search-item select:focus{
+outline:none;
+border-color:#0B3C5D;
+background:white;
+}
+
+/* SEARCH BUTTON */
+
+.search-btn{
+background:#0B3C5D;
+border:none;
+padding:11px 20px;
+border-radius:12px;
+color:white;
+font-weight:500;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:7px;
+font-size:13px;
+transition:0.25s;
+}
+
+.search-btn:hover{
+background:#092f48;
+transform:translateY(-2px);
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+/* STATS SECTION */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:70px;
+background:white;
+padding:40px 20px;
+box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.stat{
+text-align:center;
+}
+
+.stat h2{
+color:#0B3C5D;
+font-size:32px;
+margin:0;
+}
+
+.stat p{
+color:#666;
+font-size:14px;
+margin-top:5px;
+}
+
+/* WHY SECTION */
+
+.why{
+padding:70px 20px;
+text-align:center;
+background:#fafafa;
+}
+
+.why-container{
+display:flex;
+justify-content:center;
+gap:30px;
+margin-top:40px;
+}
+
+.why-card{
+background:#f4f7fb;
+padding:25px;
+border-radius:12px;
+width:250px;
+box-shadow:0 3px 10px rgba(0,0,0,0.05);
+transition:0.3s;
+}
+
+.why-card:hover{
+transform:translateY(-6px);
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.why-icon{
+width:55px;
+height:55px;
+background:#0B3C5D;
+color:white;
+font-size:22px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+margin-bottom:15px;
+}
+
+/* VILLAS */
+
+.villas{
+padding:70px 80px;
+background:white;
+}
+
+.villa-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+/* VIEW ALL BUTTON */
+
+.view-btn{
+background:#0B3C5D;
+color:white;
+padding:12px 24px;
+border-radius:6px;
+font-weight:500;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+transition:0.3s;
+}
+
+.view-btn:hover{
+background:#092f48;
+}
+
+/* VILLA CARD */
+
+.villa-container{
+display:flex;
+gap:20px;
+}
+
+.villa-card{
+width:320px;
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.villa-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* IMAGE ZOOM EFFECT */
+
+.villa-img{
+position:relative;
+overflow:hidden;
+}
+
+.villa-img img{
+width:100%;
+height:200px;
+object-fit:cover;
+transition:0.4s;
+}
+
+.villa-card:hover img{
+transform:scale(1.08);
+}
+
+/* BADGE */
+
+.villa-badge{
+position:absolute;
+top:10px;
+left:10px;
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+color:white;
+}
+
+.badge.green{background:#22c55e;}
+.badge.yellow{background:#facc15;}
+.badge.right{left:auto;right:10px;}
+
+/* CARD INFO */
+
+.villa-info{
+padding:16px;
+}
+
+.location{
+color:#666;
+font-size:14px;
+}
+
+.villa-spec{
+display:flex;
+gap:15px;
+margin:10px 0;
+font-size:13px;
+color:#555;
+}
+
+.star{color:#facc15;}
+
+.price-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:10px;
+}
+
+.price-col span{
+font-size:12px;
+color:#777;
+}
+
+/* CTA */
+
+.cta{
+background:#2b5876;
+color:white;
+text-align:center;
+padding:80px 20px;
+}
+
+.cta-icon{
+font-size:32px;
+color:#D4AF37;
+margin-bottom:10px;
+}
+
+.cta button{
+margin-top:20px;
+background:#D4AF37;
+border:none;
+padding:12px 22px;
+border-radius:8px;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.cta button:hover{
+background:#c99d2d;
+}
+
+/* FOOTER */
+
+.footer{
+background:#1c4a64;
+color:white;
+padding:50px 80px;
+}
+
+.footer-col p{
+color:#ddd;
+font-size:14px;
+}
+
+.social{
+display:flex;
+gap:15px;
+font-size:18px;
+margin-top:10px;
+}
+
+.copyright{
+margin-top:40px;
+text-align:center;
+font-size:13px;
+color:#ccc;
+}
+
+/* RECENTLY VIEWED */
+
+.recent{
+background:#f3ede5;
+margin:30px 80px;
+padding:20px;
+border-radius:12px;
+}
+
+.recent-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.recent-header h3{
+color:#0B3C5D;
+}
+
+.recent-header .clear{
+color:#b04b2f;
+font-size:14px;
+cursor:pointer;
+}
+
+.recent-card{
+display:flex;
+align-items:center;
+gap:15px;
+background:white;
+padding:10px;
+border-radius:12px;
+width:320px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.recent-card img{
+width:100px;
+height:70px;
+border-radius:10px;
+object-fit:cover;
+}
+
+.recent-info h4{
+font-size:14px;
+margin:0;
+}
+
+.recent-info p{
+font-size:12px;
+color:#666;
+margin:2px 0;
+}
+
+.recent-info .price{
+color:#0B8F5D;
+font-weight:600;
+font-size:14px;
+}
+
+.recent-info small{
+font-size:11px;
+color:#999;
+}
+
+/* DESTINATIONS */
+.destinations{
+  padding: 60px 8%;
+  text-align: center;
+}
+
+.destinations h2{
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.dest-subtitle{
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.dest-container{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 20px;
+}
+
+.dest-card{
+  position: relative;
+  cursor: pointer;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.dest-card img{
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.dest-card:hover{
+  transform: scale(1.05);
+}
+
+.dest-overlay{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+  text-align: left;
+}
+
+.dest-overlay h3{
+  margin: 0;
+}
+
+.dest-overlay p{
+  font-size: 13px;
+}
+
+/* HOW IT WORKS */
+.how {
+  padding: 80px 10%;
+  background: #f9fbff;
+  text-align: center;
+}
+
+.how h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.how-subtitle {
+  color: #666;
+  margin-bottom: 50px;
+}
+
+.how-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.how-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 16px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid #eee;
+}
+
+.how-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.how-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.how-card h3 {
+  margin-bottom: 10px;
+}
+
+.how-card p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px){
+  .how-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 500px){
+  .how-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* TESTIMONIAL */
+.testimonial {
+  padding: 80px 10%;
+  background: #f9fbff;
+  text-align: center;
+}
+
+.testimonial h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.testimonial-subtitle {
+  color: #777;
+  margin-bottom: 40px;
+}
+
+.testimonial-container {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.testimonial-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  width: 300px;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.user-info img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.user-info h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.user-info span {
+  font-size: 12px;
+  color: #888;
+}
+
+.review {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.stars {
+  color: #ffc107;
+}
+
+/* ========================= */
+/* TESTIMONIAL (PREMIUM UI) */
+/* ========================= */
+
+.testimonial {
+  padding: 80px 10%;
+  background: #f8fbff;
+  text-align: center;
+}
+
+.testimonial h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.testimonial-sub {
+  color: #666;
+  margin-bottom: 50px;
+  font-size: 16px;
+}
+
+.testimonial-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* CARD */
+.testimonial-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* HOVER EFFECT */
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+
+/* QUOTE STYLE */
+.testimonial-card p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* NAME */
+.testimonial-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 5px;
+}
+
+/* STAR */
+.testimonial-card span {
+  color: #f5a623;
+  font-size: 14px;
+}
+
+/* OPTIONAL: QUOTE ICON (BIAR PREMIUM BANGET) */
+.testimonial-card::before {
+  content: "“";
+  font-size: 60px;
+  color: #e3efff;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .testimonial {
+    padding: 60px 5%;
+  }
+
+  .testimonial h2 {
+    font-size: 24px;
+  }
+
+  .testimonial-card {
+    padding: 20px;
+  }
+}
+
+/* ========================= */
+/* TESTIMONIAL SLIDER */
+/* ========================= */
+
+.testimonial-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* TRACK (SCROLL HORIZONTAL) */
+.testimonial-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 10px;
+}
+
+/* HIDE SCROLLBAR */
+.testimonial-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD FIX WIDTH */
+.testimonial-card {
+  min-width: 280px;
+  max-width: 300px;
+  flex: 0 0 auto;
+}
+
+/* BUTTON */
+.slider-btn {
+  background: #fff;
+  border: none;
+  font-size: 28px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  cursor: pointer;
+  position: absolute;
+  z-index: 2;
+  transition: 0.3s;
+}
+
+.slider-btn:hover {
+  background: #0B3C5D;
+  color: #fff;
+}
+
+/* POSITION */
+.slider-btn.left {
+  left: -20px;
+}
+
+.slider-btn.right {
+  right: -20px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .slider-btn {
+    display: none;
+  }
+}
+
+/* ========================= */
+/* TESTIMONIAL PRO */
+/* ========================= */
+
+.testimonial-slider-pro {
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.testimonial-track-pro {
+  display: flex;
+  justify-content: center;
+}
+
+/* CARD */
+.testimonial-card-pro {
+  display: none;
+  text-align: center;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: 0.5s;
+}
+
+/* ACTIVE CARD */
+.testimonial-card-pro.active {
+  display: block;
+}
+
+/* AVATAR */
+.testimonial-card-pro img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #0B3C5D;
+}
+
+/* TEXT */
+.testimonial-card-pro p {
+  font-size: 15px;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+/* NAME */
+.testimonial-card-pro h4 {
+  margin-bottom: 5px;
+}
+
+/* STARS */
+.testimonial-card-pro span {
+  color: #f5a623;
+}
+
+/* DOTS */
+.dots {
+  margin-top: 20px;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background: #ccc;
+  margin: 0 5px;
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #0B3C5D;
+}
+
+/* BUTTON */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: none;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.slider-btn.left {
+  left: -20px;
+}
+
+.slider-btn.right {
+  right: -20px;
+}
+
+.slider-btn:hover {
+  background: #0B3C5D;
+  color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .slider-btn {
+    display: none;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.landing {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.stats .container {
+  display: flex;
+  justify-content: center;
+  gap: 70px;
+}
+
+/* PARALLAX EFFECT */
+.hero {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* GLASSMORPHISM SEARCH BOX - PERBAIKAN SESUAI GAMBAR */
+.search-box {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+}
+
+/* Label Putih agar terbaca di atas Glassmorphism */
+.search-item label {
+  color: #ffffff !important;
+}
+
+/* Kotak Input Putih Solid Bulat - SESUAI GAMBAR */
+.search-item input, .search-item select {
+  background: #ffffff !important; /* Putih Solid */
+  color: #333333 !important;      /* Teks Gelap */
+  border: none !important;
+  border-radius: 12px !important; /* Bulat */
+  padding: 12px 15px !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-item input::placeholder {
+  color: #999;
+}
+
+/* STICKY & BLUR NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  padding: 15px 80px;
+}
+
+/* HOVER GLOW BUTTONS */
+.search-btn, .book-btn {
+  transition: all 0.3s ease;
+}
+.search-btn:hover, .book-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ========================================= */
+/* TAMBAHAN BIAR MAKIN CAKEP           */
+/* ========================================= */
+
+/* 1. CUSTOM SCROLLBAR (Biar gak kaku) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0B3C5D; /* Warna biru brand kamu */
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37; /* Berubah jadi emas saat disentuh */
+}
+
+/* 2. EFEK SMOOTH PADA NAVBAR */
+/* Navbarmu sekarang akan terasa lebih ringan */
+.navbar {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 3. VILLA CARD HOVER (Glow & Lift) */
+.villa-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi pegas */
+}
+
+.villa-card:hover {
+  transform: translateY(-12px); /* Mengangkat lebih tinggi */
+  box-shadow: 0 25px 50px rgba(11, 60, 93, 0.15); /* Bayangan lembut warna biru */
+}
+
+/* 4. ANIMASI TEXT HERO (Biar lebih hidup) */
+.hero h1 {
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero p {
+  animation: fadeInUp 1.2s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5. SEARCH BUTTON SHINE EFFECT */
+.search-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.search-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.1);
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+.search-btn:hover::after {
+  left: 120%;
+}
+
+/* --- STICKY NAVBAR FIX --- */
+
+/* Membuat navbar bawaan menempel di atas layar sejak awal */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999; /* Biar posisi navbar selalu di paling depan, tidak tertutup gambar hero */
+  transition: all 0.3s ease; /* Biar ada efek transisi animasi yang halus saat di-scroll */
+}
+
+/* Mengatur gaya tampilan khusus ketika navbar dalam posisi di-scroll kebawah (saat class .scrolled aktif) */
+.navbar.scrolled {
+  background-color: #ffffff; /* Mengubah background menjadi putih solid saat di-scroll ke bawah */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Memberi bayangan tipis di bawah navbar agar kelihatan elegan */
+  padding: 12px 4%; /* Sedikit mengecilkan padding agar navbarnya terlihat lebih slim/ramping saat melayang */
+}
+
+/* FIX RESPONSIVE MOBILE — REVISI CARD RATATENGAH */
+@media (max-width: 768px) {
+  .hero {
+    height: auto !important;
+    min-height: 480px !important;
+    padding-top: 110px !important;
+    padding-bottom: 40px !important;
+  }
+
+  .hero h1 {
+    font-size: 28px !important;
+    padding: 0 15px;
+  }
+
+  .hero p {
+    font-size: 14px !important;
+    padding: 0 15px;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .search-item input, .search-item select {
+    width: 100%;
+  }
+
+  .search-item {
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stats {
+    margin-top: 50px !important;
+    padding: 30px 20px !important;
+  }
+
+  .stats .container {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .why-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .why-card {
+    width: 90%;
+  }
+
+  /* ─── PERBAIKAN UTAMA: MEMAKSA CARD VILLA PAS DI TENGAH LAYAR ─── */
+  .villas {
+    padding: 40px 20px !important; /* Mengurangi padding kanan-kiri bawaan laptop */
+  }
+
+  .villa-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .villa-container {
+    flex-direction: column;
+    align-items: center;    /* Meratakan card ke tengah secara horizontal */
+    justify-content: center; /* Memastikan distribusi konten di tengah */
+    width: 100% !important;
+    gap: 25px !important;
+  }
+
+  .villa-card {
+    width: 100% !important;   /* Membuat lebar card fleksibel mengikuti layar HP */
+    max-width: 340px !important; /* Batas lebar maksimal card agar tidak terlalu melar */
+    margin: 0 auto !important; /* Margin auto kiri-kanan memaksa posisi di tengah */
+  }
+}

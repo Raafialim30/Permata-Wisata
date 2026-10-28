@@ -1,0 +1,167 @@
+/* Logo Styling - Modern Aesthetic Travel Standard */
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 2px 0;
+}
+
+.nav-logo-img {
+    height: 58px;
+    max-height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+}
+
+.logo-link:hover .nav-logo-img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 14px rgba(255, 140, 0, 0.35));
+}
+
+/* Language Switcher */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    backdrop-filter: blur(8px);
+    margin-left: 8px;
+}
+
+.lang-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 3px 5px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+.lang-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.lang-btn.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.25);
+    font-weight: 800;
+}
+
+.lang-divider {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.7rem;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Scrolled/dark navbar variant */
+.navbar.scrolled .lang-switcher,
+.navbar.dark .lang-switcher {
+    border-color: rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.navbar.scrolled .lang-btn,
+.navbar.dark .lang-btn {
+    color: rgba(30, 41, 59, 0.7);
+}
+
+.navbar.scrolled .lang-btn:hover,
+.navbar.dark .lang-btn:hover {
+    color: #1e293b;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.navbar.scrolled .lang-btn.active,
+.navbar.dark .lang-btn.active {
+    color: #1e293b;
+    background: rgba(13, 110, 253, 0.12);
+}
+
+.navbar.scrolled .lang-divider,
+.navbar.dark .lang-divider {
+    color: rgba(0, 0, 0, 0.2);
+}
+
+/* Solid-background navbar (Booking, Payment, Success, VillaDetail) */
+.navbar:not(.scrolled) .lang-switcher {
+    /* already handled by default above */
+}
+
+
+/* HAMBURGER MENU */
+.hamburger {
+    display: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 1010;
+}
+
+.navbar.scrolled .hamburger {
+    color: #0B3C5D;
+}
+
+@media (max-width: 768px) {
+    .nav-logo-img {
+        height: 48px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+    
+   .nav-menu {
+        position: fixed !important;
+        top: 0 !important;
+        right: -100%;
+        width: 250px !important;
+        height: 100vh !important;
+        background: #0B3C5D !important;
+        
+        display: flex !important;
+        flex-direction: column !important;
+        
+        /* ─── KEMBALIKAN KE ATAS TAPI TETAP RATA TENGAH ─── */
+        justify-content: flex-start !important; /* Menarik menu kembali ke atas */
+        align-items: center !important;        /* Membuat teks/tombol tetap di tengah (Kiri-Kanan) */
+        gap: 25px !important;                  /* Jarak antar menu */
+        
+        transition: right 0.3s ease;
+        z-index: 1000 !important;
+        padding-top: 100px !important;         /* Jarak ideal dari atas agar tidak menutupi tombol Close (X) */
+        padding-left: 0 !important;            /* Tetap 0 agar tidak condong ke kanan */
+    }
+    
+    /* Memastikan tombol bahasa dan switcher ikut rapi */
+    .nav-menu .lang-switcher {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    .navbar.scrolled .nav-menu {
+        background: white;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .navbar.scrolled .nav-menu a:not(.contact-btn) {
+        color: #0B3C5D !important;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+}

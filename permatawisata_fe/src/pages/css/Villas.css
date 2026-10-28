@@ -1,0 +1,569 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap');
+
+/* ========================= */
+/* GLOBAL & LAYOUT           */
+/* ========================= */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f8fafc; /* Abu-abu sangat muda yang bersih */
+  color: #334155;
+}
+
+.villa-page {
+  padding-top: 75px; /* Mencegah area hero tertutup oleh navbar fixed */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ========================================= */
+/* NAVBAR BASE (UNTUK HALAMAN VILLAS)        */
+/* ========================================= */
+.navbar {
+  position: fixed; /* Memaksa navbar tetap melayang saat di-scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 80px;
+  background: #0B3C5D; /* Warna deep blue bawaan kamu */
+  color: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  color: #D4AF37;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo-text span {
+  display: block;
+  font-size: 12px;
+  color: #d0d0d0;
+}
+
+/* MENU */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.nav-menu a:hover,
+.nav-menu .active {
+  color: #D4AF37;
+}
+
+/* CONTACT BUTTON DALAM NAVBAR */
+.contact-btn {
+  background: #D4AF37;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  color: white !important;
+  transition: 0.3s;
+}
+
+.contact-btn:hover {
+  background: #c99d2d;
+}
+
+/* ========================= */
+/* FIX HERO AREA            */
+/* ========================= */
+.villas-hero {
+  /* Kita pakai warna biru brand kamu sebagai cadangan kalau gambar mati */
+  background: linear-gradient(rgba(11, 60, 93, 0.7), rgba(11, 60, 93, 0.7)), 
+              url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070');
+  background-size: cover;
+  background-position: center;
+  padding: 60px 20px; /* Padding lebih ramping agar tidak terlalu tinggi */
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.hero-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.3); /* Biar teks makin tegas */
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  opacity: 0.9;
+  margin-bottom: 25px;
+}
+
+/* SEARCH BAR MODERN (Mirroring Halaman Utama) */
+.search-bar-modern {
+  background: rgba(255, 255, 255, 0.2); /* Efek Transparan */
+  backdrop-filter: blur(10px); /* Efek Glassmorphism */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 8px 25px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.search-icon-inside {
+  color: #D4AF37; /* Pakai warna emas biar matching */
+  margin-right: 15px;
+  font-size: 18px;
+}
+
+.search-bar-modern input {
+  background: transparent; /* Input transparan mengikuti glassmorphism */
+  border: none;
+  padding: 12px 0;
+  width: 100%;
+  font-size: 16px;
+  outline: none;
+  color: white; /* Teks ketikan jadi putih */
+}
+
+/* Biar placeholder inputnya berwarna abu-abu terang/putih */
+.search-bar-modern input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========================= */
+/* FILTER PILLS & DROPDOWNS */
+/* ========================= */
+.filter-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.type-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  color: #64748b;
+}
+
+.pill.active {
+  background: #0B3C5D;
+  color: white;
+  border-color: #0B3C5D;
+}
+
+.pill:hover:not(.active) {
+  background: #f1f5f9;
+}
+
+.dropdown-filters {
+  display: flex;
+  gap: 15px;
+}
+
+.dropdown-filters select {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  font-family: inherit;
+  cursor: pointer;
+  color: #334155;
+}
+
+/* ========================= */
+/* LUXURY VILLA CARD (UTAMA) */
+/* ========================= */
+.villa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.luxury-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  position: relative;
+  border: 1px solid #f1f5f9;
+}
+
+.luxury-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.5s;
+}
+
+.luxury-card:hover .card-image img {
+  transform: scale(1.1);
+}
+
+.badge-promo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #ef4444;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.card-rating {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #0f172a;
+}
+
+.card-rating svg { color: #f59e0b; }
+
+.card-details {
+  padding: 20px;
+}
+
+.card-link-wrapper {
+  text-decoration: none;
+  color: inherit;
+}
+
+.villa-type-label {
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #D4AF37;
+  font-weight: 700;
+}
+
+.card-details h3 {
+  margin: 8px 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.loc {
+  font-size: 14px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.amenities {
+  display: flex;
+  gap: 15px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 15px;
+  margin-bottom: 20px;
+}
+
+.amenities span {
+  font-size: 13px;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.amenities svg { color: #94a3b8; }
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-tag {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0B3C5D;
+}
+
+.price-unit {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ========================= */
+/* SKELETON LOADING          */
+/* ========================= */
+.skeleton-card {
+  background: white;
+  border-radius: 20px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.skeleton-img { height: 220px; background: #e2e8f0; }
+.skeleton-info { padding: 20px; }
+.skeleton-line { height: 15px; background: #e2e8f0; margin-bottom: 15px; border-radius: 4px; }
+
+.pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* ========================= */
+/* NO RESULTS STATE          */
+/* ========================= */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 0;
+  color: #94a3b8;
+}
+
+.no-results h3 { color: #334155; margin-top: 20px; }
+.no-results button {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: #0B3C5D;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+/* ========================= */
+/* FOOTER REPAIR (FIXED)     */
+/* ========================= */
+.footer-container {
+  background-color: #0B3C5D; /* Warna Biru Utama Kamu */
+  color: #ffffff;
+  padding: 60px 0 30px;
+  width: 100%;
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #D4AF37; /* Aksen Emas */
+}
+
+.footer-left span {
+  display: block;
+  font-size: 13px;
+  color: #8da9c4;
+  margin-bottom: 16px;
+}
+
+.footer-left p {
+  color: #d1d8e0;
+  line-height: 1.6;
+  font-size: 13px;
+  margin: 0;
+  max-width: 350px;
+}
+
+.footer-center h3,
+.footer-right h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-center p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d1d8e0;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.footer-center svg {
+  color: #D4AF37;
+  font-size: 16px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icon:hover {
+  background-color: #D4AF37;
+  color: #0B3C5D;
+  transform: translateY(-3px);
+}
+
+.footer-divider {
+  width: 100%;
+  max-width: 1200px;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 40px 0 20px;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 13px;
+  color: #8da9c4;
+}
+
+/* RESPONSIVE FOOTER */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-center p {
+    justify-content: center;
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+  
+  .footer-left p {
+    max-width: 100%;
+  }
+}
+
+/* ========================================= */
+/* NAVBAR SCROLLED STATE (TETAP BIRU TUA)    */
+/* ========================================= */
+.navbar.scrolled {
+  background-color: #0B3C5D !important; /* Tetap pakai biru tua andalanmu */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important; /* Beri bayangan agar terpisah dari konten */
+  padding: 12px 80px !important; /* Sedikit lebih ramping saat di-scroll */
+}
+
+/* Memastikan semua warna teks di dalam navbar tetap putih & emas saat di-scroll */
+.navbar.scrolled .logo-text h3 { color: #ffffff !important; }
+.navbar.scrolled .logo-text span { color: #d0d0d0 !important; }
+.navbar.scrolled .nav-menu a { color: #ffffff !important; }
+.navbar.scrolled .nav-menu a:hover,
+.navbar.scrolled .nav-menu .active { color: #D4AF37 !important; }
+
+/* Responsive Navbar Padding saat Scrolled */
+@media (max-width: 768px) {
+  .navbar, .navbar.scrolled {
+    padding: 15px 20px !important;
+  }
+}

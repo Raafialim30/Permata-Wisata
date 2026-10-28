@@ -1,0 +1,272 @@
+.admin-owner-registrations-layout {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+.admin-owner-registrations-main {
+  padding: 36px;
+}
+
+.owner-registrations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.owner-registrations-header > div > span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.owner-registrations-header h1 {
+  margin: 5px 0;
+  color: #102a43;
+  font-size: 29px;
+}
+
+.owner-registrations-header p {
+  max-width: 620px;
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.owner-registrations-header > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  background: white;
+  color: #334e68;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.owner-registrations-header > button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.owner-registrations-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  color: #486581;
+}
+
+.owner-registrations-filter label {
+  font-weight: 700;
+}
+
+.owner-registrations-filter select {
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: white;
+}
+
+.owner-registrations-filter span {
+  margin-left: auto;
+  font-size: 13px;
+}
+
+.owner-registration-alert {
+  margin: 12px 0;
+  border-radius: 8px;
+  padding: 12px 15px;
+}
+
+.owner-registration-alert.error {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.owner-registration-alert.success {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.owner-registration-empty {
+  padding: 50px 20px;
+  border-radius: 12px;
+  background: white;
+  color: #64748b;
+  text-align: center;
+}
+
+.owner-registration-list {
+  display: grid;
+  gap: 16px;
+}
+
+.owner-registration-card {
+  padding: 21px;
+  border: 1px solid #e5ebf2;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 12px rgba(16, 42, 67, .04);
+}
+
+.owner-registration-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.owner-registration-status {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.owner-registration-status.disetujui {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.owner-registration-status.ditolak {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.owner-registration-card h2 {
+  margin: 8px 0 3px;
+  color: #102a43;
+  font-size: 20px;
+}
+
+.owner-registration-card-heading p,
+.owner-registration-date {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.owner-registration-date {
+  text-align: right;
+}
+
+.owner-registration-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 19px 0 0;
+  padding: 15px;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.owner-registration-card dl div {
+  min-width: 0;
+}
+
+.owner-registration-card dt {
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.owner-registration-card dd {
+  margin: 0;
+  color: #243b53;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.owner-registration-card dd a {
+  color: #0b6b96;
+}
+
+.owner-registration-admin-note {
+  color: #486581;
+  font-size: 13px;
+}
+
+.owner-registration-actions {
+  margin-top: 16px;
+  border-top: 1px solid #e5ebf2;
+  padding-top: 14px;
+}
+
+.owner-registration-actions label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334e68;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.owner-registration-actions textarea {
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.owner-registration-actions > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.owner-registration-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 13px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.owner-registration-actions button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.owner-registration-approve {
+  background: #15803d;
+}
+
+.owner-registration-reject {
+  background: #b42318;
+}
+
+@media (max-width: 900px) {
+  .admin-owner-registrations-main {
+    padding: 26px 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-owner-registrations-main {
+    padding: 20px 14px;
+  }
+
+  .owner-registrations-header {
+    flex-direction: column;
+  }
+
+  .owner-registration-card dl {
+    grid-template-columns: 1fr;
+  }
+}
