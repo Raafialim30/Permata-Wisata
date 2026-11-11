@@ -6,11 +6,10 @@ import {
   FaUser,
   FaBuilding,
   FaReceipt,
-  FaTimes,
-  FaExclamationTriangle
+  FaTimes
 } from "react-icons/fa";
-
 import { useCallback, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 import API_BASE_URL from "../config";
 import AdminSidebar from "./AdminSidebar";
@@ -20,10 +19,7 @@ import "./css/AdminPayment.css";
 function AdminPayment() {
   const [data, setData] = useState([]);
   const [paymentLoadError, setPaymentLoadError] = useState("");
-
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-  const [confirmAction, setConfirmAction] = useState(null);
-  const [resultNotification, setResultNotification] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
 
   const getAdminHeaders = () => {
@@ -73,33 +69,41 @@ function AdminPayment() {
     setSelectedTransaction(null);
   };
 
-  const handleApprove = (item) => {
-    setConfirmAction({
-      type: "approve",
-      id: item.id,
-      transaction: item
+  const handleApprove = async (item) => {
+    const result = await Swal.fire({
+      title: "Setujui Pembayaran?",
+      html: `Booking <strong>#${item.id}</strong> atas nama <strong>${item.full_name}</strong><br/>Total: <strong>Rp ${Number(item.total_price || 0).toLocaleString("id-ID")}</strong>`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#16a36e",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Setujui",
+      cancelButtonText: "Batal"
     });
+
+    if (result.isConfirmed) {
+      executeStatusUpdate(item.id, "Lunas", "approve");
+    }
   };
 
-  const handleReject = (item) => {
-    setConfirmAction({
-      type: "reject",
-      id: item.id,
-      transaction: item
+  const handleReject = async (item) => {
+    const result = await Swal.fire({
+      title: "Tolak Pembayaran?",
+      html: `Booking <strong>#${item.id}</strong> atas nama <strong>${item.full_name}</strong><br/>Total: <strong>Rp ${Number(item.total_price || 0).toLocaleString("id-ID")}</strong>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d94242",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Tolak",
+      cancelButtonText: "Batal"
     });
+
+    if (result.isConfirmed) {
+      executeStatusUpdate(item.id, "Batal", "reject");
+    }
   };
 
-  const closeConfirmModal = () => {
-    if (actionLoading) return;
-    setConfirmAction(null);
-  };
-
-  const executeAction = () => {
-    if (!confirmAction || actionLoading) return;
-
-    const { type, id } = confirmAction;
-    const newStatus = type === "approve" ? "Lunas" : "Batal";
-
+  const executeStatusUpdate = (id, newStatus, type) => {
     setActionLoading(true);
 
     fetch(`${API_BASE_URL}/api/admin/payments/${id}/status`, {
@@ -108,55 +112,43 @@ function AdminPayment() {
         "Content-Type": "application/json",
         ...getAdminHeaders()
       },
-      body: JSON.stringify({
-        status: newStatus
-      })
+      body: JSON.stringify({ status: newStatus })
     })
       .then((res) => res.json())
       .then((resData) => {
         if (resData.status === "success") {
-          setConfirmAction(null);
-
-          setResultNotification({
-            type: type === "approve" ? "success" : "reject",
-            title:
-              type === "approve"
-                ? "Pembayaran Berhasil Disetujui"
-                : "Pembayaran Berhasil Ditolak",
-            message:
-              type === "approve"
-                ? "Bukti pembayaran telah berhasil dikonfirmasi."
-                : "Bukti pembayaran telah berhasil ditolak."
+          Swal.fire({
+            icon: type === "approve" ? "success" : "info",
+            title: type === "approve" ? "Berhasil Disetujui! 🎉" : "Pembayaran Ditolak",
+            text: type === "approve"
+              ? "Bukti pembayaran telah dikonfirmasi dan status otomatis menjadi Lunas."
+              : "Bukti pembayaran telah berhasil ditolak.",
+            confirmButtonColor: "#123e57"
           });
 
           fetchPayments();
           setSelectedTransaction(null);
         } else {
-          setResultNotification({
-            type: "error",
+          Swal.fire({
+            icon: "error",
             title: "Proses Gagal",
-            message:
-              resData.error ||
-              resData.message ||
-              "Perubahan status pembayaran tidak dapat diproses."
+            text: resData.error || resData.message || "Perubahan status pembayaran tidak dapat diproses.",
+            confirmButtonColor: "#123e57"
           });
         }
       })
       .catch((err) => {
         console.error("Error saat mengubah status pembayaran:", err);
-        setResultNotification({
-          type: "error",
+        Swal.fire({
+          icon: "error",
           title: "Terjadi Kesalahan",
-          message: "Tidak dapat terhubung ke server. Silakan coba lagi."
+          text: "Tidak dapat terhubung ke server. Silakan coba lagi.",
+          confirmButtonColor: "#123e57"
         });
       })
       .finally(() => {
         setActionLoading(false);
       });
-  };
-
-  const closeResultNotification = () => {
-    setResultNotification(null);
   };
 
   const getStatusLabel = (status) => {
@@ -287,6 +279,7 @@ function AdminPayment() {
                         <>
                           <button
                             className="action-btn approve"
+                            disabled={actionLoading}
                             onClick={() => handleApprove(item)}
                             title="Setujui pembayaran"
                           >
@@ -295,6 +288,7 @@ function AdminPayment() {
 
                           <button
                             className="action-btn reject"
+                            disabled={actionLoading}
                             onClick={() => handleReject(item)}
                             title="Tolak pembayaran"
                           >
@@ -598,342 +592,6 @@ function AdminPayment() {
           </div>
         </div>
       )}
-
-      {/* MODAL KONFIRMASI APPROVE/REJECT */}
-      {confirmAction && (
-        <div
-          onClick={(e) => {
-            if (e.target === e.currentTarget && !actionLoading) {
-              closeConfirmModal();
-            }
-          }}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(10, 25, 38, 0.62)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 10000,
-            padding: "20px",
-            animation: "adminPaymentFadeIn 0.2s ease"
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "470px",
-              background: "#ffffff",
-              borderRadius: "22px",
-              overflow: "hidden",
-              boxShadow: "0 30px 80px rgba(0,0,0,0.30)",
-              animation: "adminPaymentModalIn 0.25s ease"
-            }}
-          >
-            <div
-              style={{
-                background:
-                  confirmAction.type === "approve"
-                    ? "linear-gradient(135deg, #0e7557 0%, #16a36e 100%)"
-                    : "linear-gradient(135deg, #a82e35 0%, #d94242 100%)",
-                padding: "26px 28px",
-                color: "#ffffff",
-                position: "relative"
-              }}
-            >
-              <button
-                onClick={closeConfirmModal}
-                disabled={actionLoading}
-                title="Tutup"
-                style={{
-                  position: "absolute",
-                  top: "18px",
-                  right: "18px",
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "50%",
-                  border: "1px solid rgba(255,255,255,0.28)",
-                  background: "rgba(255,255,255,0.13)",
-                  color: "#ffffff",
-                  cursor: actionLoading ? "not-allowed" : "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "14px"
-                }}
-              >
-                <FaTimes />
-              </button>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                <div
-                  style={{
-                    width: "54px",
-                    height: "54px",
-                    borderRadius: "16px",
-                    background: "rgba(255,255,255,0.16)",
-                    border: "1px solid rgba(255,255,255,0.22)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "23px"
-                  }}
-                >
-                  {confirmAction.type === "approve" ? <FaCheckCircle /> : <FaTimesCircle />}
-                </div>
-
-                <div>
-                  <div style={{ fontSize: "12px", opacity: 0.75, marginBottom: "4px", letterSpacing: "0.5px" }}>
-                    KONFIRMASI ADMIN
-                  </div>
-                  <h2 style={{ margin: 0, fontSize: "21px", fontWeight: 700 }}>
-                    {confirmAction.type === "approve" ? "Setujui Pembayaran" : "Tolak Pembayaran"}
-                  </h2>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ padding: "28px" }}>
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
-                <div
-                  style={{
-                    width: "64px",
-                    height: "64px",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: confirmAction.type === "approve" ? "#e8f8f1" : "#fdecec",
-                    color: confirmAction.type === "approve" ? "#16a36e" : "#d94242",
-                    fontSize: "27px"
-                  }}
-                >
-                  {confirmAction.type === "approve" ? <FaCheckCircle /> : <FaExclamationTriangle />}
-                </div>
-              </div>
-
-              <h3
-                style={{
-                  margin: "0 0 10px",
-                  textAlign: "center",
-                  color: "#253746",
-                  fontSize: "18px",
-                  fontWeight: 700
-                }}
-              >
-                {confirmAction.type === "approve"
-                  ? "Apakah Anda yakin ingin menyetujui pembayaran ini?"
-                  : "Apakah Anda yakin ingin menolak pembayaran ini?"}
-              </h3>
-
-              <p
-                style={{
-                  margin: "0 auto 22px",
-                  maxWidth: "380px",
-                  textAlign: "center",
-                  color: "#7b8790",
-                  fontSize: "14px",
-                  lineHeight: "1.6"
-                }}
-              >
-                Booking #{confirmAction.transaction?.id || "-"} atas nama{" "}
-                <strong style={{ color: "#253746" }}>
-                  {confirmAction.transaction?.full_name || "-"}
-                </strong>
-                .
-              </p>
-
-              <div
-                style={{
-                  background: confirmAction.type === "approve" ? "#f2faf6" : "#fff5f5",
-                  border: confirmAction.type === "approve" ? "1px solid #d9f0e5" : "1px solid #f4dcdc",
-                  borderRadius: "14px",
-                  padding: "14px 16px",
-                  marginBottom: "24px",
-                  textAlign: "center"
-                }}
-              >
-                <span style={{ fontSize: "12px", color: "#89949c" }}>Total pembayaran</span>
-                <div
-                  style={{
-                    marginTop: "3px",
-                    fontSize: "17px",
-                    fontWeight: 700,
-                    color: confirmAction.type === "approve" ? "#159667" : "#d94242"
-                  }}
-                >
-                  Rp {Number(confirmAction.transaction?.total_price || 0).toLocaleString("id-ID")}
-                </div>
-              </div>
-
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  onClick={closeConfirmModal}
-                  disabled={actionLoading}
-                  style={{
-                    flex: 1,
-                    height: "46px",
-                    border: "1px solid #dfe4e7",
-                    borderRadius: "12px",
-                    background: "#ffffff",
-                    color: "#53616b",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    cursor: actionLoading ? "not-allowed" : "pointer"
-                  }}
-                >
-                  Kembali
-                </button>
-
-                <button
-                  onClick={executeAction}
-                  disabled={actionLoading}
-                  style={{
-                    flex: 1.5,
-                    height: "46px",
-                    border: "none",
-                    borderRadius: "12px",
-                    background:
-                      confirmAction.type === "approve"
-                        ? "linear-gradient(135deg, #0e7557 0%, #16a36e 100%)"
-                        : "linear-gradient(135deg, #a82e35 0%, #d94242 100%)",
-                    color: "#ffffff",
-                    fontSize: "14px",
-                    fontWeight: 700,
-                    cursor: actionLoading ? "not-allowed" : "pointer",
-                    opacity: actionLoading ? 0.7 : 1,
-                    boxShadow:
-                      confirmAction.type === "approve"
-                        ? "0 7px 18px rgba(22,163,110,0.22)"
-                        : "0 7px 18px rgba(217,66,66,0.22)"
-                  }}
-                >
-                  {actionLoading
-                    ? "Memproses..."
-                    : confirmAction.type === "approve"
-                    ? "Ya, Setujui"
-                    : "Ya, Tolak"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* NOTIFIKASI HASIL AKSI */}
-      {resultNotification && (
-        <div
-          onClick={closeResultNotification}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(10, 25, 38, 0.42)",
-            backdropFilter: "blur(5px)",
-            WebkitBackdropFilter: "blur(5px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 11000,
-            padding: "20px",
-            animation: "adminPaymentFadeIn 0.2s ease"
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: "100%",
-              maxWidth: "430px",
-              background: "#ffffff",
-              borderRadius: "22px",
-              padding: "30px",
-              boxShadow: "0 30px 80px rgba(0,0,0,0.28)",
-              textAlign: "center",
-              animation: "adminPaymentModalIn 0.25s ease"
-            }}
-          >
-            <div
-              style={{
-                width: "68px",
-                height: "68px",
-                borderRadius: "50%",
-                margin: "0 auto 18px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background:
-                  resultNotification.type === "success"
-                    ? "#e7f8f0"
-                    : resultNotification.type === "reject"
-                    ? "#fdeaea"
-                    : "#fff2df",
-                color:
-                  resultNotification.type === "success"
-                    ? "#16a36e"
-                    : resultNotification.type === "reject"
-                    ? "#d94242"
-                    : "#d49117",
-                fontSize: "28px"
-              }}
-            >
-              {resultNotification.type === "success" ? (
-                <FaCheckCircle />
-              ) : resultNotification.type === "reject" ? (
-                <FaTimesCircle />
-              ) : (
-                <FaExclamationTriangle />
-              )}
-            </div>
-
-            <h2 style={{ margin: "0 0 10px", color: "#253746", fontSize: "20px", fontWeight: 700 }}>
-              {resultNotification.title}
-            </h2>
-
-            <p style={{ margin: "0 auto 24px", maxWidth: "340px", color: "#7b8790", fontSize: "14px", lineHeight: "1.6" }}>
-              {resultNotification.message}
-            </p>
-
-            <button
-              onClick={closeResultNotification}
-              style={{
-                width: "100%",
-                height: "46px",
-                border: "none",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #123e57 0%, #1c5d7c 100%)",
-                color: "#ffffff",
-                fontSize: "14px",
-                fontWeight: 700,
-                cursor: "pointer",
-                boxShadow: "0 7px 18px rgba(18,62,87,0.20)"
-              }}
-            >
-              Mengerti
-            </button>
-          </div>
-        </div>
-      )}
-
-      <style>
-        {`
-          @keyframes adminPaymentFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-          }
-
-          @keyframes adminPaymentModalIn {
-            from {
-              opacity: 0;
-              transform: translateY(15px) scale(0.97);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-            }
-          }
-        `}
-      </style>
     </div>
   );
 }

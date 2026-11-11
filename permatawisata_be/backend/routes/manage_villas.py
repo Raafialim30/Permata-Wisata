@@ -2,7 +2,7 @@ import os
 from typing import Any, Dict, Tuple
 from werkzeug.exceptions import NotFound
 from werkzeug.utils import secure_filename
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, jsonify, send_from_directory, current_app
 from db import get_db_connection
 from security import require_admin
 
@@ -25,57 +25,41 @@ def _close(cursor=None, conn=None):
 
 
 def get_villas_img_dir() -> str:
+    """
+    Mengembalikan jalur absolut ke folder media/villas di dalam backend (permatawisata_be/backend/media/villas).
+    """
     env_dir = os.getenv("UPLOAD_FOLDER")
-
     if env_dir:
         return os.path.abspath(os.path.expanduser(env_dir))
 
-    base_dir = os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.abspath(__file__)
-                )
-            )
-        )
-    )
+    # Gunakan root_path Flask backend agar selalu menuju permatawisata_be/backend/media/villas
+    try:
+        base_backend = current_app.root_path
+    except Exception:
+        base_backend = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    fe_dir = os.path.join(
-        base_dir,
-        'permatawisata_fe',
-        'public',
-        'images',
-        'villas'
-    )
-
-    if os.path.exists(
-        os.path.join(
-            base_dir,
-            'permatawisata_fe'
-        )
-    ):
-        return fe_dir
-
-    return os.path.join(
-        base_dir,
-        'public',
-        'images',
-        'villas'
-    )
+    media_villas_dir = os.path.normpath(os.path.join(base_backend, 'media', 'villas'))
+    os.makedirs(media_villas_dir, exist_ok=True)
+    return media_villas_dir
 
 
 @manage_villas_bp.route('/media/villas/<path:filename>', methods=['GET'])
 def serve_villa_image(filename):
     try:
+        villas_dir = get_villas_img_dir()
         response = send_from_directory(
-            get_villas_img_dir(),
+            villas_dir,
             filename,
             conditional=True,
         )
+        response.headers['Access-Control-Allow-Origin'] = '*'
         response.cache_control.no_cache = True
         response.cache_control.public = True
         return response
     except NotFound:
+        # Jika file spesifik di folder kamar tidak ada, oper ke smart fallback penyaji gambar utama di app.py
+        if hasattr(current_app, 'view_functions') and 'serve_media' in current_app.view_functions:
+            return current_app.view_functions['serve_media'](f"villas/{filename}")
         return jsonify({
             "status": "error",
             "error": "Gambar tidak ditemukan.",
@@ -159,7 +143,7 @@ def add_villa():
         amenities = data.get('amenities', '')
         equipment = data.get('equipment', '')
         facilities = data.get('facilities', '')
-        img = data.get('img', 'villa1.jpg')
+        img = data.get('img', 'utama.png')
         catalog_link = data.get('catalog_link', '')
         promo = data.get('promo', '')
 
@@ -771,18 +755,6 @@ def upload_image():
                 "error": "folder_type tidak valid"
             }), 400
 
-        target_dir_resolved = os.path.abspath(target_dir)
-        villas_base_resolved = os.path.abspath(villas_img_dir)
-
-        if not (
-            target_dir_resolved == villas_base_resolved
-            or target_dir_resolved.startswith(villas_base_resolved + os.sep)
-        ):
-            return jsonify({
-                "status": "error",
-                "error": "Path tidak valid"
-            }), 400
-
         os.makedirs(target_dir, exist_ok=True)
         file_path = os.path.join(target_dir, filename_safe)
 
@@ -958,18 +930,6 @@ def delete_gallery_image():
             return jsonify({
                 "status": "error",
                 "error": "folder_type tidak valid"
-            }), 400
-
-        target_dir_resolved = os.path.abspath(target_dir)
-        villas_base_resolved = os.path.abspath(os.path.dirname(villas_img_dir))
-
-        if not (
-            target_dir_resolved == villas_base_resolved
-            or target_dir_resolved.startswith(villas_base_resolved + os.sep)
-        ):
-            return jsonify({
-                "status": "error",
-                "error": "Path tidak valid"
             }), 400
 
         file_path = os.path.join(target_dir, filename_safe)

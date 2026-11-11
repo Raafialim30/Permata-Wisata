@@ -10,6 +10,7 @@ import {
   FaTimes,
   FaArrowUp
 } from "react-icons/fa";
+import { useLang } from "../context/LanguageContext";
 import "./css/JogjaFilterCard.css";
 
 const JOGJA_SPOTS = [
@@ -33,22 +34,6 @@ const JOGJA_SPOTS = [
   "Gembira Loka Zoo"
 ];
 
-const GUEST_OPTIONS = [
-  { label: "Semua Tamu", value: "" },
-  { label: "1-2 Tamu", value: "2" },
-  { label: "3-5 Tamu", value: "5" },
-  { label: "6-10 Tamu", value: "10" },
-  { label: "10+ Tamu", value: "15" }
-];
-
-const ROOM_OPTIONS = [
-  { label: "Semua Kamar", value: "" },
-  { label: "1 Kamar", value: "1" },
-  { label: "2 Kamar", value: "2" },
-  { label: "3 Kamar", value: "3" },
-  { label: "4+ Kamar", value: "4" }
-];
-
 export default function JogjaFilterCard({
   sort,
   setSort,
@@ -66,9 +51,72 @@ export default function JogjaFilterCard({
   setDuration,
   onReset
 }) {
+  const { lang } = useLang();
+  const isEn = lang === "en";
+
   const [activeTab, setActiveTab] = useState("spot"); // "harga", "kapasitas", "kamar", "spot"
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showDurationPicker, setShowDurationPicker] = useState(false);
+
+  // Kamus Bahasa
+  const txt = {
+    selectDateBtn: checkInDate 
+      ? (isEn ? `Date: ${checkInDate}` : `Tgl: ${checkInDate}`)
+      : (isEn ? "Select Date" : "Pilih Tgl."),
+    datePickerTitle: isEn ? "Select Check-in Date" : "Pilih Tanggal Check-in",
+    resetDateBtn: isEn ? "Reset Date" : "Reset Tanggal",
+    
+    durationBtn: duration 
+      ? (isEn ? `${duration} Night(s)` : `${duration} Malam`)
+      : (isEn ? "Duration" : "Durasi"),
+    durationTitle: isEn ? "Select Stay Duration" : "Pilih Durasi Menginap",
+    nightLabel: isEn ? "Night" : "Malam",
+    resetDurationBtn: isEn ? "Reset Duration" : "Reset Durasi",
+
+    dividerText: isEn ? "Simplify search with filters" : "Permudah pencarian dengan filter",
+    
+    tabPrice: isEn ? "Price" : "Harga",
+    tabCapacity: isEn ? "Capacity" : "Kapasitas",
+    tabRooms: isEn ? "Rooms" : "Kamar",
+    tabSpot: isEn ? "Tourist Spot" : "Spot Wisata",
+
+    guestUnit: isEn ? "Guests" : "Tamu",
+    roomUnit: isEn ? "Rooms" : "Kamar",
+
+    radiusLabel: isEn ? "Filter Radius from" : "Filter Radius dari",
+    
+    priceSortLabel: isEn ? "Current price order:" : "Urutan harga saat ini:",
+    priceLowToHigh: isEn ? "Lowest → Highest Price" : "Harga Terendah → Tertinggi",
+    priceHighToLow: isEn ? "Highest → Lowest Price" : "Harga Tertinggi → Terendah",
+    priceDefault: isEn ? "Recommended (Default)" : "Rekomendasi (Default)",
+    changeSortBtn: isEn ? "Change Price Order" : "Ubah Urutan Harga",
+
+    resetAllBtn: isEn ? "Reset Filter" : "Reset Filter",
+    scrollTopTooltip: isEn ? "Back to Top" : "Kembali ke Atas",
+
+    guestOptions: [
+      { label: isEn ? "All Guests" : "Semua Tamu", value: "" },
+      { label: isEn ? "1-2 Guests" : "1-2 Tamu", value: "2" },
+      { label: isEn ? "3-5 Guests" : "3-5 Tamu", value: "5" },
+      { label: isEn ? "6-10 Guests" : "6-10 Tamu", value: "10" },
+      { label: isEn ? "10+ Guests" : "10+ Tamu", value: "15" }
+    ],
+
+    roomOptions: [
+      { label: isEn ? "All Rooms" : "Semua Kamar", value: "" },
+      { label: isEn ? "1 Room" : "1 Kamar", value: "1" },
+      { label: isEn ? "2 Rooms" : "2 Kamar", value: "2" },
+      { label: isEn ? "3 Rooms" : "3 Kamar", value: "3" },
+      { label: isEn ? "4+ Rooms" : "4+ Kamar", value: "4" }
+    ],
+
+    radiusChips: [
+      { label: isEn ? "≤ 5 km (Very Close)" : "≤ 5 km (Sangat Dekat)", value: 5 },
+      { label: isEn ? "≤ 10 km (Close)" : "≤ 10 km (Dekat)", value: 10 },
+      { label: isEn ? "≤ 15 km (Nearby Area)" : "≤ 15 km (Area Sekitar)", value: 15 },
+      { label: isEn ? "≤ 25 km (All Areas)" : "≤ 25 km (Semua Area)", value: 25 }
+    ]
+  };
 
   const handleSpotClick = (spot) => {
     if (selectedSpot === spot) {
@@ -109,14 +157,15 @@ export default function JogjaFilterCard({
             }}
           >
             <FaCalendarAlt className="btn-icon" />
-            <span>{checkInDate ? `Tgl: ${checkInDate}` : "Pilih Tgl."}</span>
+            <span>{txt.selectDateBtn}</span>
           </button>
 
           {showDatePicker && (
             <div className="filter-popover">
               <div className="popover-header">
-                <span>Pilih Tanggal Check-in</span>
+                <span>{txt.datePickerTitle}</span>
                 <button
+                  type="button"
                   className="close-popover-btn"
                   onClick={() => setShowDatePicker(false)}
                 >
@@ -134,10 +183,11 @@ export default function JogjaFilterCard({
               />
               {checkInDate && (
                 <button
+                  type="button"
                   className="popover-clear-btn"
                   onClick={() => setCheckInDate("")}
                 >
-                  Reset Tanggal
+                  {txt.resetDateBtn}
                 </button>
               )}
             </div>
@@ -154,14 +204,15 @@ export default function JogjaFilterCard({
             }}
           >
             <FaClock className="btn-icon" />
-            <span>{duration ? `${duration} Malam` : "Durasi"}</span>
+            <span>{txt.durationBtn}</span>
           </button>
 
           {showDurationPicker && (
             <div className="filter-popover">
               <div className="popover-header">
-                <span>Pilih Durasi Menginap</span>
+                <span>{txt.durationTitle}</span>
                 <button
+                  type="button"
                   className="close-popover-btn"
                   onClick={() => setShowDurationPicker(false)}
                 >
@@ -181,16 +232,17 @@ export default function JogjaFilterCard({
                       setShowDurationPicker(false);
                     }}
                   >
-                    {n} Malam
+                    {n} {txt.nightLabel}
                   </button>
                 ))}
               </div>
               {duration && (
                 <button
+                  type="button"
                   className="popover-clear-btn"
                   onClick={() => setDuration("")}
                 >
-                  Reset Durasi
+                  {txt.resetDurationBtn}
                 </button>
               )}
             </div>
@@ -201,7 +253,7 @@ export default function JogjaFilterCard({
       {/* Center Subtitle Divider */}
       <div className="filter-divider-title">
         <span className="divider-line" />
-        <span className="divider-text">Permudah pencarian dengan filter</span>
+        <span className="divider-text">{txt.dividerText}</span>
         <span className="divider-line" />
       </div>
 
@@ -219,15 +271,15 @@ export default function JogjaFilterCard({
         >
           {sort === "low" ? (
             <>
-              <FaSortAmountUp className="pill-icon" /> ↑ Harga
+              <FaSortAmountUp className="pill-icon" /> ↑ {txt.tabPrice}
             </>
           ) : sort === "high" ? (
             <>
-              <FaSortAmountDown className="pill-icon" /> ↓ Harga
+              <FaSortAmountDown className="pill-icon" /> ↓ {txt.tabPrice}
             </>
           ) : (
             <>
-              <FaSortAmountUp className="pill-icon" /> ↑ Harga
+              <FaSortAmountUp className="pill-icon" /> ↑ {txt.tabPrice}
             </>
           )}
         </button>
@@ -240,7 +292,7 @@ export default function JogjaFilterCard({
           onClick={() => setActiveTab(activeTab === "kapasitas" ? "spot" : "kapasitas")}
         >
           <FaUsers className="pill-icon" />
-          Kapasitas {guestFilter ? `(${guestFilter} Tamu)` : ""}
+          {txt.tabCapacity} {guestFilter ? `(${guestFilter} ${txt.guestUnit})` : ""}
         </button>
 
         <button
@@ -251,7 +303,7 @@ export default function JogjaFilterCard({
           onClick={() => setActiveTab(activeTab === "kamar" ? "spot" : "kamar")}
         >
           <FaBed className="pill-icon" />
-          Kamar {bedsFilter ? `(${bedsFilter}+)` : ""}
+          {txt.tabRooms} {bedsFilter ? `(${bedsFilter}+)` : ""}
         </button>
 
         <button
@@ -262,25 +314,20 @@ export default function JogjaFilterCard({
           onClick={() => setActiveTab("spot")}
         >
           <FaMapMarkerAlt className="pill-icon" />
-          Spot Wisata {selectedSpot ? `: ${selectedSpot}` : ""}
+          {txt.tabSpot} {selectedSpot ? `: ${selectedSpot}` : ""}
         </button>
       </div>
 
       {/* Active Sub-Filter Content */}
       <div className="filter-chips-container">
-        {/* Spot Wisata Chips (Default / Selected) */}
+        {/* Spot Wisata Chips */}
         {activeTab === "spot" && (
           <div className="spot-tab-wrapper">
             {selectedSpot && (
               <div className="radius-selector-bar">
-                <span className="radius-label">📍 Filter Radius dari {selectedSpot}:</span>
+                <span className="radius-label">📍 {txt.radiusLabel} {selectedSpot}:</span>
                 <div className="radius-chips">
-                  {[
-                    { label: "≤ 5 km (Sangat Dekat)", value: 5 },
-                    { label: "≤ 10 km (Dekat)", value: 10 },
-                    { label: "≤ 15 km (Area Sekitar)", value: 15 },
-                    { label: "≤ 25 km (Semua Area)", value: 25 }
-                  ].map((r) => (
+                  {txt.radiusChips.map((r) => (
                     <button
                       key={r.value}
                       type="button"
@@ -311,7 +358,7 @@ export default function JogjaFilterCard({
         {/* Kapasitas Chips */}
         {activeTab === "kapasitas" && (
           <div className="chips-row">
-            {GUEST_OPTIONS.map((opt, i) => (
+            {txt.guestOptions.map((opt, i) => (
               <button
                 key={i}
                 type="button"
@@ -329,7 +376,7 @@ export default function JogjaFilterCard({
         {/* Kamar Chips */}
         {activeTab === "kamar" && (
           <div className="chips-row">
-            {ROOM_OPTIONS.map((opt, i) => (
+            {txt.roomOptions.map((opt, i) => (
               <button
                 key={i}
                 type="button"
@@ -348,13 +395,13 @@ export default function JogjaFilterCard({
         {activeTab === "harga" && (
           <div className="price-sort-info">
             <span>
-              Urutan harga saat ini:{" "}
+              {txt.priceSortLabel}{" "}
               <strong>
                 {sort === "low"
-                  ? "Harga Terendah → Tertinggi"
+                  ? txt.priceLowToHigh
                   : sort === "high"
-                  ? "Harga Tertinggi → Terendah"
-                  : "Rekomendasi (Default)"}
+                  ? txt.priceHighToLow
+                  : txt.priceDefault}
               </strong>
             </span>
             <button
@@ -362,7 +409,7 @@ export default function JogjaFilterCard({
               className="change-sort-btn"
               onClick={handleToggleSort}
             >
-              Ubah Urutan Harga
+              {txt.changeSortBtn}
             </button>
           </div>
         )}
@@ -380,43 +427,43 @@ export default function JogjaFilterCard({
             )}
             {guestFilter && (
               <span className="active-tag">
-                {guestFilter} Tamu <FaTimes onClick={() => setGuestFilter("")} />
+                {guestFilter} {txt.guestUnit} <FaTimes onClick={() => setGuestFilter("")} />
               </span>
             )}
             {bedsFilter && (
               <span className="active-tag">
-                {bedsFilter}+ Kamar <FaTimes onClick={() => setBedsFilter("")} />
+                {bedsFilter}+ {txt.roomUnit} <FaTimes onClick={() => setBedsFilter("")} />
               </span>
             )}
             {checkInDate && (
               <span className="active-tag">
-                Tgl: {checkInDate} <FaTimes onClick={() => setCheckInDate("")} />
+                {txt.selectDateBtn} <FaTimes onClick={() => setCheckInDate("")} />
               </span>
             )}
             {duration && (
               <span className="active-tag">
-                Durasi: {duration} Malam <FaTimes onClick={() => setDuration("")} />
+                {duration} {txt.nightLabel} <FaTimes onClick={() => setDuration("")} />
               </span>
             )}
             {sort !== "recommended" && (
               <span className="active-tag">
-                {sort === "low" ? "Harga Terendah" : "Harga Tertinggi"}{" "}
+                {sort === "low" ? txt.priceLowToHigh.split("→")[0] : txt.priceHighToLow.split("→")[0]}{" "}
                 <FaTimes onClick={() => setSort("recommended")} />
               </span>
             )}
           </div>
           <button type="button" className="reset-all-btn" onClick={onReset}>
-            Reset Filter
+            {txt.resetAllBtn}
           </button>
         </div>
       )}
 
-      {/* Scroll to Top floating arrow icon matching reference SS */}
+      {/* Scroll to Top floating arrow icon */}
       <button
         type="button"
         className="scroll-top-float-btn"
         onClick={scrollToTop}
-        title="Kembali ke Atas"
+        title={txt.scrollTopTooltip}
       >
         <FaArrowUp />
       </button>

@@ -11,6 +11,7 @@ import {
     FaMapMarkerAlt
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import API_BASE_URL from "../config";
 import villaImageUrl from "../utils/villaImageUrl";
@@ -166,12 +167,22 @@ function AdminManageVillas() {
             .toLowerCase();
 
         if (!allowedExtensions.includes(extension)) {
-            alert("Tipe foto tidak didukung. Gunakan PNG, JPG, JPEG, WEBP, atau GIF.");
+            Swal.fire({
+                icon: "error",
+                title: "Format Tidak Didukung",
+                text: "Tipe foto tidak didukung. Gunakan PNG, JPG, JPEG, WEBP, atau GIF.",
+                confirmButtonColor: "#2980b9"
+            });
             event.target.value = "";
             return;
         }
         if (file.size > 5 * 1024 * 1024) {
-            alert("Ukuran foto maksimal 5 MB.");
+            Swal.fire({
+                icon: "warning",
+                title: "Ukuran Terlalu Besar",
+                text: "Ukuran foto maksimal 5 MB.",
+                confirmButtonColor: "#2980b9"
+            });
             event.target.value = "";
             return;
         }
@@ -299,8 +310,14 @@ function AdminManageVillas() {
 
     const saveAddon = async () => {
         const currentRoomId = roomForm.id;
-        if (!currentRoomId) { alert("Simpan data kamar terlebih dahulu sebelum menambahkan layanan tambahan."); return; }
-        if (!addonForm.name.trim()) { alert("Nama layanan tidak boleh kosong."); return; }
+        if (!currentRoomId) {
+            Swal.fire({ icon: "warning", title: "Peringatan", text: "Simpan data kamar terlebih dahulu sebelum menambahkan layanan tambahan.", confirmButtonColor: "#2980b9" });
+            return;
+        }
+        if (!addonForm.name.trim()) {
+            Swal.fire({ icon: "warning", title: "Input Kosong", text: "Nama layanan tidak boleh kosong.", confirmButtonColor: "#2980b9" });
+            return;
+        }
         try {
             let url = `${API_BASE_URL}/api/admin/room-addons`;
             let method = "POST";
@@ -312,23 +329,44 @@ function AdminManageVillas() {
             }
             const res = await adminFetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
             if (!res.ok) throw new Error("Gagal menyimpan addon");
-            alert(addonEditIndex !== null ? "Layanan diperbarui!" : "Layanan berhasil ditambahkan!");
+
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil!",
+                text: addonEditIndex !== null ? "Layanan diperbarui!" : "Layanan berhasil ditambahkan!",
+                timer: 1500,
+                showConfirmButton: false
+            });
+
             setAddonForm({ addon_type: "Motor", name: "", price: "", description: "" });
             setAddonEditIndex(null);
             fetchAddons(currentRoomId);
         } catch (e) {
-            alert("Error: " + e.message);
+            Swal.fire({ icon: "error", title: "Gagal Menyimpan", text: e.message, confirmButtonColor: "#2980b9" });
         }
     };
 
     const deleteAddon = async (addonId) => {
-        if (!window.confirm("Hapus layanan tambahan ini?")) return;
+        const result = await Swal.fire({
+            title: "Hapus Layanan?",
+            text: "Layanan tambahan ini akan dihapus secara permanen.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#e74c3c",
+            cancelButtonColor: "#64748b",
+            confirmButtonText: "Ya, Hapus",
+            cancelButtonText: "Batal"
+        });
+
+        if (!result.isConfirmed) return;
+
         try {
             const res = await adminFetch(`${API_BASE_URL}/api/admin/room-addons/${addonId}`, { method: "DELETE" });
             if (!res.ok) throw new Error();
             fetchAddons(roomForm.id);
+            Swal.fire({ icon: "success", title: "Terhapus", text: "Layanan berhasil dihapus.", timer: 1500, showConfirmButton: false });
         } catch (e) {
-            alert("Gagal menghapus layanan.");
+            Swal.fire({ icon: "error", title: "Gagal Hapus", text: "Gagal menghapus layanan tambahan.", confirmButtonColor: "#2980b9" });
         }
     };
 
@@ -400,7 +438,12 @@ function AdminManageVillas() {
 
     const saveVilla = async () => {
         if (!form.name?.trim() || !form.location?.trim()) {
-            alert("Nama properti dan alamat/lokasi wajib diisi.");
+            Swal.fire({
+                icon: "warning",
+                title: "Data Belum Lengkap",
+                text: "Nama properti dan alamat/lokasi wajib diisi.",
+                confirmButtonColor: "#2980b9"
+            });
             return;
         }
 
@@ -516,16 +559,22 @@ function AdminManageVillas() {
                 clearMainImageSelection();
             }
 
-            alert(
-                isEditing
-                    ? "Data villa berhasil disimpan."
-                    : "Villa berhasil ditambahkan."
-            );
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil Disimpan!",
+                text: isEditing ? "Data villa berhasil diperbarui." : "Villa baru berhasil ditambahkan.",
+                confirmButtonColor: "#2980b9"
+            });
             setShowModal(false);
             fetchVillas();
         } catch (error) {
             console.error("Error saving data:", error);
-            alert(`Gagal menyimpan villa: ${error.message}`);
+            Swal.fire({
+                icon: "error",
+                title: "Gagal Menyimpan Villa",
+                text: error.message,
+                confirmButtonColor: "#2980b9"
+            });
         } finally {
             setIsSavingVilla(false);
         }
@@ -639,7 +688,12 @@ function AdminManageVillas() {
 
     const saveRoomData = async () => {
         if (!roomForm.bed_info || !roomForm.bed_info.trim()) {
-            alert("Nama unit (Bed Info) wajib diisi!");
+            Swal.fire({
+                icon: "warning",
+                title: "Nama Unit Kosong",
+                text: "Nama unit (Bed Info) wajib diisi!",
+                confirmButtonColor: "#2980b9"
+            });
             return;
         }
 
@@ -677,9 +731,12 @@ function AdminManageVillas() {
             }
 
             if (response.ok) {
-                alert(
-                    "Data unit dan relasi foto berhasil disimpan ke database! 🚀"
-                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Berhasil! 🚀",
+                    text: "Data unit dan relasi foto berhasil disimpan ke database!",
+                    confirmButtonColor: "#27ae60"
+                });
                 resetRoomForm();
                 fetchRelatedRooms(form.id);
             } else {
@@ -690,45 +747,75 @@ function AdminManageVillas() {
                     errData = {};
                 }
 
-                alert(
-                    `Gagal: ${
-                        errData.error ||
-                        errData.message ||
-                        "Periksa koneksi Flask"
-                    }`
-                );
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal Menyimpan Kamar",
+                    text: errData.error || errData.message || "Periksa koneksi Flask",
+                    confirmButtonColor: "#2980b9"
+                });
             }
         } catch (error) {
             console.error("Error saving room:", error);
-            alert(`Gagal menyimpan kamar: ${error.message}`);
+            Swal.fire({
+                icon: "error",
+                title: "Gagal Menyimpan Kamar",
+                text: error.message,
+                confirmButtonColor: "#2980b9"
+            });
         }
     };
 
     const deleteRoomData = async (roomId) => {
-        if (!window.confirm("Apakah Anda yakin ingin menghapus unit ini?")) return;
+        const result = await Swal.fire({
+            title: "Hapus Unit Kamar?",
+            text: "Apakah Anda yakin ingin menghapus unit ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#e74c3c",
+            cancelButtonColor: "#64748b",
+            confirmButtonText: "Ya, Hapus Unit",
+            cancelButtonText: "Batal"
+        });
+
+        if (!result.isConfirmed) return;
+
         try {
             const response = await adminFetch(`${API_BASE_URL}/api/admin/villa-details/${roomId}`, { method: "DELETE" });
             if (response.ok) {
-                alert("Unit berhasil dihapus!");
+                Swal.fire({ icon: "success", title: "Terhapus", text: "Unit berhasil dihapus!", timer: 1500, showConfirmButton: false });
                 fetchRelatedRooms(form.id);
                 resetRoomForm();
             }
         } catch (error) {
             console.error("Gagal menghapus kamar:", error);
+            Swal.fire({ icon: "error", title: "Gagal Hapus", text: "Terjadi kesalahan saat menghapus kamar.", confirmButtonColor: "#2980b9" });
         }
     };
 
     const deleteVilla = async (index) => {
         const selectedVilla = villas[index];
-        if (window.confirm(`Apakah Anda yakin ingin menghapus ${selectedVilla.name}?`)) {
+
+        const result = await Swal.fire({
+            title: "Konfirmasi Hapus Villa",
+            text: `Apakah Anda yakin ingin menghapus "${selectedVilla.name}"?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#e74c3c",
+            cancelButtonColor: "#64748b",
+            confirmButtonText: "Ya, Hapus Villa",
+            cancelButtonText: "Batal"
+        });
+
+        if (result.isConfirmed) {
             try {
                 const response = await adminFetch(`${API_BASE_URL}/api/admin/villas/${selectedVilla.id}`, { method: "DELETE" });
                 if (response.ok) {
-                    alert("Villa berhasil dihapus!");
+                    Swal.fire({ icon: "success", title: "Terhapus!", text: "Villa berhasil dihapus.", timer: 1500, showConfirmButton: false });
                     fetchVillas();
                 }
             } catch (error) {
                 console.error("Error deleting data:", error);
+                Swal.fire({ icon: "error", title: "Gagal", text: "Gagal menghapus data villa.", confirmButtonColor: "#2980b9" });
             }
         }
     };
@@ -788,7 +875,7 @@ function AdminManageVillas() {
             return true;
         } catch (error) {
             console.error("Upload error:", error);
-            alert(`Error Upload: ${error.message}`);
+            Swal.fire({ icon: "error", title: "Error Upload", text: error.message, confirmButtonColor: "#2980b9" });
             return false;
         } finally {
             setIsUploading(false);
@@ -811,15 +898,23 @@ function AdminManageVillas() {
             ];
 
             if (!allowedExts.includes(file.type)) {
-                alert(
-                    "❌ Tipe file tidak didukung. Gunakan PNG, JPG, WEBP, atau GIF"
-                );
+                Swal.fire({
+                    icon: "error",
+                    title: "Format File Salah",
+                    text: "Tipe file tidak didukung. Gunakan PNG, JPG, WEBP, atau GIF",
+                    confirmButtonColor: "#2980b9"
+                });
                 e.target.value = '';
                 return;
             }
 
             if (file.size > 5 * 1024 * 1024) {
-                alert("❌ Ukuran file terlalu besar (max 5MB)");
+                Swal.fire({
+                    icon: "warning",
+                    title: "Ukuran Terlalu Besar",
+                    text: "Ukuran file terlalu besar (max 5MB)",
+                    confirmButtonColor: "#2980b9"
+                });
                 e.target.value = '';
                 return;
             }
@@ -861,22 +956,37 @@ function AdminManageVillas() {
                             : {})
                     }));
 
-                    alert(
-                        `✅ Gambar "${safeFileName}" berhasil diunggah ke folder kamar ${roomId}!`
-                    );
+                    Swal.fire({
+                        icon: "success",
+                        title: "Upload Berhasil ✅",
+                        text: `Gambar "${safeFileName}" berhasil diunggah ke folder kamar ${roomId}!`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             } catch (error) {
                 console.error("Upload error:", error);
-                alert(`❌ Gagal upload: ${error.message}`);
+                Swal.fire({ icon: "error", title: "Gagal Upload", text: error.message, confirmButtonColor: "#2980b9" });
             }
         }
 
         e.target.value = '';
     };
 
-    const removeImageFromGallery = (e, imgName) => {
+    const removeImageFromGallery = async (e, imgName) => {
         e.stopPropagation();
-        if (window.confirm(`Hapus gambar "${imgName}" dari server? ⚠️ Ini akan menghapus file secara permanen!`)) {
+        const result = await Swal.fire({
+            title: "Hapus Gambar?",
+            text: `Hapus gambar "${imgName}" dari server? Ini akan menghapus file secara permanen!`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#e74c3c",
+            cancelButtonColor: "#64748b",
+            confirmButtonText: "Ya, Hapus Permanen",
+            cancelButtonText: "Batal"
+        });
+
+        if (result.isConfirmed) {
             deleteImageFromServer(imgName);
         }
     };
@@ -906,10 +1016,10 @@ function AdminManageVillas() {
                 }
             }
 
-            alert(`✅ Gambar "${imgName}" berhasil dihapus dari server!`);
+            Swal.fire({ icon: "success", title: "Terhapus ✅", text: `Gambar "${imgName}" berhasil dihapus dari server!`, timer: 1500, showConfirmButton: false });
         } catch (error) {
             console.error("Delete error:", error);
-            alert(`❌ Error hapus gambar: ${error.message}`);
+            Swal.fire({ icon: "error", title: "Error Hapus Gambar", text: error.message, confirmButtonColor: "#2980b9" });
         }
     };
 
@@ -1059,7 +1169,7 @@ function AdminManageVillas() {
 
         try {
             if (!/\.csv$/i.test(file.name)) {
-                alert("File harus berformat CSV.");
+                Swal.fire({ icon: "warning", title: "Format Salah", text: "File harus berformat CSV.", confirmButtonColor: "#2980b9" });
                 return;
             }
 
@@ -1067,7 +1177,7 @@ function AdminManageVillas() {
             const rows = parseCSV(text);
 
             if (rows.length === 0) {
-                alert("CSV kosong atau header tidak ditemukan.");
+                Swal.fire({ icon: "warning", title: "CSV Kosong", text: "CSV kosong atau header tidak ditemukan.", confirmButtonColor: "#2980b9" });
                 return;
             }
 
@@ -1289,20 +1399,40 @@ function AdminManageVillas() {
                 ? `\n\nGagal ${results.failed.length} baris:\n${results.failed.slice(0, 8).join("\n")}${results.failed.length > 8 ? "\n..." : ""}`
                 : "";
 
-            alert(
-                `Import CSV selesai!\n\n` +
-                `Villa baru: ${results.villasCreated}\n` +
-                `Villa diperbarui: ${results.villasUpdated}\n` +
-                `Room berhasil: ${results.roomsCreated}\n` +
-                `Baris dilewati: ${results.skipped}` +
-                failedText
-            );
+            Swal.fire({
+                icon: "success",
+                title: "Import CSV Selesai 🎉",
+                html: `<div style="text-align:left; font-size:0.9rem;">
+                    <p><strong>Villa Baru:</strong> ${results.villasCreated}</p>
+                    <p><strong>Villa Diperbarui:</strong> ${results.villasUpdated}</p>
+                    <p><strong>Room Berhasil:</strong> ${results.roomsCreated}</p>
+                    <p><strong>Baris Dilewati:</strong> ${results.skipped}</p>
+                    ${failedText ? `<pre style="color:red; font-size:0.8rem;">${failedText}</pre>` : ''}
+                </div>`,
+                confirmButtonColor: "#27ae60"
+            });
         } catch (error) {
             console.error("Error import CSV gabungan:", error);
-            alert(`Import CSV gagal: ${error.message}`);
+            Swal.fire({ icon: "error", title: "Import CSV Gagal", text: error.message, confirmButtonColor: "#2980b9" });
         } finally {
             e.target.value = "";
         }
+    };
+
+    // Helper aman untuk preview gambar kamar di modal admin
+    const getRoomPreviewImage = () => {
+        const rawImg = (roomForm.img || "").trim();
+        if (!rawImg) return villaImageUrl(form.id || '1', "utama.png");
+        
+        const cleanPath = rawImg.replace(/\\/g, "/").replace(/^\/+/, "");
+        if (/^(data:|blob:|https?:\/\/|media\/|villas\/|villa_)/i.test(cleanPath)) {
+            return villaImageUrl(form.id || '1', rawImg);
+        }
+        
+        if (roomForm.id) {
+            return villaImageUrl(form.id || '1', `villa_${form.id || '1'}/rooms/room_${roomForm.id}/${rawImg}`);
+        }
+        return villaImageUrl(form.id || '1', `villa_${form.id || '1'}/rooms/${rawImg}`);
     };
 
     return (
@@ -1524,7 +1654,7 @@ function AdminManageVillas() {
                                         <label style={{ fontWeight: "bold", display: "block", marginBottom: "8px", color: "#1e293b" }}><FaImages /> Foto Kamar Terpilih: <span style={{ color: "#2563eb" }}>{roomForm.img || "image_1.png"}</span></label>
                                         <div style={{ display: "flex", gap: "15px", alignItems: "center", marginBottom: "12px" }}>
                                             <img
-                                                src={villaImageUrl(form.id || '1', roomForm.id ? `villa_${form.id || '1'}/rooms/room_${roomForm.id}/${roomForm.img || "image_1.png"}` : `villa_${form.id || '1'}/rooms/${roomForm.img || "image_1.png"}`)}
+                                                src={getRoomPreviewImage()}
                                                 alt="Preview"
                                                 onError={(e) => { e.target.onerror = null; }}
                                                 style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "6px", border: "2px solid #2563eb" }}
@@ -1569,7 +1699,7 @@ function AdminManageVillas() {
                                                         src={villaImageUrl(form.id || '1', targetRoomId ? `villa_${form.id || '1'}/rooms/room_${targetRoomId}/${imgName}` : `villa_${form.id || '1'}/rooms/${imgName}`)}
                                                         alt={imgName}
                                                         onError={(e) => {
-                                                            const fallbackSrc = villaImageUrl(1, `villa_1/rooms/${imgName}`);
+                                                            const fallbackSrc = villaImageUrl(form.id || '1', `villa_${form.id || '1'}/rooms/${imgName}`);
                                                             if (e.target.src.endsWith(fallbackSrc)) {
                                                                 const parent = e.target.closest('.gallery-item');
                                                                 if (parent) parent.style.display = 'none';

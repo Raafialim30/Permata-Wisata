@@ -12,6 +12,7 @@ import {
   FaExclamationCircle,
   FaCheckCircle,
 } from "react-icons/fa";
+import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
 import AdminSidebar from "./AdminSidebar";
 import AdminTopbar from "./AdminTopbar";
@@ -115,9 +116,28 @@ export default function AdminChangeRequests() {
   const handleDecision = async (request, decision) => {
     const adminNote = String(replies[request.id] || "").trim();
     if (!adminNote) {
-      setError("Catatan balasan untuk Owner wajib diisi sebelum menyimpan keputusan.");
+      Swal.fire({
+        icon: "warning",
+        title: "Catatan Wajib Diisi",
+        text: "Catatan balasan untuk Owner wajib diisi sebelum menyimpan keputusan.",
+        confirmButtonColor: "#2980b9"
+      });
       return;
     }
+
+    const actionText = decision === "approve" ? "menyetujui" : "menolak";
+    const confirmResult = await Swal.fire({
+      title: "Konfirmasi Keputusan",
+      text: `Apakah Anda yakin ingin ${actionText} pengajuan harga ini?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: decision === "approve" ? "#16a34a" : "#dc2626",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: `Ya, ${actionText.toUpperCase()}`,
+      cancelButtonText: "Batal"
+    });
+
+    if (!confirmResult.isConfirmed) return;
 
     setActiveRequestId(request.id);
     setError("");
@@ -137,11 +157,15 @@ export default function AdminChangeRequests() {
         throw new Error(data.error || "Keputusan pengajuan gagal disimpan.");
       }
 
-      setSuccess(
-        decision === "approve"
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Diproses!",
+        text: decision === "approve"
           ? "Pengajuan disetujui & catatan berhasil dikirimkan ke Owner."
-          : "Pengajuan ditolak & catatan berhasil dikirimkan ke Owner."
-      );
+          : "Pengajuan ditolak & catatan berhasil dikirimkan ke Owner.",
+        confirmButtonColor: "#2980b9"
+      });
+
       setReplies((current) => {
         const next = { ...current };
         delete next[request.id];
@@ -150,7 +174,12 @@ export default function AdminChangeRequests() {
       await loadRequests();
     } catch (actionError) {
       console.error("Process Owner Change Request Error:", actionError);
-      setError(actionError.message || "Keputusan pengajuan gagal disimpan.");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Memproses",
+        text: actionError.message || "Keputusan pengajuan gagal disimpan.",
+        confirmButtonColor: "#2980b9"
+      });
     } finally {
       setActiveRequestId(null);
     }

@@ -1,5 +1,5 @@
 /* ========================================================= */
-/* JOGJA FILTER CARD STYLES                                 */
+/* JOGJA FILTER CARD STYLES (MODERN & ELEGANT)              */
 /* ========================================================= */
 
 .jogja-filter-card {
@@ -7,12 +7,17 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 20px 24px 28px;
+  padding: 22px 24px 28px;
   margin: 0 auto 35px auto;
   max-width: 1000px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   overflow: visible;
   box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+.jogja-filter-card:hover {
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.07);
 }
 
 /* Accent Top Bar */
@@ -21,8 +26,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, #ff8c00 0%, #f97316 100%);
+  height: 5px;
+  background: linear-gradient(90deg, #f59e0b 0%, #ff8c00 50%, #ea580c 100%);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -32,8 +37,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 6px;
   margin-bottom: 20px;
 }
 
@@ -47,58 +52,73 @@
   gap: 8px;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 10px 20px;
+  border-radius: 10px;
+  padding: 10px 22px;
   font-size: 14px;
   font-weight: 600;
   color: #334155;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filter-control-btn:hover {
-  border-color: #ff8c00;
-  color: #ff8c00;
+  border-color: #f59e0b;
+  color: #d97706;
   background: #fffdfa;
+  transform: translateY(-1px);
 }
 
 .filter-control-btn.active {
-  border-color: #ff8c00;
+  border-color: #f59e0b;
   background: #fff7ed;
   color: #ea580c;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
 }
 
 .filter-control-btn .btn-icon {
   font-size: 15px;
   color: #64748b;
+  transition: color 0.2s ease;
 }
 
 .filter-control-btn.active .btn-icon {
   color: #ea580c;
 }
 
-/* Popover for Date / Duration selection */
+/* Popover Floating Panel */
 .filter-popover {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 250;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  min-width: 250px;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  min-width: 260px;
+  animation: popoverFadeIn 0.2s ease-out;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .popover-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: #1e293b;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
   margin-bottom: 12px;
 }
 
@@ -108,41 +128,50 @@
   color: #94a3b8;
   cursor: pointer;
   font-size: 14px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .close-popover-btn:hover {
   color: #ef4444;
+  background: #fee2e2;
 }
 
 .popover-date-input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   border-radius: 8px;
   font-size: 14px;
   box-sizing: border-box;
   outline: none;
+  font-family: inherit;
+  color: #1e293b;
 }
 
 .popover-date-input:focus {
-  border-color: #ff8c00;
+  border-color: #f59e0b;
 }
 
 .popover-clear-btn {
-  margin-top: 10px;
+  margin-top: 12px;
   width: 100%;
-  background: #f1f5f9;
-  border: none;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   padding: 8px;
   border-radius: 6px;
   font-size: 12px;
+  font-weight: 600;
   color: #64748b;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .popover-clear-btn:hover {
   background: #fee2e2;
-  color: #ef4444;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
 .duration-options-list {
@@ -152,28 +181,30 @@
 }
 
 .duration-chip {
-  padding: 8px;
+  padding: 9px 6px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: #334155;
   cursor: pointer;
   text-align: center;
+  transition: all 0.2s ease;
 }
 
 .duration-chip:hover {
   background: #fff7ed;
-  border-color: #ff8c00;
-  color: #ff8c00;
+  border-color: #f59e0b;
+  color: #ea580c;
 }
 
 .duration-chip.selected {
-  background: #ff8c00;
+  background: #ea580c;
   color: #ffffff;
-  border-color: #ff8c00;
-  font-weight: 600;
+  border-color: #ea580c;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
 }
 
 /* Center Subtitle Divider */
@@ -181,21 +212,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin: 15px 0 20px;
+  gap: 16px;
+  margin: 18px 0 22px;
 }
 
 .divider-line {
   flex: 1;
   height: 1px;
   background-color: #e2e8f0;
-  max-width: 150px;
+  max-width: 160px;
 }
 
 .divider-text {
-  font-size: 14px;
+  font-size: 13.5px;
   color: #64748b;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.2px;
 }
 
@@ -206,19 +237,19 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .filter-tab-pill {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
   border-radius: 10px;
-  padding: 10px 18px;
+  padding: 10px 20px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -227,7 +258,7 @@
 .filter-tab-pill:hover {
   border-color: #cbd5e1;
   background: #f8fafc;
-  color: #1e293b;
+  color: #0f172a;
 }
 
 .filter-tab-pill.active {
@@ -235,20 +266,14 @@
   color: #0f172a;
   font-weight: 700;
   background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.filter-tab-pill.bold-tab.active {
-  color: #0f172a;
-  font-weight: 700;
-  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .pill-icon {
-  font-size: 13px;
+  font-size: 14px;
 }
 
-/* Filter Chips Container (Spot Wisata Chips Grid) */
+/* Filter Chips Container */
 .filter-chips-container {
   margin-top: 10px;
 }
@@ -257,7 +282,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .spot-chip {
@@ -265,7 +290,7 @@
   border: 1.5px solid #e2e8f0;
   border-radius: 10px;
   padding: 8px 16px;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   color: #334155;
   cursor: pointer;
@@ -273,35 +298,36 @@
 }
 
 .spot-chip:hover {
-  border-color: #ff8c00;
-  color: #ff8c00;
+  border-color: #f59e0b;
+  color: #d97706;
   transform: translateY(-1px);
 }
 
 .spot-chip.selected {
-  background: #ff8c00;
+  background: #ea580c;
   color: #ffffff;
-  border-color: #ff8c00;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(255, 140, 0, 0.25);
+  border-color: #ea580c;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.22);
 }
 
 /* Radius Selector Bar */
 .radius-selector-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 14px;
   background: #fff7ed;
   border: 1px solid #fed7aa;
   border-radius: 10px;
-  padding: 10px 16px;
-  margin-bottom: 14px;
+  padding: 12px 18px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .radius-label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #c2410c;
 }
 
@@ -314,10 +340,10 @@
 .radius-chip {
   background: #ffffff;
   border: 1px solid #fdba74;
-  border-radius: 6px;
-  padding: 5px 12px;
+  border-radius: 8px;
+  padding: 6px 14px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: #ea580c;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -331,9 +357,9 @@
 .radius-chip.active {
   background: #ea580c;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
   border-color: #ea580c;
-  box-shadow: 0 2px 5px rgba(234, 88, 12, 0.2);
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.2);
 }
 
 /* Sub Filter Chips (Kapasitas & Kamar) */
@@ -342,31 +368,32 @@
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 10px 0;
+  padding: 8px 0;
 }
 
 .sub-filter-chip {
   background: #f8fafc;
   border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 8px 18px;
+  border-radius: 10px;
+  padding: 9px 20px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: #334155;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .sub-filter-chip:hover {
-  border-color: #0B3C5D;
-  color: #0B3C5D;
+  border-color: #0d6efd;
+  color: #0d6efd;
 }
 
 .sub-filter-chip.selected {
-  background: #0B3C5D;
+  background: #0d6efd;
   color: #ffffff;
-  border-color: #0B3C5D;
-  font-weight: 600;
+  border-color: #0d6efd;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.25);
 }
 
 /* Price Sort Info */
@@ -375,25 +402,27 @@
   align-items: center;
   justify-content: space-between;
   background: #f8fafc;
-  padding: 12px 20px;
-  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: 14px 20px;
+  border-radius: 12px;
   font-size: 13.5px;
-  color: #475569;
+  color: #334155;
 }
 
 .change-sort-btn {
-  background: #0B3C5D;
-  color: white;
+  background: #0f172a;
+  color: #ffffff;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
 .change-sort-btn:hover {
-  background: #082a42;
+  background: #1e293b;
 }
 
 /* Summary Bar */
@@ -401,12 +430,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding-top: 15px;
-  padding-right: 55px; /* Leave space for auto-up float button */
-  border-top: 1px dashed #e2e8f0;
+  margin-top: 22px;
+  padding-top: 16px;
+  padding-right: 55px;
+  border-top: 1px dashed #cbd5e1;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .active-tags {
@@ -420,73 +449,77 @@
   align-items: center;
   gap: 6px;
   background: #fff7ed;
-  color: #ea580c;
+  color: #c2410c;
   border: 1px solid #ffedd5;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .active-tag svg {
   cursor: pointer;
   font-size: 11px;
+  transition: color 0.15s ease;
 }
 
 .active-tag svg:hover {
-  color: #ef4444;
+  color: #dc2626;
 }
 
 .reset-all-btn {
   background: transparent;
   border: none;
-  color: #ef4444;
+  color: #dc2626;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   padding: 4px 8px;
   white-space: nowrap;
+  transition: opacity 0.2s ease;
 }
 
 .reset-all-btn:hover {
   text-decoration: underline;
+  opacity: 0.85;
 }
 
-/* Floating Scroll to Top button matching screenshot */
+/* Floating Scroll to Top button */
 .scroll-top-float-btn {
   position: absolute;
-  bottom: 14px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
+  bottom: 16px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: #ffffff;
-  border: 1.5px solid #ff8c00;
-  color: #ff8c00;
+  border: 1.5px solid #ea580c;
+  color: #ea580c;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease;
   z-index: 10;
 }
 
 .scroll-top-float-btn:hover {
-  background: #ff8c00;
+  background: #ea580c;
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(234, 88, 12, 0.3);
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .jogja-filter-card {
-    padding: 16px 14px 20px;
+    padding: 18px 16px 22px;
   }
 
   .divider-line {
-    max-width: 40px;
+    max-width: 45px;
   }
 
   .divider-text {
@@ -498,7 +531,7 @@
   }
 
   .filter-tab-pill {
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-size: 12.5px;
   }
 
@@ -507,19 +540,15 @@
     font-size: 12px;
   }
 
-  .chips-grid {
-    gap: 6px;
-  }
-
   .scroll-top-float-btn {
     bottom: 12px;
-    right: 12px;
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
   }
 
   .filter-active-summary {
-    padding-right: 45px;
+    padding-right: 48px;
   }
 }

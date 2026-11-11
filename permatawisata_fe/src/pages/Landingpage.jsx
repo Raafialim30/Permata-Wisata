@@ -28,7 +28,12 @@ function Landingpage() {
   const navigate = useNavigate();
   const { t } = useLang();
 
+  // Tanggal hari ini dalam format YYYY-MM-DD untuk batas minimal kalender (disable tanggal kadaluarsa)
+  const todayStr = new Date().toISOString().split("T")[0];
+
   const [location, setLocation] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("2");
   const [beds, setBeds] = useState("");
 
@@ -40,12 +45,22 @@ function Landingpage() {
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [commissionRate, setCommissionRate] = useState(10);
 
+  // State statistik transaksi & rating real dari penyewa
+  const [statsData, setStatsData] = useState({
+    villasCount: 0,
+    guestsCount: 0,
+    avgRating: 0,
+    reviewsCount: 0,
+    bookingsCount: 0
+  });
+
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
 
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
 
+    // Fetch Komisi
     fetch(`${API_BASE_URL}/api/settings/commission`)
       .then(res => res.json())
       .then(data => {
@@ -55,13 +70,57 @@ function Landingpage() {
       })
       .catch(err => console.error("Gagal mengambil komisi:", err));
 
+    // Fetch Data Villa
     fetch(`${API_BASE_URL}/api/villas`)
       .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-      .then(data => { setVillas(data); setLoading(false); })
+      .then(data => { 
+        setVillas(data); 
+        setLoading(false);
+        if (Array.isArray(data)) {
+          setStatsData(prev => ({ ...prev, villasCount: data.length }));
+        }
+      })
       .catch(() => setLoading(false));
 
-    setTestimonials([]);
-    setLoadingTestimonial(false);
+    // Fetch Ulasan Real
+    fetch(`${API_BASE_URL}/api/reviews`)
+      .then(res => res.json())
+      .then(resData => {
+        const reviewsList = Array.isArray(resData) ? resData : (resData.data || []);
+        if (reviewsList.length > 0) {
+          const totalRatingSum = reviewsList.reduce((sum, r) => sum + parseFloat(r.rating || 0), 0);
+          const realAvgRating = (totalRatingSum / reviewsList.length).toFixed(1);
+
+          setTestimonials(reviewsList);
+          setStatsData(prev => ({
+            ...prev,
+            avgRating: realAvgRating,
+            reviewsCount: reviewsList.length
+          }));
+        } else {
+          setTestimonials([]);
+        }
+        setLoadingTestimonial(false);
+      })
+      .catch(() => {
+        setTestimonials([]);
+        setLoadingTestimonial(false);
+      });
+
+    // Fetch Statistik Transaksi
+    fetch(`${API_BASE_URL}/api/stats`)
+      .then(res => res.json())
+      .then(resData => {
+        if (resData && resData.status === "success" && resData.data) {
+          setStatsData(prev => ({
+            ...prev,
+            guestsCount: resData.data.guests_count || 0,
+            bookingsCount: resData.data.bookings_count || 0,
+            ...(resData.data.avg_rating ? { avgRating: resData.data.avg_rating } : {})
+          }));
+        }
+      })
+      .catch(() => {});
 
     try {
       const saved = localStorage.getItem("recentlyViewedVillas");
@@ -77,7 +136,10 @@ function Landingpage() {
   };
 
   const handleSearch = () => {
-    navigate(`/villas?location=${location}&guests=${guests}${beds ? `&beds=${beds}` : ""}`);
+    let query = `/villas?location=${location}&guests=${guests}${beds ? `&beds=${beds}` : ""}`;
+    if (checkIn) query += `&checkIn=${checkIn}`;
+    if (checkOut) query += `&checkOut=${checkOut}`;
+    navigate(query);
   };
 
   const handleClearHistory = () => {
@@ -116,6 +178,8 @@ function Landingpage() {
     { value: "21", key: "guest_20plus" },
   ];
 
+  const hasRealData = statsData.villasCount > 0;
+
   return (
     <div className="landing">
       {/* NAVBAR */}
@@ -137,14 +201,31 @@ function Landingpage() {
               />
             </div>
 
+            {/* CHECK-IN DATE PICKER DENGAN MIN=TODAY */}
             <div className="search-item">
               <label><FaCalendarAlt /> {t("search_checkin")}</label>
-              <input type="date" />
+              <input 
+                type="date" 
+                min={todayStr}
+                value={checkIn}
+                onChange={(e) => {
+                  setCheckIn(e.target.value);
+                  if (checkOut && e.target.value > checkOut) {
+                    setCheckOut("");
+                  }
+                }}
+              />
             </div>
 
+            {/* CHECK-OUT DATE PICKER DENGAN MIN=CHECKIN/TODAY */}
             <div className="search-item">
               <label><FaCalendarAlt /> {t("search_checkout")}</label>
-              <input type="date" />
+              <input 
+                type="date" 
+                min={checkIn || todayStr}
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+              />
             </div>
 
             <div className="search-item">
@@ -206,15 +287,38 @@ function Landingpage() {
         </section>
       )}
 
-      {/* STATS */}
-      <section className="stats">
-        <div className="container">
-          <div className="stat" data-aos="fade-up" data-aos-delay="100"><h2>120+</h2><p>{t("stat_villas")}</p></div>
-          <div className="stat" data-aos="fade-up" data-aos-delay="200"><h2>5K+</h2><p>{t("stat_guests")}</p></div>
-          <div className="stat" data-aos="fade-up" data-aos-delay="300"><h2>4.9</h2><p>{t("stat_rating")}</p></div>
-          <div className="stat" data-aos="fade-up" data-aos-delay="400"><h2>24/7</h2><p>{t("stat_support")}</p></div>
-        </div>
-      </section>
+      {/* STATS REAL-TIME */}
+      {hasRealData && (
+        <section className="stats">
+          <div className="container">
+            <div className="stat" data-aos="fade-up" data-aos-delay="100">
+              <h2>{statsData.villasCount}+</h2>
+              <p>{t("stat_villas")}</p>
+            </div>
+
+            {/* Tamu Bahagia HANYA tampil jika sudah ada minimal 10 tamu / transaksi */}
+            {statsData.guestsCount >= 10 && (
+              <div className="stat" data-aos="fade-up" data-aos-delay="200">
+                <h2>{statsData.guestsCount}+</h2>
+                <p>{t("stat_guests")}</p>
+              </div>
+            )}
+
+            {/* Rating Rata-rata HANYA tampil jika sudah ada minimal 10 ulasan */}
+            {statsData.reviewsCount >= 10 && (
+              <div className="stat" data-aos="fade-up" data-aos-delay="300">
+                <h2>{statsData.avgRating}</h2>
+                <p>{t("stat_rating")}</p>
+              </div>
+            )}
+
+            <div className="stat" data-aos="fade-up" data-aos-delay="400">
+              <h2>24/7</h2>
+              <p>{t("stat_support")}</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* HOW IT WORKS */}
       <section className="how">
@@ -290,7 +394,12 @@ function Landingpage() {
                           <span><FaDoorOpen /> {villa.beds} {t("search_beds")}</span>
                           <span><FaBath /> {villa.baths} {t("bath")}</span>
                         </div>
-                        <p className="rating" style={{ fontSize: "0.85rem", marginBottom: "10px" }}><FaStar className="star" /> {villa.rating}</p>
+                        {/* Rating Villa HANYA muncul jika sudah ada minimal 10 ulasan */}
+                        {Number(villa.total_reviews) >= 10 && (
+                          <p className="rating" style={{ fontSize: "0.85rem", marginBottom: "10px" }}>
+                            <FaStar className="star" /> {Number(villa.rating).toFixed(1)}
+                          </p>
+                        )}
                       </div>
                       <div className="price-row" style={{ paddingTop: "10px", borderTop: "1px solid #f0f0f0" }}>
                         <div>

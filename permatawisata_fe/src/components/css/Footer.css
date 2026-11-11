@@ -1,9 +1,8 @@
 /* FOOTER KHUSUS (ANTI BENTROK) */
 .pw-footer {
-  /* Menggunakan warna biru tua solid agar sama dengan Navbar */
   background-color: #0B3C5D; 
   color: #ffffff;
-  padding: 60px 0 30px 0;
+  padding: 60px 0 30px 0; /* Dikembalikan ke 60px agar jaraknya pas dan simetris */
   width: 100%;
   font-family: 'Poppins', sans-serif;
 }
@@ -49,7 +48,7 @@
 .pw-brand-subtitle {
   display: block;
   font-size: 14px;
-  color: #D4AF37; /* Warna emas agar elegan */
+  color: #D4AF37;
   margin-bottom: 15px;
   font-weight: 500;
 }

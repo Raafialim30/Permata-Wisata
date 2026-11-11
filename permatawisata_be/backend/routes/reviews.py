@@ -22,14 +22,20 @@ def _close(cursor=None, conn=None):
 def add_review():
     conn = cursor = None
     try:
-        # get_json(silent=True) or {} memastikan data selalu berupa dict (bukan None)
         data = request.get_json(silent=True) or {}
 
-        reviewer_name = data.get('reviewer_name')
+        reviewer_name = data.get('reviewer_name', '').strip()
         villa_id = data.get('villa_id')
-        room_id = data.get('room_id')
+        room_id = data.get('room_id') if data.get('room_id') else None
         rating = data.get('rating', 5)
-        comment = data.get('comment', '')
+        comment = data.get('comment', '').strip()
+
+        # Validasi data wajib
+        if not reviewer_name or not villa_id or not comment:
+            return jsonify({
+                "status": "error",
+                "message": "Nama, villa, dan komentar wajib diisi."
+            }), 400
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -37,15 +43,19 @@ def add_review():
         cursor.execute(
             """
             INSERT INTO villa_reviews (villa_id, room_id, reviewer_name, rating, comment, is_approved)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, 1)
             """,
-            (villa_id, room_id, reviewer_name, rating, comment, 1)
+            (villa_id, room_id, reviewer_name, rating, comment)
         )
         conn.commit()
-        return jsonify({"message": "Ulasan berhasil dikirim!", "status": "success"}), 201
+
+        return jsonify({
+            "status": "success",
+            "message": "Ulasan berhasil dikirim!"
+        }), 201
 
     except Exception as e:
-        return jsonify({"error": f"{e}"}), 500
+        return jsonify({"status": "error", "error": f"{e}"}), 500
     finally:
         _close(cursor, conn)
 
@@ -60,7 +70,13 @@ def get_reviews():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        query = "SELECT * FROM villa_reviews WHERE is_approved = 1"
+        # Mengubah created_at langsung via SQL menjadi string format standar
+        query = """
+            SELECT id, villa_id, room_id, reviewer_name, rating, comment,
+                   DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at, is_approved
+            FROM villa_reviews
+            WHERE (is_approved = 1 OR is_approved IS NULL)
+        """
         params = []
 
         if villa_id:
@@ -73,9 +89,11 @@ def get_reviews():
         query += " ORDER BY created_at DESC"
 
         cursor.execute(query, tuple(params))
-        return jsonify({"status": "success", "data": cursor.fetchall()}), 200
+        reviews_list = cursor.fetchall() or []
+
+        return jsonify({"status": "success", "data": reviews_list}), 200
 
     except Exception as e:
-        return jsonify({"error": f"{e}"}), 500
+        return jsonify({"status": "error", "error": f"{e}"}), 500
     finally:
         _close(cursor, conn)

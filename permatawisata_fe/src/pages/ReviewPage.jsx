@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
 import API_BASE_URL from "../config";
-import "./css/ReviewPage.css"; // We will create this
+import "./css/ReviewPage.css";
 
 function ReviewPage() {
     const [villas, setVillas] = useState([]);
@@ -42,13 +43,30 @@ function ReviewPage() {
                 body: JSON.stringify(formData)
             });
             if (res.ok) {
-                setSuccess(true);
+                Swal.fire({
+                    icon: "success",
+                    title: "Terima Kasih! 🎉",
+                    text: "Ulasan Anda sangat berarti bagi kami dan telah berhasil disimpan.",
+                    confirmButtonColor: "#16a34a"
+                }).then(() => {
+                    setSuccess(true);
+                });
             } else {
-                alert("Gagal mengirim ulasan.");
+                Swal.fire({
+                    icon: "warning",
+                    title: "Gagal Mengirim",
+                    text: "Mohon lengkapi seluruh kolom ulasan sebelum mengunggah.",
+                    confirmButtonColor: "#ea580c"
+                });
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Terjadi kesalahan.");
+            Swal.fire({
+                icon: "error",
+                title: "Terjadi Kesalahan",
+                text: "Gagal terhubung ke server. Periksa koneksi internet Anda.",
+                confirmButtonColor: "#dc2626"
+            });
         } finally {
             setLoading(false);
         }

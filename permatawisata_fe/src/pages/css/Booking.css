@@ -359,6 +359,7 @@
     border-radius: 8px;
     outline: none;
     font-size: 14px;
+    text-align: left;
 }
 
 .form-card input[type="date"]:focus {
@@ -674,7 +675,7 @@
 }
 
 /* =========================================================
-   CUSTOMER
+   CUSTOMER / DATA PEMESAN (RATA KIRI)
 ========================================================= */
 
 .customer-layout {
@@ -693,26 +694,37 @@
     display: flex;
     flex-direction: column;
     gap: 7px;
+    text-align: left !important;
 }
 
 .input-group label {
     color: #334155;
     font-size: 13px;
     font-weight: 700;
+    text-align: left !important;
 }
 
 .input-group input {
     width: 100%;
     box-sizing: border-box;
-    padding: 12px 13px;
+    padding: 12px 14px;
     border: 1px solid #cbd5e1;
     border-radius: 9px;
     outline: none;
     font-size: 14px;
+    text-align: left !important;
+    color: #1e293b;
+    background: #ffffff;
+}
+
+.input-group input::placeholder {
+    text-align: left !important;
+    color: #94a3b8;
 }
 
 .input-group input:focus {
     border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
 }
 
 /* =========================================================
@@ -723,6 +735,7 @@
     margin-top: 8px;
     padding-top: 20px;
     border-top: 1px solid #e2e8f0;
+    text-align: left;
 }
 
 .addon-section h3 {
@@ -750,6 +763,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     cursor: pointer;
+    text-align: left;
 }
 
 .addon-item.selected {
@@ -798,6 +812,7 @@
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
+    text-align: left;
 }
 
 .booking-summary h3 {
@@ -885,6 +900,7 @@
     border-radius: 9px;
     background: #eff6ff;
     border: 1px solid #bfdbfe;
+    text-align: left;
 }
 
 .payment-method-info strong {

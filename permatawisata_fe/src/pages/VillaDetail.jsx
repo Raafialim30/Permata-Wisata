@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     FaArrowLeft,
     FaBath,
@@ -17,7 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useLang } from "../context/LanguageContext";
 import API_BASE_URL from "../config";
-import villaImageUrl from "../utils/villaImageUrl";
+import villaImageUrl, { handleVillaImageError } from "../utils/villaImageUrl";
 import "./css/VillaDetail.css";
 
 function VillaDetail() {
@@ -25,7 +25,6 @@ function VillaDetail() {
     const navigate = useNavigate();
     const { t } = useLang();
     const sliderRef = useRef(null);
-    const roomImagesCache = useRef({});
 
     const [villa, setVilla] = useState(null);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -33,7 +32,6 @@ function VillaDetail() {
     const [checkOut, setCheckOut] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [roomFirstImages, setRoomFirstImages] = useState({});
     const [reviews, setReviews] = useState([]);
     const [showAllNearby, setShowAllNearby] = useState(false);
     const [commissionRate, setCommissionRate] = useState(10);
@@ -53,112 +51,6 @@ function VillaDetail() {
         const base = Number(price) || 0;
         return Math.round(base * (1 + commissionRate / 100));
     };
-
-    const loadRoomImages = useCallback(async (roomId, roomImgName = null) => {
-        const cacheKey = `${id}-${roomId}`;
-
-        if (roomImagesCache.current[cacheKey]) {
-            return roomImagesCache.current[cacheKey];
-        }
-
-        const isImageValid = (url, timeout = 3000) => {
-            return new Promise((resolve) => {
-                let timedOut = false;
-                const timer = setTimeout(() => {
-                    timedOut = true;
-                    resolve(false);
-                }, timeout);
-
-                const img = new Image();
-                img.onload = () => {
-                    if (!timedOut) {
-                        clearTimeout(timer);
-                        resolve(true);
-                    }
-                };
-                img.onerror = () => {
-                    if (!timedOut) {
-                        clearTimeout(timer);
-                        resolve(false);
-                    }
-                };
-                img.src = villaImageUrl(id, url);
-            });
-        };
-
-        try {
-            const res = await fetch(`${API_BASE_URL}/api/admin/gallery?villa_id=${id}&folder_type=room&room_id=${roomId}`);
-            if (res.ok) {
-                const data = await res.json();
-                if (data.status === "success" && data.data && data.data.length > 0) {
-                    const images = data.data
-                        .slice(0, 10)
-                        .map(imgName =>
-                            `/images/villas/villa_${id}/rooms/room_${roomId}/${imgName}`
-                        );
-
-                    roomImagesCache.current[cacheKey] = images;
-                    return images;
-                }
-            }
-        } catch (error) {
-            console.error("Gagal load gallery kamar:", error);
-        }
-
-        const validImages = [];
-        const imagePrefixes = ["image_", "foto_", "room_", ""];
-        const imageExtensions = [".webp", ".jpg", ".jpeg", ".png"];
-
-        outerLoop:
-        for (const prefix of imagePrefixes) {
-            for (let i = 1; i <= 10; i++) {
-                const candidates =
-                    prefix === ""
-                        ? [`${i}`, `${String(i).padStart(2, "0")}`]
-                        : [`${prefix}${i}`];
-
-                const checks = [];
-
-                for (const base of candidates) {
-                    for (const ext of imageExtensions) {
-                        const path =
-                            `/images/villas/villa_${id}/rooms/room_${roomId}/${base}${ext}`;
-
-                        checks.push({
-                            path,
-                            promise: isImageValid(path, 300)
-                        });
-                    }
-                }
-
-                const results = await Promise.all(
-                    checks.map(c => c.promise)
-                );
-
-                for (let j = 0; j < results.length; j++) {
-                    if (results[j]) {
-                        if (!validImages.includes(checks[j].path)) {
-                            validImages.push(checks[j].path);
-                        }
-                        break;
-                    }
-                }
-
-                if (validImages.length >= 10)
-                    break outerLoop;
-            }
-
-            if (validImages.length > 0)
-                break;
-        }
-
-        if (validImages.length === 0) {
-            validImages.push(`/images/villas/villa_${id}/utama.png`);
-        }
-
-        roomImagesCache.current[cacheKey] = validImages;
-        return validImages;
-    }, [id]);
 
     const currentYear = new Date().getFullYear();
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -198,9 +90,9 @@ function VillaDetail() {
                 const otherFacilitiesList = data.other_facilities ? data.other_facilities.split(',') : [];
                 const initialRoom = data.rooms && data.rooms.length > 0 ? data.rooms[0] : null;
 
-                const defaultImages = [
-                    villaImageUrl(data.id || id, data.img)
-                ];
+                const defaultImages = (initialRoom && initialRoom.images && initialRoom.images.length > 0)
+                    ? initialRoom.images
+                    : (data.images && data.images.length > 0 ? data.images : [data.img]);
 
                 const mappedVilla = {
                     ...data,
@@ -211,6 +103,10 @@ function VillaDetail() {
                 };
 
                 setVilla(mappedVilla);
+
+                if (initialRoom) {
+                    setSelectedRoom(initialRoom);
+                }
 
                 try {
                     const savedHistory = localStorage.getItem("recentlyViewedVillas");
@@ -235,14 +131,6 @@ function VillaDetail() {
                     console.error("Gagal menyimpan history:", e);
                 }
 
-                if (initialRoom) {
-                    setSelectedRoom(initialRoom);
-                    loadRoomImages(initialRoom.id_detail, initialRoom.img).then(imgs => {
-                        setVilla(prev => ({ ...prev, images: imgs }));
-                    });
-                }
-                setRoomFirstImages({});
-
                 fetch(`${API_BASE_URL}/api/reviews?villa_id=${id}`)
                     .then(res => res.json())
                     .then(rData => {
@@ -259,15 +147,16 @@ function VillaDetail() {
                 setError(err.message);
                 setLoading(false);
             });
-    }, [id, loadRoomImages]);
+    }, [id]);
 
-    const handleRoomSelect = async (room) => {
+    const handleRoomSelect = (room) => {
         setSelectedRoom(room);
-        const newRoomImages = await loadRoomImages(room.id_detail, room.img);
-        setVilla(prev => ({
-            ...prev,
-            images: newRoomImages
-        }));
+        if (room && room.images && room.images.length > 0) {
+            setVilla(prev => ({
+                ...prev,
+                images: room.images
+            }));
+        }
     };
 
     const handleDateClick = (day) => {
@@ -379,20 +268,9 @@ function VillaDetail() {
 
     const getRoomImageUrl = (room) => {
         if (!room) return villaImageUrl(id);
-
-        if (roomFirstImages[room.id_detail]) {
-            return roomFirstImages[room.id_detail];
-        }
-
-        if (room.img) {
-            if (String(room.img).startsWith("http")) return room.img;
-            return villaImageUrl(
-                id,
-                `villa_${id}/rooms/room_${room.id_detail}/${room.img}`
-            );
-        }
-
-        return villaImageUrl(id, villa?.img);
+        if (room.images && room.images.length > 0) return room.images[0];
+        if (room.img) return room.img;
+        return villa.img;
     };
 
     return (
@@ -447,9 +325,7 @@ function VillaDetail() {
                             className="slider-item-img"
                             loading={index === 0 ? "eager" : "lazy"}
                             decoding="async"
-                            onError={(e) => {
-                                e.target.style.display = "none";
-                            }}
+                            onError={handleVillaImageError}
                         />
                     ))}
                 </div>
@@ -497,10 +373,7 @@ function VillaDetail() {
                                                     src={villaImageUrl(id, finalRoomSrc)}
                                                     alt={room.bed_info}
                                                     style={{ width: "70px", height: "50px", objectFit: "cover", borderRadius: "4px" }}
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src = "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=200";
-                                                    }}
+                                                    onError={handleVillaImageError}
                                                 />
                                                 <div>
                                                     <h4 style={{ margin: "0 0 5px 0", color: isSelected ? "#0d6efd" : "#333" }}>
@@ -707,9 +580,6 @@ function VillaDetail() {
                                     </div>
                                 ))}
                             </div>
-                            <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginTop: "12px" }}>
-                                * Harga rental dihitung per hari. Informasikan minat Anda saat menghubungi pemilik melalui WhatsApp.
-                            </p>
                         </div>
                     )}
 
@@ -749,7 +619,26 @@ function VillaDetail() {
 
                     {/* ULASAN TAMU */}
                     <div className="detail-card">
-                        <h3 style={{ marginBottom: "16px" }}>Ulasan Tamu</h3>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                            <h3 style={{ margin: 0 }}>Ulasan Tamu</h3>
+                            
+                            <button 
+                                onClick={() => navigate("/review")}
+                                style={{
+                                    backgroundColor: "#0d6efd",
+                                    color: "#fff",
+                                    border: "none",
+                                    padding: "8px 14px",
+                                    borderRadius: "6px",
+                                    fontSize: "0.85rem",
+                                    fontWeight: "600",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                + Tulis Ulasan
+                            </button>
+                        </div>
+
                         {reviews.length > 0 ? (
                             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                                 {reviews.map((r) => (
@@ -768,7 +657,9 @@ function VillaDetail() {
                                 ))}
                             </div>
                         ) : (
-                            <p style={{ color: "#64748b", fontStyle: "italic", fontSize: "0.95rem" }}>Belum ada ulasan saat ini.</p>
+                            <p style={{ color: "#64748b", fontStyle: "italic", fontSize: "0.95rem" }}>
+                                Belum ada ulasan saat ini. Jadilah yang pertama memberikan penilaian!
+                            </p>
                         )}
                     </div>
                 </div>
@@ -782,7 +673,7 @@ function VillaDetail() {
                     </h2>
 
                     {selectedRoom && (
-                        <p style={{ fontSize: "0.85rem", color: "#0d6efd", marginTop: "-5px", marginBottom: "15px", fontWeight: "500" }}>
+                        <p style={{ fontSize: "0.85rem", color: "#0d6efd", marginTop:"-5px", marginBottom: "15px", fontWeight: "500" }}>
                             Room: {selectedRoom.bed_info}
                         </p>
                     )}
@@ -832,11 +723,6 @@ function VillaDetail() {
                                             handleDateClick(day);
                                         }}
                                         aria-disabled={pastDate}
-                                        title={
-                                            pastDate
-                                                ? "Tanggal sudah terlewat"
-                                                : "Pilih tanggal"
-                                        }
                                         style={{
                                             padding: "6px 0",
                                             fontSize: "0.85rem",
@@ -898,11 +784,6 @@ function VillaDetail() {
                     >
                         Pesan Sekarang
                     </button>
-
-                    <div className="support-box">
-                        <p className="support-title">Bantuan Cepat!</p>
-                        <p className="support-text">Punya pertanyaan? Hubungi kami via WhatsApp untuk bantuan cepat!</p>
-                    </div>
                 </div>
             </div>
 

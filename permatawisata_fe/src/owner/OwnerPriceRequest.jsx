@@ -5,6 +5,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
 import "./css/OwnerPriceRequest.css";
 
@@ -137,34 +138,21 @@ export default function OwnerPriceRequest() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-
   const [villas, setVillas] = useState([]);
   const [units, setUnits] = useState([]);
   const [requests, setRequests] = useState([]);
 
-  const [selectedVillaId, setSelectedVillaId] =
-    useState("");
-
-  const [selectedTarget, setSelectedTarget] =
-    useState("villa");
-
-  const [selectedUnitId, setSelectedUnitId] =
-    useState("");
+  const [selectedVillaId, setSelectedVillaId] = useState("");
+  const [selectedTarget, setSelectedTarget] = useState("villa");
+  const [selectedUnitId, setSelectedUnitId] = useState("");
 
   const [newPrice, setNewPrice] = useState("");
   const [reason, setReason] = useState("");
 
-  const [loadingVillas, setLoadingVillas] =
-    useState(true);
-
-  const [loadingUnits, setLoadingUnits] =
-    useState(false);
-
-  const [loadingRequests, setLoadingRequests] =
-    useState(true);
-
-  const [submitting, setSubmitting] =
-    useState(false);
+  const [loadingVillas, setLoadingVillas] = useState(true);
+  const [loadingUnits, setLoadingUnits] = useState(false);
+  const [loadingRequests, setLoadingRequests] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -213,10 +201,6 @@ export default function OwnerPriceRequest() {
     selectedCurrentPrice,
     parsedNewPrice
   );
-
-  // ==========================================================
-  // LOAD VILLAS
-  // ==========================================================
 
   const loadVillas = useCallback(async () => {
     try {
@@ -270,10 +254,6 @@ export default function OwnerPriceRequest() {
       setLoadingVillas(false);
     }
   }, []);
-
-  // ==========================================================
-  // LOAD VILLA UNITS
-  // ==========================================================
 
   const loadUnits = useCallback(
     async (villaId) => {
@@ -342,10 +322,6 @@ export default function OwnerPriceRequest() {
     []
   );
 
-  // ==========================================================
-  // LOAD REQUEST HISTORY
-  // ==========================================================
-
   const loadRequests = useCallback(async () => {
     try {
       setLoadingRequests(true);
@@ -391,10 +367,6 @@ export default function OwnerPriceRequest() {
     }
   }, []);
 
-  // ==========================================================
-  // AUTH + INITIAL LOAD
-  // ==========================================================
-
   useEffect(() => {
     const storedUser = getStoredUser();
 
@@ -410,14 +382,14 @@ export default function OwnerPriceRequest() {
     ).toLowerCase();
 
     if (role !== "owner") {
-      alert(
-        "Halaman ini hanya dapat diakses oleh Owner."
-      );
-
-      navigate("/login", {
-        replace: true,
+      Swal.fire({
+        icon: "error",
+        title: "Akses Ditolak",
+        text: "Halaman ini hanya dapat diakses oleh Owner.",
+        confirmButtonColor: "#27ae60"
+      }).then(() => {
+        navigate("/login", { replace: true });
       });
-
       return;
     }
 
@@ -451,10 +423,6 @@ export default function OwnerPriceRequest() {
     selectedUnitId,
   ]);
 
-  // ==========================================================
-  // FORM
-  // ==========================================================
-
   const resetForm = () => {
     setNewPrice("");
     setReason("");
@@ -469,9 +437,7 @@ export default function OwnerPriceRequest() {
     setSuccess("");
 
     if (!selectedVillaId) {
-      setError(
-        "Silakan pilih villa terlebih dahulu."
-      );
+      Swal.fire({ icon: "warning", title: "Pilih Villa", text: "Silakan pilih villa terlebih dahulu.", confirmButtonColor: "#27ae60" });
       return;
     }
 
@@ -479,9 +445,7 @@ export default function OwnerPriceRequest() {
       selectedTarget === "unit" &&
       !selectedUnitId
     ) {
-      setError(
-        "Silakan pilih kamar/unit terlebih dahulu."
-      );
+      Swal.fire({ icon: "warning", title: "Pilih Kamar", text: "Silakan pilih kamar/unit terlebih dahulu.", confirmButtonColor: "#27ae60" });
       return;
     }
 
@@ -489,9 +453,7 @@ export default function OwnerPriceRequest() {
       !Number.isFinite(parsedNewPrice) ||
       parsedNewPrice <= 0
     ) {
-      setError(
-        "Harga baru harus lebih dari Rp 0."
-      );
+      Swal.fire({ icon: "warning", title: "Harga Tidak Valid", text: "Harga baru harus lebih dari Rp 0.", confirmButtonColor: "#27ae60" });
       return;
     }
 
@@ -499,16 +461,12 @@ export default function OwnerPriceRequest() {
       parsedNewPrice ===
       selectedCurrentPrice
     ) {
-      setError(
-        "Harga baru harus berbeda dari harga saat ini."
-      );
+      Swal.fire({ icon: "warning", title: "Harga Sama", text: "Harga baru harus berbeda dari harga saat ini.", confirmButtonColor: "#27ae60" });
       return;
     }
 
     if (!reason.trim()) {
-      setError(
-        "Alasan penyesuaian harga wajib diisi."
-      );
+      Swal.fire({ icon: "warning", title: "Alasan Diperlukan", text: "Alasan penyesuaian harga wajib diisi.", confirmButtonColor: "#27ae60" });
       return;
     }
 
@@ -583,9 +541,12 @@ export default function OwnerPriceRequest() {
           ? "kenaikan"
           : "penurunan";
 
-      setSuccess(
-        `Pengajuan ${directionText} harga berhasil dikirim dan menunggu persetujuan Admin.`
-      );
+      Swal.fire({
+        icon: "success",
+        title: "Pengajuan Terkirim! 🎉",
+        text: `Pengajuan ${directionText} harga berhasil dikirim dan menunggu persetujuan Admin.`,
+        confirmButtonColor: "#27ae60"
+      });
 
       setNewPrice("");
       setReason("");
@@ -597,27 +558,30 @@ export default function OwnerPriceRequest() {
         err
       );
 
-      setError(
-        err.message ||
-          "Pengajuan penyesuaian harga gagal dikirim."
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Mengirim",
+        text: err.message || "Pengajuan penyesuaian harga gagal dikirim.",
+        confirmButtonColor: "#27ae60"
+      });
     } finally {
       setSubmitting(false);
     }
   };
 
-  // ==========================================================
-  // CANCEL REQUEST
-  // ==========================================================
-
   const handleCancel = async (requestId) => {
-    const confirmed = window.confirm(
-      "Apakah Anda yakin ingin membatalkan pengajuan ini?"
-    );
+    const result = await Swal.fire({
+      title: "Batalkan Pengajuan?",
+      text: "Apakah Anda yakin ingin membatalkan pengajuan harga ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e74c3c",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Batalkan",
+      cancelButtonText: "Kembali"
+    });
 
-    if (!confirmed) {
-      return;
-    }
+    if (!result.isConfirmed) return;
 
     try {
       setError("");
@@ -643,9 +607,13 @@ export default function OwnerPriceRequest() {
         );
       }
 
-      setSuccess(
-        "Pengajuan berhasil dibatalkan."
-      );
+      Swal.fire({
+        icon: "success",
+        title: "Pengajuan Dibatalkan",
+        text: "Pengajuan penyesuaian harga berhasil dibatalkan.",
+        timer: 1500,
+        showConfirmButton: false
+      });
 
       await loadRequests();
     } catch (err) {
@@ -654,10 +622,12 @@ export default function OwnerPriceRequest() {
         err
       );
 
-      setError(
-        err.message ||
-          "Pengajuan tidak dapat dibatalkan."
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Membatalkan",
+        text: err.message || "Pengajuan tidak dapat dibatalkan.",
+        confirmButtonColor: "#27ae60"
+      });
     }
   };
 
@@ -667,12 +637,6 @@ export default function OwnerPriceRequest() {
 
   return (
     <div className="owner-price-page">
-      {/* =====================================================
-          MAIN CONTENT
-          Sidebar berada di OwnerLayout -> OwnerSidebar.
-          Jangan membuat sidebar kedua di halaman ini.
-      ====================================================== */}
-
       <main className="owner-price-main">
         <div className="owner-price-topbar">
           <div>
@@ -699,51 +663,21 @@ export default function OwnerPriceRequest() {
           </div>
         </div>
 
-        {/* ERROR */}
         {error && (
           <div className="owner-alert error">
-            <strong>
-              Terjadi masalah
-            </strong>
-
+            <strong>Terjadi masalah</strong>
             <span>{error}</span>
-
-            <button
-              type="button"
-              onClick={() =>
-                setError("")
-              }
-              aria-label="Tutup pesan"
-            >
-              ×
-            </button>
+            <button type="button" onClick={() => setError("")} aria-label="Tutup pesan">×</button>
           </div>
         )}
 
-        {/* SUCCESS */}
         {success && (
           <div className="owner-alert success">
-            <strong>
-              Berhasil
-            </strong>
-
+            <strong>Berhasil</strong>
             <span>{success}</span>
-
-            <button
-              type="button"
-              onClick={() =>
-                setSuccess("")
-              }
-              aria-label="Tutup pesan"
-            >
-              ×
-            </button>
+            <button type="button" onClick={() => setSuccess("")} aria-label="Tutup pesan">×</button>
           </div>
         )}
-
-        {/* ===================================================
-            FORM + INFO
-        ==================================================== */}
 
         <section className="owner-request-layout">
           <div className="owner-request-card">
@@ -766,14 +700,10 @@ export default function OwnerPriceRequest() {
               </div>
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-            >
-              {/* VILLA */}
+            <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>
-                  Pilih Villa{" "}
-                  <span>*</span>
+                  Pilih Villa <span>*</span>
                 </label>
 
                 <select
@@ -808,18 +738,15 @@ export default function OwnerPriceRequest() {
                 </select>
               </div>
 
-              {/* TARGET */}
               <div className="form-group">
                 <label>
-                  Bagian yang Disesuaikan{" "}
-                  <span>*</span>
+                  Bagian yang Disesuaikan <span>*</span>
                 </label>
 
                 <div className="target-options">
                   <label
                     className={`target-option ${
-                      selectedTarget ===
-                      "villa"
+                      selectedTarget === "villa"
                         ? "selected"
                         : ""
                     }`}
@@ -829,17 +756,14 @@ export default function OwnerPriceRequest() {
                       name="priceTarget"
                       value="villa"
                       checked={
-                        selectedTarget ===
-                        "villa"
+                        selectedTarget === "villa"
                       }
                       onChange={() =>
                         setSelectedTarget(
                           "villa"
                         )
                       }
-                      disabled={
-                        submitting
-                      }
+                      disabled={submitting}
                     />
 
                     <span>
@@ -849,8 +773,7 @@ export default function OwnerPriceRequest() {
 
                   <label
                     className={`target-option ${
-                      selectedTarget ===
-                      "unit"
+                      selectedTarget === "unit"
                         ? "selected"
                         : ""
                     }`}
@@ -860,8 +783,7 @@ export default function OwnerPriceRequest() {
                       name="priceTarget"
                       value="unit"
                       checked={
-                        selectedTarget ===
-                        "unit"
+                        selectedTarget === "unit"
                       }
                       onChange={() =>
                         setSelectedTarget(
@@ -881,19 +803,14 @@ export default function OwnerPriceRequest() {
                 </div>
               </div>
 
-              {/* UNIT */}
-              {selectedTarget ===
-                "unit" && (
+              {selectedTarget === "unit" && (
                 <div className="form-group">
                   <label>
-                    Pilih Kamar / Unit{" "}
-                    <span>*</span>
+                    Pilih Kamar / Unit <span>*</span>
                   </label>
 
                   <select
-                    value={
-                      selectedUnitId
-                    }
+                    value={selectedUnitId}
                     onChange={(event) =>
                       setSelectedUnitId(
                         event.target.value
@@ -928,45 +845,28 @@ export default function OwnerPriceRequest() {
                     )}
                   </select>
 
-                  {units.length ===
-                    0 &&
-                    !loadingUnits && (
-                      <small className="field-helper">
-                        Villa ini belum
-                        memiliki unit/kamar
-                        yang tersedia.
-                      </small>
-                    )}
+                  {units.length === 0 && !loadingUnits && (
+                    <small className="field-helper">
+                      Villa ini belum memiliki unit/kamar yang tersedia.
+                    </small>
+                  )}
                 </div>
               )}
 
-              {/* CURRENT PRICE */}
               <div className="current-price-box">
                 <div>
-                  <span>
-                    Harga Saat Ini
-                  </span>
-
-                  <strong>
-                    {formatRupiah(
-                      selectedCurrentPrice
-                    )}
-                  </strong>
+                  <span>Harga Saat Ini</span>
+                  <strong>{formatRupiah(selectedCurrentPrice)}</strong>
                 </div>
 
                 <div className="current-price-label">
-                  {selectedTarget ===
-                  "villa"
-                    ? "Villa"
-                    : "Kamar / Unit"}
+                  {selectedTarget === "villa" ? "Villa" : "Kamar / Unit"}
                 </div>
               </div>
 
-              {/* NEW PRICE */}
               <div className="form-group">
                 <label>
-                  Harga Baru{" "}
-                  <span>*</span>
+                  Harga Baru <span>*</span>
                 </label>
 
                 <div className="price-input-wrapper">
@@ -986,168 +886,88 @@ export default function OwnerPriceRequest() {
                     disabled={
                       submitting ||
                       !selectedVillaId ||
-                      (selectedTarget ===
-                        "unit" &&
-                        !selectedUnitId)
+                      (selectedTarget === "unit" && !selectedUnitId)
                     }
                   />
                 </div>
 
                 <small className="field-helper">
-                  Harga boleh lebih
-                  tinggi atau lebih rendah
-                  dari harga saat ini,
-                  tetapi tidak boleh sama.
+                  Harga boleh lebih tinggi atau lebih rendah dari harga saat ini, tetapi tidak boleh sama.
                 </small>
               </div>
 
-              {/* PRICE PREVIEW */}
               {newPrice &&
-                Number.isFinite(
-                  parsedNewPrice
-                ) &&
+                Number.isFinite(parsedNewPrice) &&
                 parsedNewPrice > 0 &&
-                selectedCurrentPrice >
-                  0 &&
-                parsedNewPrice !==
-                  selectedCurrentPrice && (
+                selectedCurrentPrice > 0 &&
+                parsedNewPrice !== selectedCurrentPrice && (
                   <div
                     className={`price-change-preview ${
-                      priceDirection ===
-                      "naik"
-                        ? "increase"
-                        : "decrease"
+                      priceDirection === "naik" ? "increase" : "decrease"
                     }`}
                   >
                     <div className="change-preview-title">
-                      <span>
-                        {priceDirection ===
-                        "naik"
-                          ? "↑"
-                          : "↓"}
-                      </span>
-
-                      <strong>
-                        Harga{" "}
-                        {priceDirection ===
-                        "naik"
-                          ? "Naik"
-                          : "Turun"}
-                      </strong>
+                      <span>{priceDirection === "naik" ? "↑" : "↓"}</span>
+                      <strong>Harga {priceDirection === "naik" ? "Naik" : "Turun"}</strong>
                     </div>
 
                     <div className="change-preview-values">
                       <div>
-                        <small>
-                          Perubahan
-                        </small>
-
+                        <small>Perubahan</small>
                         <strong>
-                          {priceDifference >
-                          0
-                            ? "+"
-                            : "-"}
-                          {formatRupiah(
-                            Math.abs(
-                              priceDifference
-                            )
-                          )}
+                          {priceDifference > 0 ? "+" : "-"}
+                          {formatRupiah(Math.abs(priceDifference))}
                         </strong>
                       </div>
 
                       <div>
-                        <small>
-                          Persentase
-                        </small>
-
+                        <small>Persentase</small>
                         <strong>
-                          {priceDifference >
-                          0
-                            ? "+"
-                            : "-"}
-                          {pricePercentage.toFixed(
-                            2
-                          )}
-                          %
+                          {priceDifference > 0 ? "+" : "-"}
+                          {pricePercentage.toFixed(2)}%
                         </strong>
                       </div>
 
                       <div>
-                        <small>
-                          Harga setelah
-                          disetujui
-                        </small>
-
-                        <strong>
-                          {formatRupiah(
-                            parsedNewPrice
-                          )}
-                        </strong>
+                        <small>Harga setelah disetujui</small>
+                        <strong>{formatRupiah(parsedNewPrice)}</strong>
                       </div>
                     </div>
                   </div>
                 )}
 
-              {/* REASON */}
               <div className="form-group">
                 <label>
-                  Alasan Penyesuaian{" "}
-                  <span>*</span>
+                  Alasan Penyesuaian <span>*</span>
                 </label>
 
                 <textarea
                   rows="5"
                   value={reason}
-                  onChange={(event) =>
-                    setReason(
-                      event.target.value
-                    )
-                  }
+                  onChange={(event) => setReason(event.target.value)}
                   placeholder="Contoh: Penyesuaian harga karena perubahan biaya operasional, musim liburan, atau strategi harga villa."
-                  disabled={
-                    submitting
-                  }
+                  disabled={submitting}
                 />
 
                 <small className="field-helper">
-                  Jelaskan alasan
-                  penyesuaian harga agar
-                  Admin dapat memahami
-                  dasar pengajuan.
+                  Jelaskan alasan penyesuaian harga agar Admin dapat memahami dasar pengajuan.
                 </small>
               </div>
 
-              {/* NOTICE */}
               <div className="request-notice">
-                <div className="notice-icon">
-                  i
-                </div>
-
+                <div className="notice-icon">i</div>
                 <div>
-                  <strong>
-                    Harga tidak langsung
-                    berubah
-                  </strong>
-
-                  <p>
-                    Pengajuan akan dikirim
-                    kepada Admin. Harga
-                    lama tetap digunakan
-                    sampai Admin menyetujui
-                    pengajuan.
-                  </p>
+                  <strong>Harga tidak langsung berubah</strong>
+                  <p>Pengajuan akan dikirim kepada Admin. Harga lama tetap digunakan sampai Admin menyetujui pengajuan.</p>
                 </div>
               </div>
 
-              {/* BUTTON */}
               <div className="form-actions">
                 <button
                   type="button"
                   className="btn-secondary"
                   onClick={resetForm}
-                  disabled={
-                    submitting
-                  }
+                  disabled={submitting}
                 >
                   Reset
                 </button>
@@ -1159,338 +979,144 @@ export default function OwnerPriceRequest() {
                     submitting ||
                     loadingVillas ||
                     !selectedVillaId ||
-                    (selectedTarget ===
-                      "unit" &&
-                      !selectedUnitId)
+                    (selectedTarget === "unit" && !selectedUnitId)
                   }
                 >
-                  {submitting
-                    ? "Mengirim..."
-                    : "Kirim Pengajuan"}
+                  {submitting ? "Mengirim..." : "Kirim Pengajuan"}
                 </button>
               </div>
             </form>
           </div>
 
-          {/* INFO */}
           <div className="owner-request-info">
             <div className="info-card">
-              <div className="info-icon">
-                1
-              </div>
-
+              <div className="info-icon">1</div>
               <div>
-                <strong>
-                  Ajukan Penyesuaian
-                </strong>
-
-                <p>
-                  Pilih villa atau unit,
-                  masukkan harga baru,
-                  dan jelaskan alasannya.
-                </p>
+                <strong>Ajukan Penyesuaian</strong>
+                <p>Pilih villa atau unit, masukkan harga baru, dan jelaskan alasannya.</p>
               </div>
             </div>
 
             <div className="info-card">
-              <div className="info-icon">
-                2
-              </div>
-
+              <div className="info-icon">2</div>
               <div>
-                <strong>
-                  Diperiksa Admin
-                </strong>
-
-                <p>
-                  Admin akan menerima
-                  pengajuan dan memeriksa
-                  perubahan yang diajukan.
-                </p>
+                <strong>Diperiksa Admin</strong>
+                <p>Admin akan menerima pengajuan dan memeriksa perubahan yang diajukan.</p>
               </div>
             </div>
 
             <div className="info-card">
-              <div className="info-icon">
-                3
-              </div>
-
+              <div className="info-icon">3</div>
               <div>
-                <strong>
-                  Harga Diperbarui
-                </strong>
-
-                <p>
-                  Jika disetujui, sistem
-                  akan menerapkan harga
-                  baru secara otomatis.
-                </p>
+                <strong>Harga Diperbarui</strong>
+                <p>Jika disetujui, sistem akan menerapkan harga baru secara otomatis.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ===================================================
-            HISTORY
-        ==================================================== */}
-
         <section className="owner-history-card">
           <div className="history-header">
             <div>
-              <h2>
-                Riwayat Pengajuan
-              </h2>
-
-              <p>
-                Pantau semua pengajuan
-                penyesuaian harga Anda.
-              </p>
+              <h2>Riwayat Pengajuan</h2>
+              <p>Pantau semua pengajuan penyesuaian harga Anda.</p>
             </div>
 
             <button
               type="button"
               className="refresh-button"
               onClick={loadRequests}
-              disabled={
-                loadingRequests
-              }
+              disabled={loadingRequests}
             >
-              ↻{" "}
-              {loadingRequests
-                ? "Memuat..."
-                : "Refresh"}
+              ↻ {loadingRequests ? "Memuat..." : "Refresh"}
             </button>
           </div>
 
           {loadingRequests ? (
+            <div className="empty-history">Memuat riwayat pengajuan...</div>
+          ) : requests.length === 0 ? (
             <div className="empty-history">
-              Memuat riwayat pengajuan...
-            </div>
-          ) : requests.length ===
-            0 ? (
-            <div className="empty-history">
-              <div className="empty-icon">
-                Rp
-              </div>
-
-              <strong>
-                Belum ada pengajuan
-              </strong>
-
-              <p>
-                Pengajuan penyesuaian harga
-                yang Anda kirim akan muncul
-                di sini.
-              </p>
+              <div className="empty-icon">Rp</div>
+              <strong>Belum ada pengajuan</strong>
+              <p>Pengajuan penyesuaian harga yang Anda kirim akan muncul di sini.</p>
             </div>
           ) : (
             <div className="request-table-wrap">
               <table className="request-table">
                 <thead>
                   <tr>
-                    <th>
-                      Pengajuan
-                    </th>
-
+                    <th>Pengajuan</th>
                     <th>Villa</th>
-
-                    <th>
-                      Harga Lama
-                    </th>
-
-                    <th>
-                      Harga Baru
-                    </th>
-
-                    <th>
-                      Perubahan
-                    </th>
-
-                    <th>
-                      Alasan
-                    </th>
-
-                    <th>
-                      Status
-                    </th>
-
-                    <th>
-                      Diajukan
-                    </th>
-
-                    <th>
-                      Aksi
-                    </th>
+                    <th>Harga Lama</th>
+                    <th>Harga Baru</th>
+                    <th>Perubahan</th>
+                    <th>Alasan</th>
+                    <th>Status</th>
+                    <th>Diajukan</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {requests.map(
-                    (request) => {
-                      const oldPrice =
-                        getOldPriceFromRequest(
-                          request
-                        );
+                  {requests.map((request) => {
+                    const oldPrice = getOldPriceFromRequest(request);
+                    const newPriceValue = getPriceFromRequest(request);
+                    const difference = newPriceValue - oldPrice;
+                    const percentage = oldPrice > 0 ? (Math.abs(difference) / oldPrice) * 100 : 0;
+                    const direction = getPriceDirection(oldPrice, newPriceValue);
+                    const roomName = request.old_data?.room_name || request.new_data?.room_name || "";
 
-                      const newPriceValue =
-                        getPriceFromRequest(
-                          request
-                        );
-
-                      const difference =
-                        newPriceValue -
-                        oldPrice;
-
-                      const percentage =
-                        oldPrice > 0
-                          ? (Math.abs(
-                              difference
-                            ) /
-                              oldPrice) *
-                            100
-                          : 0;
-
-                      const direction =
-                        getPriceDirection(
-                          oldPrice,
-                          newPriceValue
-                        );
-
-                      const roomName =
-                        request
-                          .old_data
-                          ?.room_name ||
-                        request
-                          .new_data
-                          ?.room_name ||
-                        "";
-
-                      return (
-                        <tr
-                          key={
-                            request.id
-                          }
-                        >
-                          <td>
-                            <strong>
-                              {getRequestLabel(
-                                request
-                              )}
-                            </strong>
-
-                            {roomName && (
-                              <small>
-                                {roomName}
-                              </small>
-                            )}
-                          </td>
-
-                          <td>
-                            {request.villa_name ||
-                              "-"}
-                          </td>
-
-                          <td>
-                            {formatRupiah(
-                              oldPrice
-                            )}
-                          </td>
-
-                          <td className="table-new-price">
-                            {formatRupiah(
-                              newPriceValue
-                            )}
-                          </td>
-
-                          <td>
-                            <span
-                              className={`change-mini ${
-                                direction ===
-                                "naik"
-                                  ? "increase"
-                                  : direction ===
-                                    "turun"
-                                  ? "decrease"
-                                  : ""
-                              }`}
+                    return (
+                      <tr key={request.id}>
+                        <td>
+                          <strong>{getRequestLabel(request)}</strong>
+                          {roomName && <small>{roomName}</small>}
+                        </td>
+                        <td>{request.villa_name || "-"}</td>
+                        <td>{formatRupiah(oldPrice)}</td>
+                        <td className="table-new-price">{formatRupiah(newPriceValue)}</td>
+                        <td>
+                          <span
+                            className={`change-mini ${
+                              direction === "naik"
+                                ? "increase"
+                                : direction === "turun"
+                                ? "decrease"
+                                : ""
+                            }`}
+                          >
+                            {direction === "naik" ? "↑" : direction === "turun" ? "↓" : "→"}{" "}
+                            {difference > 0 ? "+" : ""}
+                            {formatRupiah(difference)}
+                            <small> ({percentage.toFixed(2)}%)</small>
+                          </span>
+                        </td>
+                        <td>
+                          <span className="reason-text">{request.reason || "-"}</span>
+                          {request.admin_note && (
+                            <small className="admin-note">Balasan Admin: {request.admin_note}</small>
+                          )}
+                        </td>
+                        <td>
+                          <span className={`status-pill ${getStatusClass(request.status)}`}>
+                            {request.status}
+                          </span>
+                        </td>
+                        <td>{formatDate(request.created_at)}</td>
+                        <td>
+                          {request.status === REQUEST_STATUS.MENUNGGU && (
+                            <button
+                              type="button"
+                              className="cancel-request-button"
+                              onClick={() => handleCancel(request.id)}
                             >
-                              {direction ===
-                              "naik"
-                                ? "↑"
-                                : direction ===
-                                  "turun"
-                                ? "↓"
-                                : "→"}{" "}
-                              {difference > 0
-                                ? "+"
-                                : ""}
-                              {formatRupiah(
-                                difference
-                              )}
-
-                              <small>
-                                {" "}
-                                (
-                                {percentage.toFixed(
-                                  2
-                                )}
-                                %)
-                              </small>
-                            </span>
-                          </td>
-
-                          <td>
-                            <span className="reason-text">
-                              {request.reason ||
-                                "-"}
-                            </span>
-
-                            {request.admin_note && (
-                              <small className="admin-note">
-                                Balasan Admin:{" "}
-                                {
-                                  request.admin_note
-                                }
-                              </small>
-                            )}
-                          </td>
-
-                          <td>
-                            <span
-                              className={`status-pill ${getStatusClass(
-                                request.status
-                              )}`}
-                            >
-                              {request.status}
-                            </span>
-                          </td>
-
-                          <td>
-                            {formatDate(
-                              request.created_at
-                            )}
-                          </td>
-
-                          <td>
-                            {request.status ===
-                              REQUEST_STATUS.MENUNGGU && (
-                              <button
-                                type="button"
-                                className="cancel-request-button"
-                                onClick={() =>
-                                  handleCancel(
-                                    request.id
-                                  )
-                                }
-                              >
-                                Batalkan
-                              </button>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
+                              Batalkan
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

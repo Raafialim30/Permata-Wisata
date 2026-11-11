@@ -9,15 +9,12 @@ import {
   Sparkles,
   Building2,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 import "./css/OwnerSidebar.css";
 
 const OwnerSidebar = () => {
   const navigate = useNavigate();
-
-  // ==========================================================
-  // USER / OWNER DATA
-  // ==========================================================
 
   let storedUser = null;
 
@@ -47,16 +44,19 @@ const OwnerSidebar = () => {
     username?.trim()?.charAt(0)?.toUpperCase() ||
     "V";
 
-  // ==========================================================
-  // LOGOUT
-  // ==========================================================
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Konfirmasi Keluar",
+      text: "Apakah Anda yakin ingin keluar dari halaman Owner?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e74c3c",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Keluar",
+      cancelButtonText: "Batal"
+    });
 
-  const handleLogout = () => {
-    const confirmed = window.confirm(
-      "Apakah Anda yakin ingin keluar dari halaman Owner?"
-    );
-
-    if (!confirmed) {
+    if (!result.isConfirmed) {
       return;
     }
 
@@ -78,16 +78,8 @@ const OwnerSidebar = () => {
 
   return (
     <aside className="owner-sidebar">
-      {/* =====================================================
-          DECORATION
-      ====================================================== */}
-
       <div className="owner-sidebar-decoration owner-sidebar-decoration-one" />
       <div className="owner-sidebar-decoration owner-sidebar-decoration-two" />
-
-      {/* =====================================================
-          BRAND
-      ====================================================== */}
 
       <div className="owner-sidebar-brand">
         <div className="owner-brand-mark">
@@ -107,21 +99,12 @@ const OwnerSidebar = () => {
         </div>
       </div>
 
-      {/* =====================================================
-          PANEL LABEL
-      ====================================================== */}
-
       <div className="owner-sidebar-label">
         <span className="owner-sidebar-status-dot" />
         <span>OWNER PANEL</span>
       </div>
 
-      {/* =====================================================
-          NAVIGATION
-      ====================================================== */}
-
       <nav className="owner-sidebar-nav">
-        {/* DASHBOARD */}
         <NavLink
           to="/owner/dashboard"
           end
@@ -144,7 +127,6 @@ const OwnerSidebar = () => {
           />
         </NavLink>
 
-        {/* KETERSEDIAAN */}
         <NavLink
           to="/owner/availability"
           className={({ isActive }) =>
@@ -166,10 +148,6 @@ const OwnerSidebar = () => {
           />
         </NavLink>
 
-        {/* ===================================================
-            PENYESUAIAN HARGA
-            Halaman: /owner/price-request
-        ==================================================== */}
         <NavLink
           to="/owner/price-request"
           className={({ isActive }) =>
@@ -192,10 +170,6 @@ const OwnerSidebar = () => {
         </NavLink>
       </nav>
 
-      {/* =====================================================
-          INFO CARD
-      ====================================================== */}
-
       <div className="owner-sidebar-info">
         <div className="owner-sidebar-info-icon">
           <Sparkles size={18} strokeWidth={2} />
@@ -203,23 +177,13 @@ const OwnerSidebar = () => {
 
         <div className="owner-sidebar-info-content">
           <strong>Kelola villa Anda</strong>
-
           <span>
-            Pantau booking, ketersediaan, dan
-            penyesuaian harga villa dengan mudah.
+            Pantau booking, ketersediaan, dan penyesuaian harga villa dengan mudah.
           </span>
         </div>
       </div>
 
-      {/* =====================================================
-          SPACER
-      ====================================================== */}
-
       <div className="owner-sidebar-spacer" />
-
-      {/* =====================================================
-          PROFILE
-      ====================================================== */}
 
       <div className="owner-sidebar-bottom">
         <div className="owner-profile">
@@ -229,10 +193,7 @@ const OwnerSidebar = () => {
 
           <div className="owner-profile-info">
             <strong>{username}</strong>
-
-            <span>
-              Villa Owner
-            </span>
+            <span>Villa Owner</span>
           </div>
 
           <span className="owner-profile-online" />
@@ -240,10 +201,7 @@ const OwnerSidebar = () => {
 
         <div className="owner-profile-villa">
           <Building2 size={14} />
-
-          <span title={villaName}>
-            {villaName}
-          </span>
+          <span title={villaName}>{villaName}</span>
         </div>
 
         <button
@@ -251,11 +209,7 @@ const OwnerSidebar = () => {
           className="owner-logout-button"
           onClick={handleLogout}
         >
-          <LogOut
-            size={18}
-            strokeWidth={2}
-          />
-
+          <LogOut size={18} strokeWidth={2} />
           <span>Keluar</span>
         </button>
       </div>

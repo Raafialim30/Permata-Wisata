@@ -1,29 +1,44 @@
-import { createContext, useContext, useState } from "react";
-import { translations } from "../utils/translations";
+import React, { createContext, useContext, useState } from "react";
+import { translations } from "./translations";
 
 const LanguageContext = createContext();
 
-export function LanguageProvider({ children }) {
-    const [lang, setLang] = useState(() => {
-        return localStorage.getItem("lang") || "id";
-    });
+export const LanguageProvider = ({ children }) => {
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("app_lang") || "id";
+  });
 
-    const toggleLang = (newLang) => {
-        setLang(newLang);
-        localStorage.setItem("lang", newLang);
-    };
+  const changeLanguage = (lang) => {
+    setLanguage(lang);
+    localStorage.setItem("app_lang", lang);
+  };
 
-    const t = (key) => {
-        return translations[lang]?.[key] || translations["en"]?.[key] || key;
-    };
+  // Fungsi toggle untuk beralih antara 'id' dan 'en'
+  const toggleLang = () => {
+    const nextLang = language === "id" ? "en" : "id";
+    changeLanguage(nextLang);
+  };
 
-    return (
-        <LanguageContext.Provider value={{ lang, toggleLang, t }}>
-            {children}
-        </LanguageContext.Provider>
-    );
-}
+  const t = (key) => {
+    return translations[language]?.[key] || translations["id"]?.[key] || key;
+  };
 
-export function useLang() {
-    return useContext(LanguageContext);
-}
+  return (
+    <LanguageContext.Provider
+      value={{
+        language,
+        lang: language,
+        setLanguage: changeLanguage,
+        setLang: changeLanguage,
+        changeLanguage,
+        toggleLang,
+        t,
+      }}
+    >
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => useContext(LanguageContext);
+export const useLang = useLanguage;

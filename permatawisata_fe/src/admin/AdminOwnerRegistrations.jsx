@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheck, FaRedo, FaTimes } from "react-icons/fa";
+import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
 import AdminSidebar from "./AdminSidebar";
 import AdminTopbar from "./AdminTopbar";
@@ -59,13 +60,32 @@ export default function AdminOwnerRegistrations() {
   const processRegistration = async (registration, decision) => {
     const note = String(notes[registration.id] || "").trim();
     if (decision === "reject" && !note) {
-      setError("Tuliskan alasan penolakan sebelum menolak pendaftaran.");
+      Swal.fire({
+        icon: "warning",
+        title: "Alasan Penolakan Wajib",
+        text: "Tuliskan alasan penolakan sebelum menolak pendaftaran.",
+        confirmButtonColor: "#2980b9"
+      });
       return;
     }
-    const confirmation = decision === "approve"
+
+    const confirmTitle = decision === "approve" ? "Setujui Pendaftaran?" : "Tolak Pendaftaran?";
+    const confirmText = decision === "approve"
       ? `Setujui akun ${registration.username} dan tautkan ke ${registration.villa_name}?`
       : `Tolak pendaftaran akun ${registration.username}?`;
-    if (!window.confirm(confirmation)) return;
+
+    const confirmResult = await Swal.fire({
+      title: confirmTitle,
+      text: confirmText,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: decision === "approve" ? "#16a34a" : "#dc2626",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Lanjutkan",
+      cancelButtonText: "Batal"
+    });
+
+    if (!confirmResult.isConfirmed) return;
 
     setProcessingId(registration.id);
     setError("");
@@ -83,11 +103,16 @@ export default function AdminOwnerRegistrations() {
       if (!response.ok || data.status !== "success") {
         throw new Error(data.error || "Pendaftaran gagal diproses.");
       }
-      setSuccess(
-        decision === "approve"
+
+      Swal.fire({
+        icon: "success",
+        title: decision === "approve" ? "Akun Disetujui!" : "Pendaftaran Ditolak",
+        text: decision === "approve"
           ? `Akun Owner ${registration.username} aktif dan telah ditautkan ke villa.`
-          : `Pendaftaran ${registration.username} ditolak.`
-      );
+          : `Pendaftaran ${registration.username} berhasil ditolak.`,
+        confirmButtonColor: "#2980b9"
+      });
+
       setNotes((current) => {
         const next = { ...current };
         delete next[registration.id];
@@ -96,7 +121,12 @@ export default function AdminOwnerRegistrations() {
       await loadRegistrations();
     } catch (processError) {
       console.error("Process owner registration:", processError);
-      setError(processError.message || "Pendaftaran gagal diproses.");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Memproses",
+        text: processError.message || "Pendaftaran gagal diproses.",
+        confirmButtonColor: "#2980b9"
+      });
     } finally {
       setProcessingId(null);
     }

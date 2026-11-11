@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   FaBath,
   FaBed,
-  FaEnvelope,
   FaMapMarkerAlt,
-  FaPhone,
   FaRegFrownOpen,
   FaSearch,
   FaStar,
@@ -14,42 +15,12 @@ import {
 
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import JogjaFilterCard from "../components/JogjaFilterCard";
 import { useLang } from "../context/LanguageContext";
 import API_BASE_URL from "../config";
 import villaImageUrl, { handleVillaImageError } from "../utils/villaImageUrl";
 import "./css/Villas.css";
-
-function Footer() {
-  const { t } = useLang();
-  return (
-    <footer className="footer-container">
-      <div className="footer-content">
-        <div className="footer-section footer-left">
-          <h2>jogjavilla.id</h2>
-          <span>Jogja Tourism</span>
-          <p>{t("footer_tagline")}</p>
-        </div>
-        <div className="footer-section footer-center">
-          <h3>{t("footer_contact")}</h3>
-          <p><FaEnvelope /> info@jogjavilla.id</p>
-          <p><FaPhone /> +62 812-3456-7890</p>
-        </div>
-        <div className="footer-section footer-right">
-          <h3>{t("footer_follow")}</h3>
-          <div className="social-icons">
-            <span className="social-icon">IG</span>
-            <span className="social-icon">FB</span>
-          </div>
-        </div>
-      </div>
-      <div className="footer-divider" />
-      <div className="footer-bottom">
-        &copy; 2026 jogjavilla.id. {t("footer_rights")}
-      </div>
-    </footer>
-  );
-}
 
 const SkeletonCard = () => (
   <div className="skeleton-card">
@@ -146,6 +117,13 @@ function Villas() {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+        offset: 80
+      });
+
       const handleScroll = () => setIsScrolled(window.scrollY > 50);
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
@@ -245,7 +223,7 @@ function Villas() {
           return a.price - b.price;
         if (sort === "high")
           return b.price - a.price;
-        return b.rating - a.rating;
+        return (b.rating || 0) - (a.rating || 0);
       });
     }, [filtered, sort]);
 
@@ -273,11 +251,12 @@ function Villas() {
       <div className="villa-page">
         <Navbar scrolled={isScrolled} />
 
+        {/* HERO SECTION */}
         <header className="villas-hero">
           <div className="hero-content">
-            <h1>{t("villas_hero_title")}</h1>
-            <p>{t("villas_hero_sub")}</p>
-            <div className="search-bar-modern">
+            <h1 data-aos="fade-down" data-aos-duration="1000">{t("villas_hero_title")}</h1>
+            <p data-aos="fade-up" data-aos-delay="150">{t("villas_hero_sub")}</p>
+            <div className="search-bar-modern" data-aos="zoom-in" data-aos-delay="300">
               <FaSearch className="search-icon-inside" />
               <input
                 type="text"
@@ -290,26 +269,30 @@ function Villas() {
         </header>
 
         <main className="container">
-          <JogjaFilterCard
-            sort={sort}
-            setSort={setSort}
-            guestFilter={guestFilter}
-            setGuestFilter={setGuestFilter}
-            bedsFilter={bedsFilter}
-            setBedsFilter={setBedsFilter}
-            selectedSpot={selectedSpot}
-            setSelectedSpot={setSelectedSpot}
-            radiusFilter={radiusFilter}
-            setRadiusFilter={setRadiusFilter}
-            checkInDate={checkInDate}
-            setCheckInDate={setCheckInDate}
-            duration={duration}
-            setDuration={setDuration}
-            onReset={handleResetAll}
-          />
+          {/* CARD FILTER LOKASI & TANGGAL */}
+          <div data-aos="fade-up" data-aos-delay="100">
+            <JogjaFilterCard
+              sort={sort}
+              setSort={setSort}
+              guestFilter={guestFilter}
+              setGuestFilter={setGuestFilter}
+              bedsFilter={bedsFilter}
+              setBedsFilter={setBedsFilter}
+              selectedSpot={selectedSpot}
+              setSelectedSpot={setSelectedSpot}
+              radiusFilter={radiusFilter}
+              setRadiusFilter={setRadiusFilter}
+              checkInDate={checkInDate}
+              setCheckInDate={setCheckInDate}
+              duration={duration}
+              setDuration={setDuration}
+              onReset={handleResetAll}
+            />
+          </div>
 
+          {/* BARIS KATEGORI PILLS & DROPDOWN FILTER */}
           <div className="filter-wrapper">
-            <div className="type-pills">
+            <div className="type-pills" data-aos="fade-right" data-aos-delay="200">
               {["all", "villa", "homestay", "pool", "promo"].map((t_type) => (
                 <button
                   key={t_type}
@@ -321,7 +304,7 @@ function Villas() {
               ))}
             </div>
 
-            <div className="dropdown-filters">
+            <div className="dropdown-filters" data-aos="fade-left" data-aos-delay="200">
               <select value={guestFilter} onChange={(e) => setGuestFilter(e.target.value)}>
                 <option value="">{t("filter_capacity")}</option>
                 {guestOptions.slice(1).map((opt, i) => (
@@ -337,19 +320,25 @@ function Villas() {
             </div>
           </div>
 
+          {/* GRID KARTU VILLA */}
           <section className="villa-grid">
             {loading ? (
               Array(6).fill(0).map((_, i) => <SkeletonCard key={i} />)
             ) : sorted.length === 0 ? (
-              <div className="no-results">
+              <div className="no-results" data-aos="zoom-in">
                 <FaRegFrownOpen size={50} />
                 <h3>{t("no_results_title")}</h3>
                 <p>{t("no_results_desc")}</p>
                 <button onClick={handleResetAll}>{t("reset_filter")}</button>
               </div>
             ) : (
-              sorted.map((villa) => (
-                <div className="luxury-card" key={villa.id}>
+              sorted.map((villa, idx) => (
+                <div 
+                  className="luxury-card" 
+                  key={villa.id}
+                  data-aos="zoom-in-up"
+                  data-aos-delay={(idx % 3) * 120}
+                >
                   <Link to={`/villas/${villa.id}`} className="card-link-wrapper">
                     <div className="card-image">
                       <img
@@ -361,7 +350,17 @@ function Villas() {
                         onError={(event) => handleVillaImageError(event, villa.id)}
                       />
                       {villa.promo === 1 && <div className="badge-promo">Special Offer</div>}
-                      <div className="card-rating"><FaStar /> {villa.rating}</div>
+
+                      {/* RATING REAL: HANYA DITAMPILKAN JIKA VILLA SUDAH MEMILIKI SETIDAKNYA 1 ULASAN */}
+                      {Number(villa.total_reviews) > 0 && (
+                        <div className="card-rating" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          <FaStar style={{ color: "#f59e0b" }} /> 
+                          <span>{Number(villa.rating).toFixed(1)}</span>
+                          <span style={{ fontSize: "0.75rem", opacity: 0.85, marginLeft: "2px" }}>
+                            ({villa.total_reviews})
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="card-details">
@@ -415,4 +414,4 @@ function Villas() {
     );
   }
 
-  export default Villas;
+export default Villas;

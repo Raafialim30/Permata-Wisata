@@ -1,6 +1,7 @@
 import { Lock, User } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import API_BASE_URL from "../config";
 import "./Login.css";
@@ -23,7 +24,12 @@ function Login() {
 
     // Validasi input
     if (!cleanUsername || !password) {
-      alert("Silakan isi username dan password.");
+      Swal.fire({
+        icon: "warning",
+        title: "Input Belum Lengkap",
+        text: "Silakan isi username dan password Anda.",
+        confirmButtonColor: "#0d6efd",
+      });
       return;
     }
 
@@ -68,23 +74,46 @@ function Login() {
           localStorage.setItem("user", JSON.stringify(data.user));
         }
 
-        // Redirect berdasarkan role
-        if (loginRole === "admin") {
-          navigate("/admin/dashboard", { replace: true });
-        } else if (loginRole === "owner") {
-          navigate("/owner/dashboard", { replace: true });
-        } else {
-          alert("Role pengguna tidak dikenali.");
-        }
+        Swal.fire({
+          icon: "success",
+          title: "Login Berhasil!",
+          text: `Selamat datang kembali, ${data.user?.username || loginRole}.`,
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          // Redirect berdasarkan role
+          if (loginRole === "admin") {
+            navigate("/admin/dashboard", { replace: true });
+          } else if (loginRole === "owner") {
+            navigate("/owner/dashboard", { replace: true });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Akses Ditolak",
+              text: "Role pengguna tidak dikenali.",
+              confirmButtonColor: "#0d6efd",
+            });
+          }
+        });
 
         return;
       }
 
       // LOGIN GAGAL
-      alert(data.message || "Username, password, atau role salah!");
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal",
+        text: data.message || "Username, password, atau role salah!",
+        confirmButtonColor: "#0d6efd",
+      });
     } catch (error) {
       console.error("ERROR LOGIN FRONTEND:", error);
-      alert("Gagal terhubung ke server Backend. Pastikan Flask sedang berjalan.");
+      Swal.fire({
+        icon: "error",
+        title: "Koneksi Gagal",
+        text: "Gagal terhubung ke server Backend. Pastikan Flask sedang berjalan.",
+        confirmButtonColor: "#0d6efd",
+      });
     } finally {
       setLoading(false);
     }

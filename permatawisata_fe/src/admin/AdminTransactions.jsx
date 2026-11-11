@@ -1,6 +1,7 @@
 import { FaCalendarAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 import API_BASE_URL from "../config";
 import AdminSidebar from "./AdminSidebar";
@@ -18,7 +19,14 @@ function AdminTransactions() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login", { replace: true });
+      Swal.fire({
+        icon: "warning",
+        title: "Sesi Berakhir",
+        text: "Silakan login kembali untuk mengakses halaman admin.",
+        confirmButtonColor: "#0d6efd"
+      }).then(() => {
+        navigate("/login", { replace: true });
+      });
       return undefined;
     }
 
@@ -34,7 +42,14 @@ function AdminTransactions() {
         if (response.status === 401 || response.status === 403) {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          navigate("/login", { replace: true });
+          Swal.fire({
+            icon: "warning",
+            title: "Sesi Kadaluarsa",
+            text: "Sesi Admin telah berakhir. Silakan login kembali.",
+            confirmButtonColor: "#0d6efd"
+          }).then(() => {
+            navigate("/login", { replace: true });
+          });
           return;
         }
         if (!response.ok || result.status !== "success") {

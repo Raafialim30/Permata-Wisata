@@ -20,6 +20,58 @@
     filter: drop-shadow(0 4px 14px rgba(255, 140, 0, 0.35));
 }
 
+/* ─── STYLING LINK NAVIGATION & INDIKATOR AKTIF ─── */
+.nav-menu .nav-item {
+    position: relative;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 6px 2px;
+    transition: color 0.25s ease;
+}
+
+.nav-menu .nav-item:hover {
+    color: #ffffff;
+}
+
+/* Status Menu Aktif (Saat Navbar Transparan) */
+.nav-menu .nav-item.active {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Garis Indikator di Bawah Menu Aktif */
+.nav-menu .nav-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #f59e0b; /* Warna Emas/Aksen */
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* ─── SAAT NAVBAR DI-SCROLL (BACKGROUND PUTIH) ─── */
+.navbar.scrolled .nav-menu .nav-item {
+    color: #334155;
+}
+
+.navbar.scrolled .nav-menu .nav-item:hover {
+    color: #0d6efd;
+}
+
+.navbar.scrolled .nav-menu .nav-item.active {
+    color: #0d6efd; /* Warna Biru saat Scrolled */
+    font-weight: 700;
+}
+
+.navbar.scrolled .nav-menu .nav-item.active::after {
+    background-color: #0d6efd; /* Garis Biru saat Scrolled */
+}
+
 /* Language Switcher */
 .lang-switcher {
     display: flex;
@@ -94,12 +146,6 @@
     color: rgba(0, 0, 0, 0.2);
 }
 
-/* Solid-background navbar (Booking, Payment, Success, VillaDetail) */
-.navbar:not(.scrolled) .lang-switcher {
-    /* already handled by default above */
-}
-
-
 /* HAMBURGER MENU */
 .hamburger {
     display: none;
@@ -115,6 +161,7 @@
     color: #0B3C5D;
 }
 
+/* RESPONSIVE MOBILE VIEW */
 @media (max-width: 768px) {
     .nav-logo-img {
         height: 48px;
@@ -124,7 +171,7 @@
         display: block;
     }
     
-   .nav-menu {
+    .nav-menu {
         position: fixed !important;
         top: 0 !important;
         right: -100%;
@@ -134,19 +181,16 @@
         
         display: flex !important;
         flex-direction: column !important;
-        
-        /* ─── KEMBALIKAN KE ATAS TAPI TETAP RATA TENGAH ─── */
-        justify-content: flex-start !important; /* Menarik menu kembali ke atas */
-        align-items: center !important;        /* Membuat teks/tombol tetap di tengah (Kiri-Kanan) */
-        gap: 25px !important;                  /* Jarak antar menu */
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 25px !important;
         
         transition: right 0.3s ease;
         z-index: 1000 !important;
-        padding-top: 100px !important;         /* Jarak ideal dari atas agar tidak menutupi tombol Close (X) */
-        padding-left: 0 !important;            /* Tetap 0 agar tidak condong ke kanan */
+        padding-top: 100px !important;
+        padding-left: 0 !important;
     }
     
-    /* Memastikan tombol bahasa dan switcher ikut rapi */
     .nav-menu .lang-switcher {
         margin-left: 0;
         margin-top: 10px;

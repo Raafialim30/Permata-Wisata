@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-
 import {
   ArrowLeft,
   CalendarDays,
@@ -17,11 +16,28 @@ import {
   XCircle,
   Lock,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 import API_BASE_URL from "../config";
 import villaImageUrl from "../utils/villaImageUrl";
 
 import "./css/OwnerAvailability.css";
+
+// Memindahkan array nama bulan ke luar komponen agar statis & tidak mentrigger re-render pada hooks
+const MONTH_NAMES = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
 
 const OwnerAvailability = () => {
   // =========================================================
@@ -64,21 +80,6 @@ const OwnerAvailability = () => {
 
   const selectedMonth = currentDate.getMonth();
   const selectedYear = currentDate.getFullYear();
-
-  const monthNames = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
 
   // =========================================================
   // HEADER API
@@ -237,7 +238,6 @@ const OwnerAvailability = () => {
 
       setVillas(villaList);
 
-      // LANGSUNG PILIH VILLA PERTAMA AGAR HALAMAN UTAMA DILANGSUNGKAN KE PILIH UNIT
       if (villaList.length > 0) {
         setSelectedVilla(villaList[0]);
       }
@@ -364,17 +364,9 @@ const OwnerAvailability = () => {
     selectedYear,
   ]);
 
-  // =========================================================
-  // INITIAL LOAD
-  // =========================================================
-
   useEffect(() => {
     fetchVillas();
   }, [fetchVillas]);
-
-  // =========================================================
-  // KETIKA VILLA DIPILIH
-  // =========================================================
 
   useEffect(() => {
     if (!selectedVilla?.id) {
@@ -387,10 +379,6 @@ const OwnerAvailability = () => {
     setBookedDates([]);
     fetchVillaDetails(selectedVilla);
   }, [selectedVilla, fetchVillaDetails]);
-
-  // =========================================================
-  // KETIKA UNIT / BULAN BERUBAH
-  // =========================================================
 
   useEffect(() => {
     setSelectedDay(null);
@@ -407,10 +395,6 @@ const OwnerAvailability = () => {
     selectedYear,
     fetchBookedDates,
   ]);
-
-  // =========================================================
-  // NORMALISASI TANGGAL BOOKING
-  // =========================================================
 
   const normalizedBookedDates = useMemo(() => {
     const result = new Set();
@@ -467,10 +451,6 @@ const OwnerAvailability = () => {
     return result;
   }, [bookedDates, selectedMonth, selectedYear]);
 
-  // =========================================================
-  // KALENDER HELPER
-  // =========================================================
-
   const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
 
@@ -517,10 +497,6 @@ const OwnerAvailability = () => {
     [selectedMonth, selectedYear]
   );
 
-  // =========================================================
-  // HANDLERS
-  // =========================================================
-
   const handleOpenUnit = useCallback((unit) => {
     setSelectedUnit(unit);
     setSelectedDay(null);
@@ -551,25 +527,39 @@ const OwnerAvailability = () => {
   const handleDayClick = useCallback((day) => {
     if (!day) return;
     setSelectedDay(day);
-  }, []);
+
+    const past = isPast(day);
+    const booked = isBooked(day);
+
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: past ? "warning" : booked ? "error" : "success",
+      title: `${day} ${MONTH_NAMES[selectedMonth]}: ${past ? "Sudah lewat" : booked ? "Sudah Dibooking" : "Tersedia"}`,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }, [isPast, isBooked, selectedMonth]);
 
   const handleRefresh = useCallback(async () => {
     if (selectedVilla && selectedUnit) {
       await fetchBookedDates();
-      return;
-    }
-    if (selectedVilla) {
+    } else if (selectedVilla) {
       await fetchVillaDetails(selectedVilla);
-      return;
+    } else {
+      await fetchVillas();
     }
-    await fetchVillas();
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "info",
+      title: "Data jadwal berhasil diperbarui",
+      showConfirmButton: false,
+      timer: 1500
+    });
   }, [selectedVilla, selectedUnit, fetchBookedDates, fetchVillaDetails, fetchVillas]);
 
   const isLoading = loadingVillas || loadingUnits || loadingDates;
-
-  // =========================================================
-  // RENDER
-  // =========================================================
 
   return (
     <div className="owner-availability-page">
@@ -626,12 +616,9 @@ const OwnerAvailability = () => {
         </div>
       )}
 
-      {/* =====================================================
-          TAMPILAN 1: PILIH UNIT (LANGSUNG TAMPIL DENGAN VILLA TERPILIH)
-      ===================================================== */}
+      {/* TAMPILAN 1: PILIH UNIT */}
       {selectedVilla && !selectedUnit && (
         <div className="availability-unit-view">
-          {/* VILLA TERPILIH */}
           <div className="availability-selected-villa">
             <div className="availability-selected-villa-icon">
               <Home size={27} />
@@ -642,7 +629,6 @@ const OwnerAvailability = () => {
             </div>
           </div>
 
-          {/* JUDUL UNIT */}
           <div className="availability-section-heading">
             <div>
               <span className="availability-eyebrow">UNIT / VARIASI</span>
@@ -737,9 +723,7 @@ const OwnerAvailability = () => {
         </div>
       )}
 
-      {/* =====================================================
-          TAMPILAN 2: KALENDER KETERSEDIAAN UNIT
-      ===================================================== */}
+      {/* TAMPILAN 2: KALENDER KETERSEDIAAN UNIT */}
       {selectedVilla && selectedUnit && (
         <div className="availability-schedule-view">
           <button
@@ -751,7 +735,6 @@ const OwnerAvailability = () => {
             <span>Kembali ke Unit</span>
           </button>
 
-          {/* UNIT TERPILIH */}
           <div className="availability-selected-villa">
             <div className="availability-selected-villa-icon">
               <BedDouble size={27} />
@@ -765,13 +748,12 @@ const OwnerAvailability = () => {
             </div>
           </div>
 
-          {/* CALENDAR CARD */}
           <div className="availability-calendar-card">
             <div className="availability-calendar-top">
               <div>
                 <span>KETERSEDIAAN UNIT</span>
                 <h2>
-                  {monthNames[selectedMonth]} {selectedYear}
+                  {MONTH_NAMES[selectedMonth]} {selectedYear}
                 </h2>
               </div>
 
@@ -809,7 +791,6 @@ const OwnerAvailability = () => {
               </div>
             )}
 
-            {/* CALENDAR BODY */}
             <div className="availability-calendar-body">
               <div className="availability-weekdays">
                 <span>Min</span>
@@ -874,7 +855,6 @@ const OwnerAvailability = () => {
               </div>
             </div>
 
-            {/* LEGEND */}
             <div className="availability-legend">
               <div>
                 <span className="legend-dot available" />
@@ -895,7 +875,6 @@ const OwnerAvailability = () => {
             </div>
           </div>
 
-          {/* DETAIL TANGGAL */}
           {selectedDay && (
             <div
               className={`availability-day-detail ${
@@ -918,7 +897,7 @@ const OwnerAvailability = () => {
 
               <div>
                 <span>
-                  {selectedDay} {monthNames[selectedMonth]} {selectedYear}
+                  {selectedDay} {MONTH_NAMES[selectedMonth]} {selectedYear}
                 </span>
 
                 <strong>

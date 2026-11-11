@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle, FaDownload, FaHome, FaWhatsapp, FaClock } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useLang } from "../context/LanguageContext";
@@ -85,12 +86,30 @@ function Success() {
                 email: customerEmail,
                 bookingData: currentBooking,
             }));
+
+            if (!quiet) {
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "Status pesanan berhasil diperbarui!",
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            }
+
             return true;
         } catch (error) {
             if (quiet) {
                 setRefreshError("Status terbaru belum dapat dimuat. Periksa koneksi, lalu coba perbarui kembali.");
             } else {
                 setLookupError(error.message || "Terjadi kesalahan saat mencari pesanan.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Pencarian Gagal",
+                    text: error.message || "Pesanan tidak dapat ditemukan.",
+                    confirmButtonColor: "#0B3C5D"
+                });
             }
             return false;
         } finally {
@@ -141,7 +160,7 @@ function Success() {
                         <div class="inv-title">Pemesanan Dikonfirmasi</div>
                     </div>
                     <div class="invoice-no-box">
-                        <div class="small-label">Nomor Pemesanan</div>
+                        <div class="small-label">${escapeHtml(t("booking_number"))}</div>
                         <div class="booking-id">${bookingId}</div>
                     </div>
                 </div>
@@ -160,11 +179,11 @@ function Success() {
                         <strong>${escapeHtml(bookingData.check_out || '-')}</strong>
                     </div>
                     <div class="summary-row">
-                        <span>Informasi Tamu</span>
-                        <strong>${escapeHtml(bookingData.full_name || '-')} (${escapeHtml(bookingData.guests || '-')} Tamu)</strong>
+                        <span>${escapeHtml(t("guest_info"))}</span>
+                        <strong>${escapeHtml(bookingData.full_name || '-')} (${escapeHtml(bookingData.guests || '-')} ${escapeHtml(t("tamu"))})</strong>
                     </div>
                     <div class="summary-row total-row">
-                        <span>Total Pembayaran</span>
+                        <span>${escapeHtml(t("total_payment"))}</span>
                         <strong>Rp ${Number(bookingData.total_price || 0).toLocaleString('id-ID')}</strong>
                     </div>
                 </div>
@@ -176,7 +195,6 @@ function Success() {
             </div>
         `;
 
-        // wrapper
         const wrapper = document.createElement('div');
         wrapper.style.background = '#ffffff';
         wrapper.style.width = '794px';
@@ -188,7 +206,6 @@ function Success() {
         wrapper.style.borderRadius = '12px';
         wrapper.innerHTML = invoiceHtml;
 
-        // inject styles
         const s = document.createElement('style');
         s.textContent = `
             .invoice-root { width:100%; }
@@ -242,8 +259,8 @@ function Success() {
             const canvas = await html2canvas(wrapper, { scale, useCORS: true, backgroundColor: '#ffffff' });
 
             const pxPerMm = 96 / 25.4;
-            const pageWidthCss = Math.round(210 * pxPerMm); // ~794
-            const pageHeightCss = Math.round(297 * pxPerMm); // ~1123
+            const pageWidthCss = Math.round(210 * pxPerMm);
+            const pageHeightCss = Math.round(297 * pxPerMm);
             const pageWidthCanvas = pageWidthCss * scale;
             const pageHeightCanvas = pageHeightCss * scale;
 
@@ -267,9 +284,23 @@ function Success() {
             }
 
             pdf.save(`Invoice_${bookingId}.pdf`);
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Bukti reservasi (PDF) berhasil diunduh!',
+                showConfirmButton: false,
+                timer: 3000
+            });
         } catch (err) {
             console.error('PDF generation failed', err);
-            alert('Gagal mengunduh PDF. Silakan coba refresh halaman dan ulangi.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Mengunduh PDF',
+                text: 'Silakan coba perbarui halaman dan ulangi kembali.',
+                confirmButtonColor: '#0B3C5D'
+            });
         } finally {
             if (actionButtons) { try { actionButtons.style.display = _prevActionDisplay || ''; } catch (e) {} }
             try { document.body.removeChild(wrapper); } catch (e) {}
@@ -289,6 +320,7 @@ function Success() {
         window.open(whatsappUrl, '_blank');
     };
 
+    // TAMPILAN FORM PENCARIAN PESANAN (TIDAK ADA DATA BOOKING)
     if (!bookingData) {
         return (
             <div className="success-page">
@@ -296,8 +328,8 @@ function Success() {
                 <main className="success-content-wrapper">
                     <section className="success-container slide-up">
                         <div className="success-card booking-lookup-card">
-                            <h1>Cek Pesanan</h1>
-                            <p>Masukkan kode pesanan dan email yang digunakan saat booking untuk melihat status dan mengunduh ulang bukti PDF.</p>
+                            <h1>{t("lookup_title")}</h1>
+                            <p>{t("lookup_subtitle")}</p>
                             <form
                                 className="booking-lookup-form"
                                 onSubmit={(event) => {
@@ -305,33 +337,33 @@ function Success() {
                                     refreshBooking(orderInput, email);
                                 }}
                             >
-                                <label htmlFor="booking-order-id">Kode pesanan</label>
+                                <label htmlFor="booking-order-id">{t("lookup_order_code")}</label>
                                 <input
                                     id="booking-order-id"
                                     type="text"
                                     value={orderInput}
                                     onChange={(event) => setOrderInput(event.target.value)}
-                                    placeholder="Contoh: PW-22"
+                                    placeholder={t("lookup_order_placeholder")}
                                     autoComplete="off"
                                     required
                                 />
-                                <label htmlFor="booking-email">Email saat pemesanan</label>
+                                <label htmlFor="booking-email">{t("lookup_email")}</label>
                                 <input
                                     id="booking-email"
                                     type="email"
                                     value={email}
                                     onChange={(event) => setEmail(event.target.value)}
-                                    placeholder="nama@email.com"
+                                    placeholder={t("lookup_email_placeholder")}
                                     autoComplete="email"
                                     required
                                 />
                                 {lookupError && <p className="booking-lookup-error" role="alert">{lookupError}</p>}
                                 <button type="submit" disabled={loading}>
-                                    {loading ? "Mencari pesanan..." : "Cek Pesanan"}
+                                    {loading ? t("processing") : t("lookup_btn")}
                                 </button>
                             </form>
                             <button className="booking-lookup-home" onClick={() => navigate("/")}>
-                                Kembali ke Beranda
+                                {t("lookup_back")}
                             </button>
                         </div>
                     </section>
@@ -341,6 +373,7 @@ function Success() {
         );
     }
 
+    // TAMPILAN DETAIL HASIL PESANAN
     return (
         <div className="success-page">
             <Navbar />
@@ -349,29 +382,29 @@ function Success() {
                 <div className="success-container slide-up">
                     <div className="success-card" id="invoice-content">
                         
-                        {/* INVOICE HEADER */}
+                        {/* HEADER INVOICE */}
                         <div className="success-header" style={{ paddingBottom: '20px', borderBottom: '1px solid #eef2f6', marginBottom: '20px' }}>
                             <FaCheckCircle className="success-icon pulse" style={{ fontSize: '60px', color: '#2ecc71', marginBottom: '15px' }} />
                             <h1 style={{ color: '#0B3C5D', margin: '0 0 10px 0' }}>
                                 {bookingData.status === "Lunas"
-                                    ? "Pembayaran Berhasil"
+                                    ? t("booking_confirmed")
                                     : bookingData.status === "Batal"
                                         ? "Pesanan Dibatalkan"
-                                        : t("booking_confirmed") || "Pemesanan Dikonfirmasi"}
+                                        : t("booking_confirmed")}
                             </h1>
                             <p style={{ color: '#64748b', margin: 0 }}>
                                 {bookingData.status === "Lunas"
-                                    ? "Pembayaran Anda telah disetujui oleh admin."
+                                    ? t("booking_confirmed_desc")
                                     : bookingData.status === "Batal"
-                                        ? "Pesanan ini dibatalkan. Silakan hubungi admin jika membutuhkan bantuan."
-                                        : "Terima kasih! Reservasi Anda telah berhasil dicatat."}
+                                        ? "Pesanan ini dibatalkan."
+                                        : t("booking_confirmed_desc")}
                             </p>
                         </div>
 
-                        {/* ORDER SUMMARY */}
+                        {/* RINGKASAN ORDER & STATUS */}
                         <div className="booking-reference" style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '25px', textAlign: 'left' }}>
                             <div className="ref-item">
-                                <span style={{ fontSize: '13px', color: '#64748b', display: 'block', marginBottom: '5px' }}>{t("booking_number") || "Nomor Pemesanan"}</span>
+                                <span style={{ fontSize: '13px', color: '#64748b', display: 'block', marginBottom: '5px' }}>{t("booking_number")}</span>
                                 <h3 style={{ margin: 0, color: '#0f172a', fontSize: '20px' }}>{bookingId}</h3>
                             </div>
                             <div className="ref-item" style={{ textAlign: 'right' }}>
@@ -388,59 +421,57 @@ function Success() {
                                 onClick={() => refreshBooking(bookingId, email)}
                                 disabled={loading}
                             >
-                                {loading ? "Memperbarui..." : "Perbarui status"}
+                                {loading ? t("processing") : "Perbarui status"}
                             </button>
-                            <span>Status diperbarui otomatis selama pembayaran menunggu verifikasi.</span>
                         </div>
 
-                        {/* VILLA DETAILS */}
+                        {/* DETAIL VILLA & TAMU */}
                         <div className="booking-details-card" style={{ textAlign: 'left', marginBottom: '30px' }}>
-                            <h3 style={{ color: '#0B3C5D', fontSize: '18px', borderBottom: '2px solid #eef2f6', paddingBottom: '10px', marginBottom: '15px' }}>Detail Pesanan</h3>
+                            <h3 style={{ color: '#0B3C5D', fontSize: '18px', borderBottom: '2px solid #eef2f6', paddingBottom: '10px', marginBottom: '15px' }}>
+                                {t("booking_details_title")}
+                            </h3>
                             
                             <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                                 <span style={{ color: '#64748b' }}>Villa</span>
                                 <strong style={{ color: '#0f172a' }}>{villa?.name || bookingData.villa_name || "-"}</strong>
                             </div>
                             <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                <span style={{ color: '#64748b' }}>Check-in</span>
+                                <span style={{ color: '#64748b' }}>{t("checkin_label")}</span>
                                 <strong style={{ color: '#0f172a' }}>{bookingData.check_in}</strong>
                             </div>
                             <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                <span style={{ color: '#64748b' }}>Check-out</span>
+                                <span style={{ color: '#64748b' }}>{t("checkout_label")}</span>
                                 <strong style={{ color: '#0f172a' }}>{bookingData.check_out}</strong>
                             </div>
                             <div className="detail-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                <span style={{ color: '#64748b' }}>{t("guest_info") || "Informasi Tamu"}</span>
+                                <span style={{ color: '#64748b' }}>{t("guest_info")}</span>
                                 <strong style={{ color: '#0f172a' }}>{bookingData.full_name} ({bookingData.guests} {t("tamu")})</strong>
                             </div>
                             
                             <div className="detail-row total-row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingTop: '15px', borderTop: '2px dashed #eef2f6' }}>
-                                <span style={{ color: '#0f172a', fontWeight: '600', fontSize: '18px' }}>Total Pembayaran</span>
+                                <span style={{ color: '#0f172a', fontWeight: '600', fontSize: '18px' }}>{t("total_payment")}</span>
                                 <strong style={{ color: '#0ea5e9', fontSize: '22px' }}>Rp {Number(bookingData.total_price).toLocaleString('id-ID')}</strong>
                             </div>
                         </div>
 
-                        {/* ACTION BUTTONS (EXCLUDED FROM PDF) */}
+                        {/* TOMBOL AKSI & PETUNJUK */}
                         <div id="pdf-exclude-actions">
                             <div className="next-steps" style={{ textAlign: 'left', backgroundColor: '#fffbeb', padding: '20px', borderRadius: '12px', marginBottom: '25px', borderLeft: '4px solid #f59e0b' }}>
-                                <h3 style={{ margin: '0 0 10px 0', color: '#b45309', fontSize: '16px' }}>Apa Selanjutnya?</h3>
+                                <h3 style={{ margin: '0 0 10px 0', color: '#b45309', fontSize: '16px' }}>{t("whats_next")}</h3>
                                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#92400e', fontSize: '14px', lineHeight: '1.6' }}>
-                                    {bookingData.status === "Lunas"
-                                        ? <li>Pembayaran Anda telah disetujui admin.</li>
-                                        : bookingData.status === "Batal"
-                                            ? <li>Pesanan ini telah dibatalkan.</li>
-                                            : <li>Pembayaran Anda sedang diverifikasi oleh admin.</li>}
-                                    <li>Unduh PDF ini untuk menyimpan bukti reservasi terbaru.</li>
-                                    <li>Tunjukkan bukti/nomor pesanan ini saat proses check-in.</li>
+                                    <li>{t("next_1")}</li>
+                                    <li>{t("next_2")}</li>
+                                    <li>{t("next_3")}</li>
+                                    <li>{t("next_4")}</li>
                                 </ul>
                             </div>
 
                             <div className="action-buttons" style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
                                 <button onClick={handleWhatsAppAdmin} style={{ padding: '12px 24px', backgroundColor: '#25D366', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', fontSize: '14px' }}>
-                                    <FaWhatsapp size={18} /> Konfirmasi ke Admin
+                                    <FaWhatsapp size={18} /> {t("btn_whatsapp")}
                                 </button>
                                 <button onClick={generatePDF} style={{ padding: '12px 24px', backgroundColor: '#0B3C5D', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', fontSize: '14px' }}>
-                                    <FaDownload size={16} /> Unduh PDF
+                                    <FaDownload size={16} /> {t("download_pdf")}
                                 </button>
                                 <button onClick={() => {
                                     setBookingData(null);
@@ -448,10 +479,10 @@ function Success() {
                                     setLookupError("");
                                     sessionStorage.removeItem("bookingLookup");
                                 }} style={{ padding: '12px 24px', backgroundColor: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px' }}>
-                                    Cek pesanan lain
+                                    {t("lookup_btn")}
                                 </button>
                                 <button onClick={() => navigate("/")} style={{ padding: '12px 24px', backgroundColor: '#f1f5f9', color: '#0f172a', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', fontSize: '14px' }}>
-                                    <FaHome size={16} /> Kembali ke Beranda
+                                    <FaHome size={16} /> {t("back_home")}
                                 </button>
                             </div>
                         </div>

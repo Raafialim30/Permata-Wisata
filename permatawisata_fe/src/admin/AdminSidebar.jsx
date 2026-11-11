@@ -11,18 +11,26 @@ import {
   FaThLarge,
   FaUserPlus
 } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 import "./css/AdminSidebar.css";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    const confirmed = window.confirm(
-      "Apakah Anda yakin ingin keluar dari halaman Admin?"
-    );
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Konfirmasi Keluar",
+      text: "Apakah Anda yakin ingin keluar dari halaman Admin?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Ya, Keluar",
+      cancelButtonText: "Batal"
+    });
 
-    if (!confirmed) {
+    if (!result.isConfirmed) {
       return;
     }
 

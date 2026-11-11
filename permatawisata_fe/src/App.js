@@ -32,249 +32,102 @@ import ReviewPage from "./pages/ReviewPage";
 
 import "./css/responsive.css";
 
-
 function App() {
   return (
     <LanguageProvider>
-
       <BrowserRouter>
-
         <Routes>
-
           {/* ==================================================
               CUSTOMER
           ================================================== */}
-
-          <Route
-            path="/"
-            element={<Landingpage />}
-          />
-
-          <Route
-            path="/villas"
-            element={<Villas />}
-          />
-
-          <Route
-            path="/villas/:id"
-            element={<VillaDetail />}
-          />
-
-          <Route
-            path="/booking"
-            element={<Booking />}
-          />
-
-          <Route
-            path="/payment"
-            element={<Payment />}
-          />
-
-          <Route
-            path="/success"
-            element={<Success />}
-          />
-
-          <Route
-            path="/review"
-            element={<ReviewPage />}
-          />
-
+          <Route path="/" element={<Landingpage />} />
+          <Route path="/villas" element={<Villas />} />
+          <Route path="/villas/:id" element={<VillaDetail />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/review" element={<ReviewPage />} />
 
           {/* ==================================================
-              LOGIN
+              LOGIN & REGISTER
           ================================================== */}
-
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-
-          <Route
-            path="/owner/register"
-            element={<OwnerRegister />}
-          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/owner/register" element={<OwnerRegister />} />
 
           {/* ==================================================
               ADMIN
           ================================================== */}
-
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminDashboard />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/villas"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminManageVillas />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/transactions"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminTransactions />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/payment"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminPayment />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/change-requests"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminChangeRequests />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/owner-registrations"
             element={
-              <ProtectedRoute
-                allowedRole="admin"
-              >
+              <ProtectedRoute allowedRole="admin">
                 <AdminOwnerRegistrations />
               </ProtectedRoute>
             }
           />
 
-
           {/* ==================================================
               OWNER
-              
-              OwnerLayout menjadi parent.
-
-              Semua halaman Owner berada di dalam
-              OwnerLayout sehingga sidebar/menu Owner
-              tetap digunakan.
-
-              Struktur:
-              
-              /owner
-                ├── dashboard
-                ├── availability
-                └── price-request
-              
-              OwnerLayout:
-                  ├── Owner Sidebar
-                  └── Outlet
-                      
-              Outlet akan menampilkan halaman child:
-                  ├── OwnerDashboard
-                  ├── OwnerAvailability
-                  └── OwnerPriceRequest
           ================================================== */}
-
           <Route
             path="/owner"
             element={
-              <ProtectedRoute
-                allowedRole="owner"
-              >
+              <ProtectedRoute allowedRole="owner">
                 <OwnerLayout />
               </ProtectedRoute>
             }
           >
-
-            {/* ================================================
-                OWNER DASHBOARD
-                URL:
-                /owner/dashboard
-            ================================================= */}
-
-            <Route
-              path="dashboard"
-              element={
-                <OwnerDashboard />
-              }
-            />
-
-
-            {/* ================================================
-                OWNER AVAILABILITY
-                URL:
-                /owner/availability
-            ================================================= */}
-
-            <Route
-              path="availability"
-              element={
-                <OwnerAvailability />
-              }
-            />
-
-
-            {/* ================================================
-                OWNER PRICE ADJUSTMENT
-                URL:
-                /owner/price-request
-
-                Halaman ini digunakan Owner untuk mengajukan
-                PENYESUAIAN harga.
-
-                Harga dapat:
-                - Naik
-                - Turun
-
-                Pengajuan akan masuk ke Admin untuk diperiksa
-                sebelum harga benar-benar berubah.
-            ================================================= */}
-
-            <Route
-              path="price-request"
-              element={
-                <OwnerPriceRequest />
-              }
-            />
-
+            <Route path="dashboard" element={<OwnerDashboard />} />
+            <Route path="availability" element={<OwnerAvailability />} />
+            <Route path="price-request" element={<OwnerPriceRequest />} />
           </Route>
-
 
           {/* ==================================================
               DEFAULT
           ================================================== */}
-
-          <Route
-            path="*"
-            element={
-              <Navigate
-                to="/"
-                replace
-              />
-            }
-          />
-
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-
       </BrowserRouter>
-
     </LanguageProvider>
   );
 }
